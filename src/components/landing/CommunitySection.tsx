@@ -1,10 +1,17 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Heart, Users, TreePine, School } from 'lucide-react'
+import { Heart, Users, TreePine, School, Building2, Globe } from 'lucide-react'
 
 const CommunitySection = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const branchImages = [
+    '/assets/images/building-exterior-1.jpg',
+    '/assets/images/building-exterior-2.jpg',
+    '/assets/images/building-branch-dusk.jpg',
+    '/assets/images/building-branch-modern.jpg'
+  ]
 
   const initiatives = [
     {
@@ -36,11 +43,54 @@ const CommunitySection = () => {
   return (
     <section ref={ref} className="py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Branch Locations Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
+        >
+          <span className="inline-block px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold mb-4">
+            Our Locations
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Serving Communities Nationwide
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            With 350+ branches across the United States and Europe, we're always close to you.
+            Visit us at any of our locations for personalized service.
+          </p>
+        </motion.div>
+
+        {/* Branch Image Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          {branchImages.map((img, index) => (
+            <motion.div
+              key={img}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`rounded-2xl overflow-hidden shadow-lg ${
+                index === 0 ? 'col-span-2 row-span-2' : ''
+              }`}
+            >
+              <img
+                src={img}
+                alt={`OrbitPay Branch Location ${index + 1}`}
+                className={`w-full object-cover hover:scale-105 transition-transform duration-500 ${
+                  index === 0 ? 'h-64 md:h-full' : 'h-32 md:h-40'
+                }`}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Community Initiatives */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
           <span className="inline-block px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold mb-4">
             Community Impact

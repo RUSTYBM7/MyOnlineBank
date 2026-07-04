@@ -66,6 +66,57 @@ const ProductsSection = () => {
           </p>
         </motion.div>
 
+        {/* Featured Product Card with User Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-12"
+        >
+          <div className="glass-card rounded-3xl overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-0">
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <span className="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold mb-4 w-fit">
+                  Most Popular
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Primary Checking</h3>
+                <p className="text-gray-600 mb-6">
+                  Everyday banking with no monthly fees. Get free access to 30,000+ ATMs,
+                  direct deposit, and overdraft protection up to $200.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Free transfers', 'Free debit card', 'Overdraft protection', 'Mobile deposits'].map((feature) => (
+                    <li key={feature} className="flex items-center text-sm text-gray-600">
+                      <svg className="w-5 h-5 text-emerald-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex items-center gap-4">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all"
+                  >
+                    Open Primary Checking
+                  </motion.button>
+                  <span className="text-sm text-emerald-600 font-medium">4.25% APY</span>
+                </div>
+              </div>
+              <div className="relative h-64 md:h-auto">
+                <img
+                  src="/assets/images/lobby-interior.jpg"
+                  alt="OrbitPay Branch Interior"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-emerald-50/90 md:block hidden" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product, index) => (
             <motion.div

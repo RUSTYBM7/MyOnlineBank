@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-export const BRAND_LOGO_URL = '/assets/logo/logo-orbitpay-master.jpg';
+export const BRAND_LOGO_URL = '/assets/logo/orbitpay-logo.svg';
 
 export interface BrandLogoProps {
   variant?: 'header' | 'nav' | 'hero' | 'footer' | 'auth' | 'card' | 'modal' | 'settings' | 'compact' | 'full';

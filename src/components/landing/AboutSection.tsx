@@ -7,10 +7,16 @@ const AboutSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   const milestones = [
-    { year: "1948", title: "Founded", description: "Established by 12 community members" },
+    { year: "1952", title: "Founded", description: "Established by 12 community members" },
     { year: "1975", title: "1K Members", description: "Reached our first thousand members" },
     { year: "1998", title: "Digital Era", description: "Launched online banking services" },
-    { year: "2024", title: "Today", description: "Serving 2M+ members nationwide" }
+    { year: "2024", title: "Today", description: "Serving 2.4M+ members nationwide" }
+  ]
+
+  const branchImages = [
+    '/assets/images/building-global-hq.jpg',
+    '/assets/images/building-europe-hq.jpg',
+    '/assets/images/reception-interior.jpg'
   ]
 
   return (
@@ -30,12 +36,12 @@ const AboutSection = () => {
               A Legacy of Trust
               <br />
               <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Since 1948
+                Since 1952
               </span>
             </h2>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               OrbitPay Credit Union was founded on the principle that financial services should
-              benefit everyone, not just shareholders. For over 75 years, we've remained committed
+              benefit everyone, not just shareholders. For over 70 years, we've remained committed
               to our members, offering better rates, lower fees, and exceptional service.
             </p>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -47,9 +53,9 @@ const AboutSection = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-6">
               {[
-                { icon: Users, value: "2M+", label: "Members" },
+                { icon: Users, value: "2.4M+", label: "Members" },
                 { icon: Building2, value: "350+", label: "Branches" },
-                { icon: Calendar, value: "75+", label: "Years" },
+                { icon: Calendar, value: "70+", label: "Years" },
                 { icon: Trophy, value: "50+", label: "Awards" }
               ].map((stat) => (
                 <div key={stat.label} className="flex items-center gap-4">
@@ -65,33 +71,67 @@ const AboutSection = () => {
             </div>
           </motion.div>
 
-          {/* Timeline */}
+          {/* Branch Images Grid */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 to-teal-500" />
-            <div className="space-y-8">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={milestone.year}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  className="relative pl-20"
-                >
-                  <div className="absolute left-4 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                    <div className="w-3 h-3 rounded-full bg-white" />
-                  </div>
-                  <div className="bg-gray-50 rounded-2xl p-6">
-                    <div className="text-sm font-bold text-emerald-600 mb-1">{milestone.year}</div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-1">{milestone.title}</h4>
-                    <p className="text-gray-600">{milestone.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Main large image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="col-span-2 rounded-3xl overflow-hidden shadow-2xl shadow-emerald-500/20"
+              >
+                <img
+                  src={branchImages[0]}
+                  alt="OrbitPay Global Headquarters - Sacramento, California"
+                  className="w-full h-64 object-cover"
+                />
+              </motion.div>
+
+              {/* Two smaller images */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="rounded-3xl overflow-hidden shadow-xl shadow-emerald-500/10"
+              >
+                <img
+                  src={branchImages[1]}
+                  alt="OrbitPay Europe Headquarters - Frankfurt, Germany"
+                  className="w-full h-40 object-cover"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="rounded-3xl overflow-hidden shadow-xl shadow-emerald-500/10"
+              >
+                <img
+                  src={branchImages[2]}
+                  alt="OrbitPay Reception Area"
+                  className="w-full h-40 object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* Location badges */}
+            <div className="mt-4 flex flex-wrap gap-3">
+              <span className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                Sacramento, CA
+              </span>
+              <span className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                Frankfurt, Germany
+              </span>
+              <span className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+                350+ Branches
+              </span>
             </div>
           </motion.div>
         </div>
