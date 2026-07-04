@@ -29,14 +29,14 @@ export default function ProfileScreen() {
   ];
 
   const settingsItems = [
-    { icon: <User className="w-5 h-5" />, label: 'Personal Info', desc: 'Name, email, phone', action: () => {} },
-    { icon: <Shield className="w-5 h-5" />, label: 'Security', desc: 'Password, 2FA', action: () => {} },
+    { icon: <User className="w-5 h-5" />, label: 'Personal Info', desc: 'Name, email, phone', action: () => navigate('/app/settings/account') },
+    { icon: <Shield className="w-5 h-5" />, label: 'Security', desc: 'Password, 2FA', action: () => navigate('/app/settings/security') },
     { icon: <Fingerprint className="w-5 h-5" />, label: 'Biometrics', desc: biometrics ? 'Enabled' : 'Disabled', action: () => setBiometrics(!biometrics), toggle: true, value: biometrics },
-    { icon: <CreditCard className="w-5 h-5" />, label: 'Transaction Limits', desc: `$${user.dailyLimit.toLocaleString()}/day`, action: () => {} },
-    { icon: <Smartphone className="w-5 h-5" />, label: 'Devices', desc: '3 active devices', action: () => {} },
+    { icon: <CreditCard className="w-5 h-5" />, label: 'Transaction Limits', desc: `$${user.dailyLimit.toLocaleString()}/day`, action: () => navigate('/app/settings/transaction-limits') },
+    { icon: <Smartphone className="w-5 h-5" />, label: 'Devices', desc: '3 active devices', action: () => navigate('/app/settings/devices') },
     { icon: <Bell className="w-5 h-5" />, label: 'Notifications', desc: notifications ? 'On' : 'Off', action: () => setNotifications(!notifications), toggle: true, value: notifications },
     { icon: darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />, label: 'Dark Mode', desc: darkMode ? 'On' : 'Off', action: toggleDarkMode, toggle: true, value: darkMode },
-    { icon: <Settings className="w-5 h-5" />, label: 'App Settings', desc: 'Preferences', action: () => {} },
+    { icon: <Settings className="w-5 h-5" />, label: 'App Settings', desc: 'Preferences', action: () => navigate('/app/settings') },
     { icon: <Headphones className="w-5 h-5" />, label: 'Help & Support', desc: '24/7 Live Support', action: () => navigate('/app/support') },
   ];
 

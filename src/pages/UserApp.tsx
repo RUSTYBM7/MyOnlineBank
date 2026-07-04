@@ -33,6 +33,10 @@ import CardSettings from '@/components/user/settings/CardSettings';
 import PrivacySettings from '@/components/user/settings/PrivacySettings';
 import AppearanceSettings from '@/components/user/settings/AppearanceSettings';
 import AboutSettings from '@/components/user/settings/AboutSettings';
+import TransactionLimitsPage from '@/components/user/settings/TransactionLimitsPage';
+import DevicesPage from '@/components/user/settings/DevicesPage';
+// Scroll to top button
+import ScrollToTop from '@/components/common/ScrollToTop';
 import { useState, useEffect } from 'react';
 
 // 5-button bottom navigation: Home, Transfer, Accounts, Cards, Settings
@@ -162,6 +166,8 @@ export default function UserApp() {
             <Route path="/settings/privacy" element={<PrivacySettings />} />
             <Route path="/settings/appearance" element={<AppearanceSettings />} />
             <Route path="/settings/about" element={<AboutSettings />} />
+            <Route path="/settings/transaction-limits" element={<TransactionLimitsPage />} />
+            <Route path="/settings/devices" element={<DevicesPage />} />
             <Route path="/support" element={<SupportScreen />} />
             <Route path="/receipt" element={<ReceiptScreen />} />
             <Route path="/statement" element={<StatementScreen />} />
@@ -218,6 +224,9 @@ export default function UserApp() {
           </div>
         </motion.div>
       )}
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop threshold={300} smooth={true} />
     </div>
   );
 }
