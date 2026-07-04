@@ -1,0 +1,302 @@
+# ============================================================
+# OrbitPay - Fastlane Fastfile
+# iOS Build, Test, and Distribution Automation
+# ============================================================
+#
+# Prerequisites:
+#   gem install fastlane
+#   fastlane add_plugin versioning
+#
+# Environment Variables Required:
+#   APPLE_ID            — your Apple Developer email
+#   APPLE_TEAM_ID       — 10-char team ID from developer.apple.com
+#   ITC_TEAM_ID         — iTunes Connect team ID
+#   MATCH_GIT_URL       — private git repo for certificates (match)
+#   MATCH_PASSWORD      — encryption password for match
+#   APP_STORE_CONNECT_API_KEY_ID       — API key ID
+#   APP_STORE_CONNECT_API_ISSUER_ID    — API issuer ID
+#   APP_STORE_CONNECT_API_KEY_CONTENT  — base64 encoded .p8 key file
+# ============================================================
+
+default_platform(:ios)
+
+# ─── Shared Helpers ───────────────────────────────────────
+def app_store_connect_api_key
+  app_store_connect_api_key(
+    key_id:        ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id:     ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+    key_content:   ENV["APP_STORE_CONNECT_API_KEY_CONTENT"],
+    is_key_content_base64: true,
+    in_house:      false
+  )
+end
+
+def bump_version(type: :patch)
+  # Increment build number on every CI build
+  increment_build_number(
+    xcodeproj: "ios/OrbitPay.xcodeproj"
+  )
+  # Increment semantic version
+  increment_version_number(
+    bump_type:   type.to_s,
+    xcodeproj:   "ios/OrbitPay.xcodeproj"
+  )
+end
+
+platform :ios do
+
+  # ─── Certificates & Provisioning (Match) ────────────────
+  desc "Sync certificates and provisioning profiles using Match"
+  lane :certs do |options|
+    type = options[:type] || "development"
+
+    match(
+      type:                 type,
+      app_identifier:       "com.orbitpay.creditunion",
+      git_url:              ENV["MATCH_GIT_URL"],
+      git_branch:           "main",
+      readonly:             options[:readonly] || false,
+      force_for_new_devices: true,
+    )
+  end
+
+  desc "Sync development certificates"
+  lane :certs_dev do
+    certs(type: "development")
+  end
+
+  desc "Sync release/distribution certificates"
+  lane :certs_release do
+    certs(type: "appstore")
+  end
+
+  # ─── Tests ──────────────────────────────────────────────
+  desc "Run unit and integration tests"
+  lane :test do
+    run_tests(
+      workspace:   "ios/OrbitPay.xcworkspace",
+      scheme:      "OrbitPay",
+      devices:     ["iPhone 15 Pro"],
+      clean:       true,
+      output_directory: "./test-results",
+      output_files:     "report.xml",
+    )
+  end
+
+  # ─── Build (No Sign) ────────────────────────────────────
+  desc "Build without code signing (CI check)"
+  lane :build_unsigned do
+    yarn(command: "install", package_path: "package.json")
+
+    build_app(
+      workspace:         "ios/OrbitPay.xcworkspace",
+      scheme:            "OrbitPay",
+      configuration:     "Release",
+      skip_codesigning:  true,
+      skip_archive:      false,
+      output_directory:  "./build",
+      output_name:       "OrbitPay.ipa",
+      clean:             true,
+      export_method:     "development",
+    )
+  end
+
+  # ─── Development IPA ────────────────────────────────────
+  desc "Build development IPA for device testing"
+  lane :build_dev do
+    certs(type: "development")
+
+    yarn(command: "install", package_path: "package.json")
+
+    build_app(
+      workspace:        "ios/OrbitPay.xcworkspace",
+      scheme:           "OrbitPay",
+      configuration:    "Debug",
+      export_method:    "development",
+      output_directory: "./build",
+      output_name:      "OrbitPay-Dev.ipa",
+      clean:            true,
+      export_options:   {
+        method:              "development",
+        teamID:              ENV["APPLE_TEAM_ID"],
+        provisioningProfiles: {
+          "com.orbitpay.creditunion" => "match Development com.orbitpay.creditunion",
+        },
+      },
+    )
+
+    UI.success "Development IPA built at ./build/OrbitPay-Dev.ipa"
+  end
+
+  # ─── Release IPA (App Store) ────────────────────────────
+  desc "Build release IPA for App Store / TestFlight"
+  lane :build_release do
+    api_key = app_store_connect_api_key
+
+    certs(type: "appstore", readonly: true)
+    bump_version(type: :build)
+
+    yarn(command: "install", package_path: "package.json")
+
+    build_app(
+      workspace:        "ios/OrbitPay.xcworkspace",
+      scheme:           "OrbitPay",
+      configuration:    "Release",
+      export_method:    "app-store",
+      output_directory: "./build",
+      output_name:      "OrbitPay.ipa",
+      clean:            true,
+      include_symbols:  true,
+      include_bitcode:  false,
+      export_options:   {
+        method:              "app-store",
+        teamID:              ENV["APPLE_TEAM_ID"],
+        provisioningProfiles: {
+          "com.orbitpay.creditunion" => "match AppStore com.orbitpay.creditunion",
+        },
+        compileBitcode: false,
+        uploadSymbols:  true,
+      },
+    )
+
+    UI.success "Release IPA built at ./build/OrbitPay.ipa"
+  end
+
+  # ─── AdHoc IPA (Beta Distribution) ─────────────────────
+  desc "Build AdHoc IPA for beta distribution (Firebase/Diawi)"
+  lane :build_adhoc do
+    certs(type: "adhoc")
+
+    yarn(command: "install", package_path: "package.json")
+
+    build_app(
+      workspace:        "ios/OrbitPay.xcworkspace",
+      scheme:           "OrbitPay",
+      configuration:    "Release",
+      export_method:    "ad-hoc",
+      output_directory: "./build",
+      output_name:      "OrbitPay-AdHoc.ipa",
+      clean:            true,
+      export_options:   {
+        method:              "ad-hoc",
+        teamID:              ENV["APPLE_TEAM_ID"],
+        provisioningProfiles: {
+          "com.orbitpay.creditunion" => "match AdHoc com.orbitpay.creditunion",
+        },
+      },
+    )
+
+    UI.success "AdHoc IPA built at ./build/OrbitPay-AdHoc.ipa"
+  end
+
+  # ─── TestFlight Upload ──────────────────────────────────
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key
+
+    build_release
+
+    upload_to_testflight(
+      api_key:                    api_key,
+      ipa:                        "./build/OrbitPay.ipa",
+      skip_waiting_for_build_processing: true,
+      distribute_external:        false,
+      notify_external_testers:    false,
+      changelog:                  File.exist?("../CHANGELOG.md") ? File.read("../CHANGELOG.md").split("---").first.strip : "New build",
+    )
+
+    UI.success "Successfully uploaded to TestFlight!"
+    slack_notify("OrbitPay TestFlight build uploaded successfully!") if ENV["SLACK_URL"]
+  end
+
+  # ─── App Store Submit ───────────────────────────────────
+  desc "Build and submit to App Store for review"
+  lane :release do
+    api_key = app_store_connect_api_key
+
+    build_release
+
+    deliver(
+      api_key:               api_key,
+      ipa:                   "./build/OrbitPay.ipa",
+      skip_screenshots:      true,
+      skip_metadata:         false,
+      metadata_path:         "./fastlane/metadata",
+      automatic_release:     false,
+      submit_for_review:     true,
+      force:                 true,
+      submission_information: {
+        add_id_info_limits_tracking:          true,
+        add_id_info_serves_ads:               false,
+        add_id_info_tracks_action:            false,
+        add_id_info_tracks_install:           false,
+        add_id_info_uses_idfa:                false,
+        content_rights_has_rights:            true,
+        content_rights_contains_third_party_content: false,
+        export_compliance_platform:           "ios",
+        export_compliance_compliance_required: false,
+        export_compliance_encryption_updated: false,
+        export_compliance_app_type:           nil,
+        export_compliance_uses_encryption:    true,
+        export_compliance_is_exempt:          true,
+      },
+    )
+
+    UI.success "Successfully submitted to App Store!"
+  end
+
+  # ─── Screenshots ────────────────────────────────────────
+  desc "Generate App Store screenshots using snapshot"
+  lane :screenshots do
+    capture_screenshots(
+      workspace:    "ios/OrbitPay.xcworkspace",
+      scheme:       "OrbitPay",
+      devices:      [
+        "iPhone 15 Pro Max",
+        "iPhone 15 Pro",
+        "iPhone SE (3rd generation)",
+        "iPad Pro (12.9-inch) (6th generation)",
+      ],
+      languages:    ["en-US"],
+      output_directory: "./fastlane/screenshots",
+      clear_previous_screenshots: true,
+    )
+    frame_screenshots(white: false)
+  end
+
+  # ─── CI Full Pipeline ───────────────────────────────────
+  desc "CI pipeline: test + beta upload"
+  lane :ci do
+    test
+    beta
+  end
+
+  # ─── Utilities ──────────────────────────────────────────
+  desc "Increment build number"
+  lane :bump_build do
+    increment_build_number(xcodeproj: "ios/OrbitPay.xcodeproj")
+    build_number = get_build_number(xcodeproj: "ios/OrbitPay.xcodeproj")
+    UI.success "Build number bumped to #{build_number}"
+  end
+
+  desc "Print current version info"
+  lane :version_info do
+    version = get_version_number(xcodeproj: "ios/OrbitPay.xcodeproj")
+    build   = get_build_number(xcodeproj: "ios/OrbitPay.xcodeproj")
+    UI.message "OrbitPay v#{version} (#{build})"
+  end
+
+  # ─── Hooks ──────────────────────────────────────────────
+  error do |lane, exception|
+    slack_notify("OrbitPay build FAILED in lane '#{lane}': #{exception.message}") if ENV["SLACK_URL"]
+  end
+end
+
+# ─── Helper Methods ─────────────────────────────────────────
+def slack_notify(message)
+  slack(
+    message:    message,
+    slack_url:  ENV["SLACK_URL"],
+    success:    true,
+  ) if ENV["SLACK_URL"]
+end

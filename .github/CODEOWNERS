@@ -1,0 +1,13 @@
+# Code Owners
+
+# Default owner for everything
+*       @RUSTYBM7
+
+# Frontend
+/src    @RUSTYBM7
+/components @RUSTYBM7
+/pages @RUSTYBM7
+
+# Documentation
+*.md    @RUSTYBM7
+/docs   @RUSTYBM7

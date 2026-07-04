@@ -1,0 +1,459 @@
+// This is your Prisma schema file
+// OrbitPay Credit Union Banking Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────── ENUMS ────────────────────────────────────────────
+
+// SQLite does not support native enums; we use String fields with @db.Text
+// and validate at the application layer.
+
+// ─────────────────────────── MODELS ───────────────────────────────────────────
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  fullName      String
+  phone         String?  @unique
+  avatar        String?
+  dateOfBirth   String?
+  address       String?
+  city          String?
+  state         String?
+  zipCode       String?
+  country       String?  @default("US")
+
+  // Status fields
+  kycStatus     String   @default("not_submitted") // verified | pending | rejected | not_submitted
+  accountStatus String   @default("pending")       // active | suspended | frozen | closed | pending
+  tier          String   @default("basic")          // basic | standard | premium
+
+  // Limits
+  dailyLimit    Float    @default(5000)
+  weeklyLimit   Float    @default(20000)
+  monthlyLimit  Float    @default(50000)
+
+  // Multi-currency balances (stored in their native units)
+  balanceUsd    Float    @default(0)
+  balanceEur    Float    @default(0)
+  balanceGbp    Float    @default(0)
+  balanceBtc    Float    @default(0)
+
+  // MFA
+  mfaEnabled    Boolean  @default(false)
+  mfaSecret     String?
+  mfaBackupCodes String?  // JSON array of hashed backup codes
+
+  // Security
+  failedLoginAttempts Int @default(0)
+  lockedUntil   String?
+
+  // Metadata
+  isOnline      Boolean  @default(false)
+  lastActive    String?
+  createdAt     String   @default("")
+  updatedAt     String   @default("")
+
+  // Relations
+  accounts              BankAccount[]
+  transactions          Transaction[]
+  kycDocuments          KycDocument[]
+  notifications         Notification[]
+  refreshTokens         RefreshToken[]
+  sentTransfers         Transfer[]       @relation("SenderTransfers")
+  receivedTransfers     Transfer[]       @relation("ReceiverTransfers")
+  cards                 Card[]
+  loans                 Loan[]
+  scheduledTransfers    ScheduledTransfer[]
+  billPayments          BillPayment[]
+  auditLogs             AuditLog[]
+
+  @@map("users")
+}
+
+model AdminUser {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  passwordHash String
+  fullName    String
+  role        String   @default("viewer") // super_admin | support_admin | finance_admin | viewer
+  permissions String   @default("[]")     // JSON array
+  ipWhitelist String   @default("[]")     // JSON array
+  avatar      String?
+  isOnline    Boolean  @default(false)
+  lastLogin   String?
+  mfaEnabled  Boolean  @default(false)
+  mfaSecret   String?
+  createdAt   String   @default("")
+  updatedAt   String   @default("")
+
+  // Relations
+  refreshTokens  AdminRefreshToken[]
+  adminActions   AdminAction[]
+  kycReviews     KycDocument[]
+
+  @@map("admin_users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt String
+  createdAt String   @default("")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model AdminRefreshToken {
+  id          String    @id @default(uuid())
+  token       String    @unique
+  adminUserId String
+  expiresAt   String
+  createdAt   String    @default("")
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@map("admin_refresh_tokens")
+}
+
+model BankAccount {
+  id            String  @id @default(uuid())
+  userId        String
+  type          String  // checking | savings
+  name          String
+  accountNumber String  @unique
+  routingNumber String  @default("021000021")
+  balance       Float   @default(0)
+  currency      String  @default("USD")
+  status        String  @default("active")   // active | suspended | frozen | closed
+  interestRate  Float   @default(0)
+  isPrimary     Boolean @default(false)
+  color         String  @default("mint")
+  createdAt     String  @default("")
+  updatedAt     String  @default("")
+
+  // Relations
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions        Transaction[]
+  sentTransfers       Transfer[]         @relation("SourceAccount")
+  receivedTransfers   Transfer[]         @relation("DestinationAccount")
+  scheduledTransfers  ScheduledTransfer[]
+
+  @@map("bank_accounts")
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  userId          String
+  accountId       String?
+  type            String   // deposit | withdrawal | transfer | investment | topup | debit | credit | loan_payment | card_payment
+  amount          Float
+  currency        String   @default("USD")
+  status          String   @default("pending") // completed | pending | failed | held | flagged
+  description     String
+  recipientName   String?
+  recipientAvatar String?
+  referenceId     String?
+  metadata        String?  // JSON
+  adminId         String?
+  adminAction     String?
+  fee             Float    @default(0)
+  createdAt       String   @default("")
+  updatedAt       String   @default("")
+
+  // Relations
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account     BankAccount? @relation(fields: [accountId], references: [id])
+
+  @@map("transactions")
+}
+
+model Transfer {
+  id                String   @id @default(uuid())
+  senderId          String
+  receiverId        String?
+  sourceAccountId   String?
+  destAccountId     String?
+  type              String   // internal | external | wire
+  amount            Float
+  currency          String   @default("USD")
+  fee               Float    @default(0)
+  exchangeRate      Float?
+  status            String   @default("pending")
+  description       String?
+  recipientName     String?
+  recipientBank     String?
+  recipientAccount  String?
+  referenceNumber   String?
+  scheduledAt       String?
+  completedAt       String?
+  failureReason     String?
+  createdAt         String   @default("")
+  updatedAt         String   @default("")
+
+  // Relations
+  sender          User         @relation("SenderTransfers", fields: [senderId], references: [id])
+  receiver        User?        @relation("ReceiverTransfers", fields: [receiverId], references: [id])
+  sourceAccount   BankAccount? @relation("SourceAccount", fields: [sourceAccountId], references: [id])
+  destAccount     BankAccount? @relation("DestinationAccount", fields: [destAccountId], references: [id])
+
+  @@map("transfers")
+}
+
+model KycDocument {
+  id               String   @id @default(uuid())
+  userId           String
+  docType          String   // id_card | passport | selfie | address_proof | drivers_license
+  url              String
+  filePath         String?
+  status           String   @default("pending") // pending | approved | rejected
+  reviewedBy       String?
+  reviewedAt       String?
+  rejectionReason  String?
+  uploadedAt       String   @default("")
+  ocrData          String?  // JSON
+  createdAt        String   @default("")
+  updatedAt        String   @default("")
+
+  // Relations
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewer    AdminUser? @relation(fields: [reviewedBy], references: [id])
+
+  @@map("kyc_documents")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // transaction | security | chat | kyc | system
+  read      Boolean  @default(false)
+  readAt    String?
+  metadata  String?  // JSON
+  createdAt String   @default("")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model AdminAction {
+  id              String    @id @default(uuid())
+  adminId         String
+  adminName       String
+  actionType      String
+  targetUserId    String?
+  targetUserName  String?
+  amount          Float?
+  reason          String?
+  metadata        String?   // JSON
+  ipAddress       String
+  userAgent       String?
+  createdAt       String    @default("")
+
+  // Relations
+  admin AdminUser @relation(fields: [adminId], references: [id])
+
+  @@map("admin_actions")
+}
+
+model AuditLog {
+  id          String  @id @default(uuid())
+  userId      String?
+  adminId     String?
+  action      String
+  resource    String
+  resourceId  String?
+  oldValue    String? // JSON
+  newValue    String? // JSON
+  ipAddress   String?
+  userAgent   String?
+  status      String  @default("success")
+  createdAt   String  @default("")
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+model Card {
+  id              String   @id @default(uuid())
+  userId          String
+  type            String   // debit | credit
+  name            String
+  lastFourDigits  String
+  cardNumber      String?  // Encrypted
+  expiryMonth     Int
+  expiryYear      Int
+  cvv             String?  // Encrypted/Hashed
+  status          String   @default("active") // active | frozen | blocked | expired
+  balance         Float    @default(0)
+  creditLimit     Float?
+  availableCredit Float?
+  dailyLimit      Float    @default(1000)
+  monthlyLimit    Float    @default(5000)
+  isVirtual       Boolean  @default(false)
+  cardNetwork     String   @default("visa") // visa | mastercard | amex
+  color           String   @default("mint")
+  createdAt       String   @default("")
+  updatedAt       String   @default("")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("cards")
+}
+
+model Loan {
+  id                  String   @id @default(uuid())
+  userId              String
+  type                String   // personal | home | auto | student | business
+  name                String
+  principal           Float
+  interestRate        Float
+  termMonths          Int
+  monthlyPayment      Float
+  remainingBalance    Float
+  totalPaid           Float    @default(0)
+  status              String   @default("pending") // pending | approved | rejected | active | paid_off | defaulted
+  startDate           String?
+  endDate             String?
+  nextPaymentDate     String?
+  nextPaymentAmount   Float?
+  collateral          String?
+  applicationNotes    String?
+  createdAt           String   @default("")
+  updatedAt           String   @default("")
+
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payments     LoanPayment[]
+
+  @@map("loans")
+}
+
+model LoanPayment {
+  id               String   @id @default(uuid())
+  loanId           String
+  userId           String
+  amount           Float
+  principalPaid    Float
+  interestPaid     Float
+  remainingBalance Float
+  status           String   @default("pending")
+  dueDate          String
+  paidAt           String?
+  createdAt        String   @default("")
+
+  // Relations
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_payments")
+}
+
+model ScheduledTransfer {
+  id              String  @id @default(uuid())
+  userId          String
+  fromAccountId   String
+  toAccountNumber String
+  toAccountName   String
+  amount          Float
+  currency        String  @default("USD")
+  frequency       String  // daily | weekly | biweekly | monthly
+  nextRunDate     String
+  endDate         String?
+  status          String  @default("active") // active | paused | cancelled
+  description     String?
+  lastRunAt       String?
+  createdAt       String  @default("")
+  updatedAt       String  @default("")
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fromAccount BankAccount @relation(fields: [fromAccountId], references: [id])
+
+  @@map("scheduled_transfers")
+}
+
+model BillPayment {
+  id              String  @id @default(uuid())
+  userId          String
+  billerName      String
+  billerCategory  String
+  accountNumber   String
+  amount          Float
+  currency        String  @default("USD")
+  status          String  @default("pending")
+  dueDate         String?
+  paidAt          String?
+  transactionId   String?
+  createdAt       String  @default("")
+  updatedAt       String  @default("")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("bill_payments")
+}
+
+model ChatRoom {
+  id             String   @id @default(uuid())
+  userId         String
+  adminId        String?
+  status         String   @default("active") // active | resolved | flagged
+  userName       String
+  userAvatar     String?
+  lastMessage    String?
+  lastMessageAt  String?
+  unreadCount    Int      @default(0)
+  isUserOnline   Boolean  @default(false)
+  subject        String?
+  createdAt      String   @default("")
+  updatedAt      String   @default("")
+
+  // Relations
+  messages ChatMessage[]
+
+  @@map("chat_rooms")
+}
+
+model ChatMessage {
+  id            String  @id @default(uuid())
+  roomId        String
+  senderId      String
+  senderType    String  // user | admin
+  senderName    String
+  content       String
+  attachmentUrl String?
+  isRead        Boolean @default(false)
+  createdAt     String  @default("")
+
+  // Relations
+  room ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model CurrencyRate {
+  id        String @id @default(uuid())
+  code      String @unique // USD | EUR | GBP | BTC
+  name      String
+  symbol    String
+  rate      Float  // Rate relative to USD
+  change    Float  @default(0) // 24h change %
+  updatedAt String @default("")
+
+  @@map("currency_rates")
+}

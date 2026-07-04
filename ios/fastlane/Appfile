@@ -1,0 +1,15 @@
+# ============================================================
+# OrbitPay - Fastlane Appfile
+# ============================================================
+
+# Your Apple ID associated with your Apple Developer account
+app_identifier("com.orbitpay.creditunion")
+
+# Your Apple Developer account email
+apple_id(ENV["APPLE_ID"] || "developer@orbitpay.com")
+
+# Your iTunes Connect Team ID (find at https://appstoreconnect.apple.com)
+itc_team_id(ENV["ITC_TEAM_ID"])
+
+# Your Apple Developer Portal Team ID (find at https://developer.apple.com)
+team_id(ENV["APPLE_TEAM_ID"])

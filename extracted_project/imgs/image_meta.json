@@ -1,0 +1,1042 @@
+[
+  {
+    "query": "Bank vault with gold bars security",
+    "image_info": {
+      "url": "https://discoveryalert.com.au/wp-content/uploads/2026/03/41424e29-d1c2-4003-ab16-8392f6aff859-1024x572.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 118470,
+      "width": 1024,
+      "height": 572,
+      "total_pixels": 585728,
+      "basic_score": 0.8801766184055344,
+      "file_name": "bank-vault-gold-security-comparison.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 79.0,
+      "overall_score": 75.0,
+      "explanation": "The image effectively illustrates a bank vault with gold and security personnel, matching the query. The visual quality is consistent and lacks obstructive watermarks.",
+      "file_name": "bank-vault-gold-security-comparison.jpg",
+      "caption": "A conceptual digital rendering of a high-security vault featuring gold bars, armed guards, and a comparison overlay.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Bank vault with gold bars security",
+    "image_info": {
+      "url": "https://m.media-amazon.com/images/I/81RMivu2DKL._AC_UF894,1000_QL80_.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 120944,
+      "width": 894,
+      "height": 639,
+      "total_pixels": 571266,
+      "basic_score": 0.8768885489714796,
+      "file_name": "bank-vault-gold-bars-security.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 72.0,
+      "watermark_score": 82.0,
+      "overall_score": 74.0,
+      "explanation": "The image accurately depicts a bank vault with gold bars and a secure door. The render is professional and lacks watermarks.",
+      "file_name": "bank-vault-gold-bars-security.jpg",
+      "caption": "A digital render of a bank vault interior featuring stacked gold bars on metal shelving and a circular vault door.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Bank vault with gold bars security",
+    "image_info": {
+      "url": "https://static.vecteezy.com/system/resources/previews/071/673/258/non_2x/bank-vault-security-gold-open-safe-with-golden-bars-financial-wealth-protection-money-storage-investment-banking-concept-free-photo.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 224445,
+      "width": 1515,
+      "height": 980,
+      "total_pixels": 1484700,
+      "basic_score": 0.8911345083421769,
+      "file_name": "secure-bank-vault-gold-bars.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 73.0,
+      "clarity_score": 71.0,
+      "watermark_score": 75.0,
+      "overall_score": 72.0,
+      "explanation": "Matches prompt effectively with good resolution and no visible watermarks. The visual style is professional and consistent.",
+      "file_name": "secure-bank-vault-gold-bars.jpg",
+      "caption": "A large, metallic circular bank vault door stands open, revealing a brightly lit interior filled with rows of gold bars.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Bank vault with gold bars security",
+    "image_info": {
+      "url": "https://www.goldmarket.fr/wp-content/uploads/2024/11/5a901466thumbnail-1024x512.jpeg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 411659,
+      "width": 1024,
+      "height": 512,
+      "total_pixels": 524288,
+      "basic_score": 0.8793278565117781,
+      "file_name": "secure-bank-vault-gold-bars.jpg_d3"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 72.0,
+      "clarity_score": 68.0,
+      "watermark_score": 75.0,
+      "overall_score": 70.0,
+      "explanation": "Matches the query with cinematic lighting and clear subject matter. Minor AI-generated texture inconsistencies are present.",
+      "file_name": "secure-bank-vault-gold-bars.jpg",
+      "caption": "A large metal vault door in a stone room filled with gold bullion.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Bank vault with gold bars security",
+    "image_info": {
+      "url": "https://thumbs.dreamstime.com/b/vault-door-opening-to-reveal-stacks-gold-bars-high-security-bank-slightly-ajar-revealing-massive-inside-representing-ultimate-362251794.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 75324,
+      "width": 800,
+      "height": 533,
+      "total_pixels": 426400,
+      "basic_score": 0.8329143941993314,
+      "file_name": "bank-vault-security-gold-bars.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 45.0,
+      "overall_score": 68.0,
+      "explanation": "The image aligns well with the vault and gold query but is marred by a central watermark.",
+      "file_name": "bank-vault-security-gold-bars.jpg",
+      "caption": "An open heavy-duty bank vault door showcasing a large stack of glowing gold bars inside a secure chamber.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Happy family managing finances together",
+    "image_info": {
+      "url": "https://img.magnific.com/free-photo/happy-daughter-embracing-kissing-her-working-parents-home_637285-12186.jpg?semt=ais_hybrid&w=740&q=80",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 68729,
+      "width": 740,
+      "height": 493,
+      "total_pixels": 364820,
+      "basic_score": 0.8125965349910327,
+      "file_name": "happy-family-managing-finances-online-banking.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly captures a happy family engaged in what looks like financial planning or online banking. The presence of a laptop, smartphone, and financial documents, combined with their joyful expressions, aligns exceptionally well with the search query and prompt. The image is clear, well-composed, and professional.",
+      "file_name": "happy-family-managing-finances-online-banking.jpg",
+      "caption": "A happy young family of three—a father, mother, and daughter—sit together at a wooden dining table. The father holds a smartphone while looking at his daughter, who is hugging her mother. A laptop and several financial documents are spread out on the table, suggesting they are managing their household finances or banking online in a warm, domestic setting.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Happy family managing finances together",
+    "image_info": {
+      "url": "https://www.associatedbank.com/images/family_banking_benefits_and_strategies.jpeg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 165428,
+      "width": 1200,
+      "height": 630,
+      "total_pixels": 756000,
+      "basic_score": 0.9131834121533146,
+      "file_name": "family-managing-finances-kitchen.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 75.0,
+      "watermark_score": 85.0,
+      "overall_score": 76.0,
+      "explanation": "The image captures a family interacting with a tablet and paperwork, effectively depicting the theme of home finance management. The visual quality is consistent and clear.",
+      "file_name": "family-managing-finances-kitchen.jpg",
+      "caption": "A family of three looks at a tablet and documents together while sitting at a kitchen table.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Happy family managing finances together",
+    "image_info": {
+      "url": "https://www.pymnts.com/wp-content/uploads/2020/12/Family-banking.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 150745,
+      "width": 1200,
+      "height": 720,
+      "total_pixels": 864000,
+      "basic_score": 0.9276403747228693,
+      "file_name": "happy-family-saving-money-piggy-bank.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 85.0,
+      "overall_score": 75.0,
+      "explanation": "The image aligns well with the theme of family financial management and displays professional composition without watermarks.",
+      "file_name": "happy-family-saving-money-piggy-bank.jpg",
+      "caption": "A smiling family of four sits together at a table, teaching children about saving money with a pink piggy bank and cash.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Happy family managing finances together",
+    "image_info": {
+      "url": "https://media.istockphoto.com/id/1280853878/photo/happy-family-saving-money-together.jpg?s=612x612&w=0&k=20&c=gqLSAkvVuw0EShuEFi_V0BTsA-OAQRfGBKiCA1leT_0=",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 43979,
+      "width": 612,
+      "height": 408,
+      "total_pixels": 249696,
+      "basic_score": 0.7688263499175169,
+      "file_name": "happy-family-saving-money-piggy-bank.jpg_df"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 72.0,
+      "clarity_score": 75.0,
+      "watermark_score": 70.0,
+      "overall_score": 73.0,
+      "explanation": "The image effectively depicts family financial planning through a piggy bank metaphor. It features professional composition and clear thematic alignment with the query.",
+      "file_name": "happy-family-saving-money-piggy-bank.jpg",
+      "caption": "A happy family of four sits on a couch while children and parents deposit coins into a white piggy bank.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Money growing savings investment growth concept",
+    "image_info": {
+      "url": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2018_12/1956916/170406-spring-savings-mn-1435.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 110683,
+      "width": 1500,
+      "height": 1005,
+      "total_pixels": 1507500,
+      "basic_score": 0.8766449967594303,
+      "file_name": "savings-growth-investment-concept.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 75.0,
+      "watermark_score": 80.0,
+      "overall_score": 77.0,
+      "explanation": "Strong conceptual alignment with query. Sharp focus on subject with professional lighting and no branding.",
+      "file_name": "savings-growth-investment-concept.jpg",
+      "caption": "Glass jar filled with coins featuring a green sprout, symbolizing financial growth against a blurred natural backdrop.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Money growing savings investment growth concept",
+    "image_info": {
+      "url": "https://sc4.edu/wp-content/uploads/2021/05/Money_saving_growth.jpeg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 92576,
+      "width": 1024,
+      "height": 692,
+      "total_pixels": 708608,
+      "basic_score": 0.9040089148149352,
+      "file_name": "money-savings-growth-concept.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 74.0,
+      "watermark_score": 77.0,
+      "overall_score": 75.0,
+      "explanation": "The image effectively illustrates financial growth using coin stacks and plants. Composition is balanced and lacks watermarks.",
+      "file_name": "money-savings-growth-concept.jpg",
+      "caption": "Increasing stacks of coins and a glass jar filled with money, each topped with a small green plant.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Money growing savings investment growth concept",
+    "image_info": {
+      "url": "https://www.bankrate.com/2024/01/26143406/Banking_Every-Penny-Counts.jpg?auto=webp&optimize=high&crop=16:9",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 58851,
+      "width": 1280,
+      "height": 720,
+      "total_pixels": 921600,
+      "basic_score": 0.925734478318756,
+      "file_name": "savings-investment-growth-concept.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 75.0,
+      "overall_score": 74.0,
+      "explanation": "The image effectively illustrates financial growth through a clear metaphor. Visuals are sharp with professional composition.",
+      "file_name": "savings-investment-growth-concept.jpg",
+      "caption": "A hand placing a coin into a jar of savings featuring a growing green plant.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern professional business office",
+    "image_info": {
+      "url": "https://meetatroam.com/wp-content/uploads/2021/08/Buckhead-Office-Space-1024x683.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 109380,
+      "width": 1024,
+      "height": 683,
+      "total_pixels": 699392,
+      "basic_score": 0.9041892391116619,
+      "file_name": "modern-professional-office-workspace-collaboration.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 96.0,
+      "explanation": "The image perfectly captures a modern professional office environment. It features a high-quality wooden desk, contemporary furniture, and two professionals engaged in a collaborative meeting. The lighting is excellent, and the composition is professional, making it highly relevant to the search query and prompt.",
+      "file_name": "modern-professional-office-workspace-collaboration.jpg",
+      "caption": "A man and a woman engaged in a professional meeting at a large, solid wood desk in a modern office workspace featuring laptops, natural lighting, and a minimalist aesthetic.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern professional business office",
+    "image_info": {
+      "url": "https://www.americanbusinessmag.com/wp-content/uploads/Office-Spaces.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 167251,
+      "width": 500,
+      "height": 333,
+      "total_pixels": 166500,
+      "basic_score": 0.7574148251778913,
+      "file_name": "modern-professional-office-workspace-red-chairs.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 96.0,
+      "explanation": "The image perfectly matches the search query and prompt. It depicts a clean, modern, and professional office environment with high clarity and no watermarks. The composition is excellent for business-related content.",
+      "file_name": "modern-professional-office-workspace-red-chairs.jpg",
+      "caption": "A bright and spacious modern office workspace featuring white curved desks, ergonomic red chairs, and large windows overlooking a city. The room is well-organized with computer monitors, keyboards, and office supplies, creating a professional business atmosphere.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern professional business office",
+    "image_info": {
+      "url": "https://visionoffices.co.uk/wp-content/uploads/2024/01/private-office-banner-1.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 710927,
+      "width": 2048,
+      "height": 1365,
+      "total_pixels": 2795520,
+      "basic_score": 0.5888204014642421,
+      "file_name": "modern-professional-office-workspace.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly matches the search query and prompt, depicting a modern, bright, and professional open-plan office environment. The lighting is excellent, the composition is balanced, and it features a diverse group of people working, which is ideal for business-related content.",
+      "file_name": "modern-professional-office-workspace.jpg",
+      "caption": "A bright and spacious modern open-plan office featuring diverse professionals working at computer workstations near large industrial-style windows.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern professional business office",
+    "image_info": {
+      "url": "https://www.ceosuite.com/wp-content/uploads/2014/12/The_Park_Northpoint_-_Open_Plan_Office_Space.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 641069,
+      "width": 1200,
+      "height": 600,
+      "total_pixels": 720000,
+      "basic_score": 0.930727372950578,
+      "file_name": "modern-open-plan-office-business-workspace.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 80.0,
+      "explanation": "The image is a high-quality digital rendering that perfectly aligns with the search query for a 'modern professional business office'. It depicts a bustling open-plan workspace with multiple employees, desks, and office equipment. While it is clearly a CGI visualization rather than a photograph, it is clean, professional, and free of watermarks.",
+      "file_name": "modern-open-plan-office-business-workspace.jpg",
+      "caption": "A detailed digital rendering of a busy, modern open-plan office environment showing professionals working at desks with computers in a brightly lit, spacious workspace.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern professional business office",
+    "image_info": {
+      "url": "https://cdn.autonomous.ai/production/ecm/250117/office-setup.webp",
+      "img_format": "WEBP",
+      "mode": "RGB",
+      "file_size": 209696,
+      "width": 1920,
+      "height": 1080,
+      "total_pixels": 2073600,
+      "basic_score": 0.7360883060616848,
+      "file_name": "modern-professional-business-office-workspace.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 70.0,
+      "watermark_score": 45.0,
+      "overall_score": 68.0,
+      "explanation": "Matches query well with a modern layout and high clarity. A visible watermark in the corner slightly limits general application.",
+      "file_name": "modern-professional-business-office-workspace.jpg",
+      "caption": "High-angle view of a modern open office with wooden desks, ergonomic chairs, and greenery.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional modern bank headquarters building exterior",
+    "image_info": {
+      "url": "https://d194ip2226q57d.cloudfront.net/images/LegacyBank_New-Exterior.original.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 165952,
+      "width": 1100,
+      "height": 700,
+      "total_pixels": 770000,
+      "basic_score": 0.9199887513207899,
+      "file_name": "modern-bank-headquarters-building-exterior.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 98.0,
+      "explanation": "The image perfectly matches the search query and prompt. It shows a high-quality, professional architectural photograph of a modern bank headquarters (Legacy Bank and Trust). The clarity is excellent, and there are no intrusive watermarks.",
+      "file_name": "modern-bank-headquarters-building-exterior.jpg",
+      "caption": "A professional architectural photograph of the Legacy Bank and Trust headquarters, featuring a modern design with dark grey textured cladding, large glass windows, and wood accents under a clear blue sky.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional modern bank headquarters building exterior",
+    "image_info": {
+      "url": "http://d1xchyov513y0i.cloudfront.net/wp-content/uploads/2020/07/28094631/13_0606_02A_HomeStreet_Bank_Tacoma_WA_web.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 198130,
+      "width": 1400,
+      "height": 934,
+      "total_pixels": 1307600,
+      "basic_score": 0.922615897582619,
+      "file_name": "modern-bank-building-exterior-architecture.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly matches the search query and prompt. It is a high-quality, professional architectural photograph of a modern bank building (HomeStreet Bank) during twilight. The lighting, composition, and clarity are excellent, showcasing the building's contemporary design elements like stone veneer, wood siding, and large windows.",
+      "file_name": "modern-bank-building-exterior-architecture.jpg",
+      "caption": "A professional architectural shot of a modern HomeStreet Bank building exterior at dusk, featuring a mix of stone, wood, and glass elements with bright interior lighting.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional modern bank headquarters building exterior",
+    "image_info": {
+      "url": "https://www.adrenalinex.com/app/uploads/2025/09/verabank.cs_0288-1440x810.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 179279,
+      "width": 1440,
+      "height": 810,
+      "total_pixels": 1166400,
+      "basic_score": 0.9357274031879402,
+      "file_name": "modern-bank-building-exterior.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 70.0,
+      "overall_score": 75.0,
+      "explanation": "Professional architectural shot of a modern bank. High relevance and solid lighting.",
+      "file_name": "modern-bank-building-exterior.jpg",
+      "caption": "Modern bank building featuring a glass facade and stone accents at dusk.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional modern bank headquarters building exterior",
+    "image_info": {
+      "url": "https://mojostumer.com/wp-content/uploads/2020/11/office-buildings-1024x702-1.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 142957,
+      "width": 1024,
+      "height": 702,
+      "total_pixels": 718848,
+      "basic_score": 0.9106584124090625,
+      "file_name": "modern-bank-headquarters-exterior.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 68.0,
+      "overall_score": 74.0,
+      "explanation": "The image aligns well with the modern bank query, featuring professional lighting and contemporary architecture. Some branding is visible on the facade.",
+      "file_name": "modern-bank-headquarters-exterior.jpg",
+      "caption": "A modern commercial building featuring a large glass curtain wall and orange architectural panels under a clear sky.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional modern bank headquarters building exterior",
+    "image_info": {
+      "url": "https://www.allplan.com/fileadmin/_processed_/d/4/csm_Bankgeb_C3_A4ude_Forty-Seven2_c_Andreas-Stimpert_1810_NEU_e8dd734df2.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 216166,
+      "width": 1320,
+      "height": 825,
+      "total_pixels": 1089000,
+      "basic_score": 0.9414957559464819,
+      "file_name": "modern-bank-headquarters-exterior.jpg_92"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 68.0,
+      "watermark_score": 75.0,
+      "overall_score": 70.0,
+      "explanation": "The image accurately depicts a modern bank exterior with professional architectural features and active street life. The composition is balanced despite foreground reflections.",
+      "file_name": "modern-bank-headquarters-exterior.jpg",
+      "caption": "A modern bank building with a geometric white facade and glass windows, featuring pedestrians on the sidewalk and a reflective car surface in the foreground.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern fintech digital banking technology abstract",
+    "image_info": {
+      "url": "https://static.vecteezy.com/system/resources/previews/035/151/837/non_2x/fintech-innovation-digital-banking-financial-technology-concept-with-character-fintech-solutions-abstract-illustration-set-financial-disruption-tech-driven-banking-fintech-evolution-vector.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 145368,
+      "width": 1920,
+      "height": 800,
+      "total_pixels": 1536000,
+      "basic_score": 0.8170886014668903,
+      "file_name": "modern-fintech-digital-banking-technology-abstract.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 100.0,
+      "watermark_score": 100.0,
+      "overall_score": 98.0,
+      "explanation": "The image is a perfect match for the search query and prompt. it uses a modern, flat-style vector illustration to represent three core concepts: fintech innovation, digital banking, and financial technology. The graphics are sharp, the text is clear, and there are no watermarks.",
+      "file_name": "modern-fintech-digital-banking-technology-abstract.jpg",
+      "caption": "A professional vector illustration divided into three sections: 'Fintech Innovation' featuring a dollar-sign lightbulb, 'Digital Banking' showing a mobile wallet and credit card, and 'Financial Technology' depicting a Bitcoin chip and global network.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern fintech digital banking technology abstract",
+    "image_info": {
+      "url": "https://managementscienceresearchjournal.com/public/journals/1/submission_118_118_coverImage_en_US.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 180715,
+      "width": 527,
+      "height": 834,
+      "total_pixels": 439518,
+      "basic_score": 0.8344299571643328,
+      "file_name": "fintech-banking-research-paper-abstract.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 75.0,
+      "watermark_score": 100.0,
+      "overall_score": 80.0,
+      "explanation": "The image is a literal academic abstract for a research paper titled 'The Impact of Fintech Technology on Traditional Banking Industry'. It perfectly matches the search query for a 'banking financial technology abstract'. While it is a text-based document rather than a conceptual 'abstract' graphic, it is highly relevant for educational or research-based needs.",
+      "file_name": "fintech-banking-research-paper-abstract.jpg",
+      "caption": "The first page of an academic journal article from the Management Science Research Journal discussing the impact of fintech on the traditional banking industry, including the title, author information, and abstract.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Modern fintech digital banking technology abstract",
+    "image_info": {
+      "url": "https://www.shutterstock.com/image-vector/financial-technology-abstract-data-stack-260nw-2747874479.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 29653,
+      "width": 463,
+      "height": 280,
+      "total_pixels": 129640,
+      "basic_score": 0.7140296035885206,
+      "file_name": "abstract-fintech-banking-technology.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 45.0,
+      "overall_score": 70.0,
+      "explanation": "Strong thematic match with abstract data visuals. Presence of text and stock watermarks reduces immediate utility.",
+      "file_name": "abstract-fintech-banking-technology.jpg",
+      "caption": "Abstract digital wave of green and blue particles on a dark background featuring financial technology text.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Person using secure mobile banking app",
+    "image_info": {
+      "url": "https://www.ujjivansfb.bank.in/assets/how_to_have_a_secure_online_banking_experience1116x627_5abb530220.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 66295,
+      "width": 1116,
+      "height": 627,
+      "total_pixels": 699732,
+      "basic_score": 0.8986568729067528,
+      "file_name": "secure-online-banking-mobile-app.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly illustrates the search query and prompt, showing a person interacting with a clean, professional-looking mobile banking login screen. The clarity is excellent, and there are no watermarks.",
+      "file_name": "secure-online-banking-mobile-app.jpg",
+      "caption": "A close-up of a person's hands holding a smartphone that displays a secure online banking application's login screen, set against a blurred indoor background with a coffee cup.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Person using secure mobile banking app",
+    "image_info": {
+      "url": "https://media.product.which.co.uk/prod/images/original/c1723bedefa3-online-bank-security.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 75294,
+      "width": 1178,
+      "height": 589,
+      "total_pixels": 693842,
+      "basic_score": 0.8851070169857428,
+      "file_name": "secure-mobile-banking-login.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 75.0,
+      "watermark_score": 82.0,
+      "overall_score": 76.0,
+      "explanation": "Image matches the query well, showing a clear mobile banking interface held by a user.",
+      "file_name": "secure-mobile-banking-login.jpg",
+      "caption": "Hands holding a smartphone with a mobile banking login screen displayed.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Person using secure mobile banking app",
+    "image_info": {
+      "url": "https://www.bankrate.com/2018/04/13134815/should-bank-customers-be-concerned-about-mobile-banking-security.jpg?auto=webp&optimize=high&crop=16:9",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 97266,
+      "width": 1280,
+      "height": 720,
+      "total_pixels": 921600,
+      "basic_score": 0.9296352975770494,
+      "file_name": "secure-mobile-banking-app-transaction.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 70.0,
+      "watermark_score": 75.0,
+      "overall_score": 72.0,
+      "explanation": "The image aligns well with the mobile banking theme, featuring a clear app interface and payment cards. Lighting and focus are adequate for professional use.",
+      "file_name": "secure-mobile-banking-app-transaction.jpg",
+      "caption": "A person holding a smartphone showing a banking application menu alongside multiple credit cards, illustrating mobile financial management.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Person using secure mobile banking app",
+    "image_info": {
+      "url": "https://media.licdn.com/dms/image/v2/D5612AQHINwF5AK7EFw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1713295337156?e=2147483647&v=beta&t=S_Ve7oJmRE8Erqu3pWgNXiyPcEA69-B5F7t8X6LC6uI",
+      "img_format": "PNG",
+      "mode": "RGB",
+      "file_size": 676154,
+      "width": 1280,
+      "height": 688,
+      "total_pixels": 880640,
+      "basic_score": 0.9517141999882294,
+      "file_name": "secure-mobile-banking-safety-tips.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 48.0,
+      "overall_score": 68.0,
+      "explanation": "The image aligns well with the security theme and mobile banking prompt. It features clear graphics but includes prominent corporate logos and branding.",
+      "file_name": "secure-mobile-banking-safety-tips.jpg",
+      "caption": "A person holding a smartphone and credit card with digital banking icons and security-focused text overlays.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Person using secure mobile banking app",
+    "image_info": {
+      "url": "https://www.planetcompliance.com/wp-content/uploads/2024/04/mobile-security-1024x732.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 40764,
+      "width": 1024,
+      "height": 732,
+      "total_pixels": 749568,
+      "basic_score": 0.9043165132032291,
+      "file_name": "secure-mobile-banking-protection.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 65.0,
+      "clarity_score": 72.0,
+      "watermark_score": 75.0,
+      "overall_score": 68.0,
+      "explanation": "The illustration effectively conveys mobile banking security themes. It is visually clear and professional, though it depicts conceptual protection rather than a literal user.",
+      "file_name": "secure-mobile-banking-protection.jpg",
+      "caption": "Vector illustration showing a security guard defending a mobile banking interface from a thief.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Diverse people in community banking setting",
+    "image_info": {
+      "url": "https://www.creditunion.ie/ILCU/media/Images/Public%20site/News/Blog/Lauri-Healy_Cara_Credit_Union.jpg?ext=.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 71786,
+      "width": 770,
+      "height": 393,
+      "total_pixels": 302610,
+      "basic_score": 0.782841822951167,
+      "file_name": "cara-credit-union-community-sponsorship-group.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 65.0,
+      "watermark_score": 100.0,
+      "overall_score": 80.0,
+      "explanation": "The image is highly relevant to the search query, showing a group of people involved in a community credit union event. It features a diverse range of ages, though it lacks racial diversity. The clarity is somewhat low, with a bit of graininess typical of local event photography, but it captures the community banking spirit perfectly.",
+      "file_name": "cara-credit-union-community-sponsorship-group.jpg",
+      "caption": "A group of diverse community members and staff at a Cara Credit Union event, holding a sponsorship sign for Cordal Coiste na nÓg.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Diverse people in community banking setting",
+    "image_info": {
+      "url": "https://web.imsintegration.com/wp-content/uploads/2023/02/2_6_2023-2.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 1080880,
+      "width": 1200,
+      "height": 675,
+      "total_pixels": 810000,
+      "basic_score": 0.9439864462645187,
+      "file_name": "diverse-community-banking-team.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 72.0,
+      "clarity_score": 75.0,
+      "watermark_score": 80.0,
+      "overall_score": 74.0,
+      "explanation": "The image captures diverse community spirit and collaboration. While banking-specific icons are missing, the professional setting and unity align with the prompt's theme.",
+      "file_name": "diverse-community-banking-team.jpg",
+      "caption": "A multi-ethnic group of professionals holding hands in a circle, expressing joy and unity within a modern office setting.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Diverse people in community banking setting",
+    "image_info": {
+      "url": "https://www.smcreditunion.co.uk/wp-content/uploads/2024/09/Staff-Celebrate-the-Benefits-of-a-Credit-Union.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 710279,
+      "width": 1200,
+      "height": 628,
+      "total_pixels": 753600,
+      "basic_score": 0.9454349593032315,
+      "file_name": "diverse-community-group-office.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 70.0,
+      "watermark_score": 75.0,
+      "overall_score": 72.0,
+      "explanation": "Diverse group in a community setting aligns with the query. Good engagement and natural lighting; background is slightly cluttered.",
+      "file_name": "diverse-community-group-office.jpg",
+      "caption": "Diverse group of smiling people waving in front of an office building with balloons.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Diverse people in community banking setting",
+    "image_info": {
+      "url": "https://www.cuofco.org/sites/default/files/styles/small_hq/public/2026-01/beyond-home-h2h-day.png?itok=a2aGrY7E",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 922810,
+      "width": 640,
+      "height": 640,
+      "total_pixels": 409600,
+      "basic_score": 0.8685099377531345,
+      "file_name": "credit-union-community-team-outdoors.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 68.0,
+      "watermark_score": 72.0,
+      "overall_score": 70.0,
+      "explanation": "The image captures a diverse group wearing credit union branded apparel, fitting the community banking theme. Clarity and lighting are adequate for social or corporate use.",
+      "file_name": "credit-union-community-team-outdoors.jpg",
+      "caption": "A diverse group of staff members wearing Credit Union of Colorado shirts posing together on outdoor wooden stairs.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Premium credit card payment transaction",
+    "image_info": {
+      "url": "https://thefinrate.com/wp-content/uploads/2025/12/credit-card-processing.jpeg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 37503,
+      "width": 900,
+      "height": 600,
+      "total_pixels": 540000,
+      "basic_score": 0.8606248648290625,
+      "file_name": "premium-credit-card-payment-transaction.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 74.0,
+      "watermark_score": 82.0,
+      "overall_score": 76.0,
+      "explanation": "The image accurately depicts a credit card transaction with professional lighting and focus, aligning well with the premium theme.",
+      "file_name": "premium-credit-card-payment-transaction.jpg",
+      "caption": "A customer handing a credit card to a merchant for payment on a handheld POS terminal.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Premium credit card payment transaction",
+    "image_info": {
+      "url": "https://www.moneydigest.com/img/gallery/things-you-should-always-pay-for-with-a-credit-card/l-intro-1706504269.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 388818,
+      "width": 1600,
+      "height": 899,
+      "total_pixels": 1438400,
+      "basic_score": 0.9120256549136081,
+      "file_name": "premium-credit-card-payment-transaction.jpg_59"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 72.0,
+      "watermark_score": 80.0,
+      "overall_score": 75.0,
+      "explanation": "The image accurately depicts a credit card transaction with professional lighting and clear focus. It lacks watermarks and fits the premium theme.",
+      "file_name": "premium-credit-card-payment-transaction.jpg",
+      "caption": "A close-up shot of a gold credit card being presented to a black payment terminal in a retail setting.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Premium credit card payment transaction",
+    "image_info": {
+      "url": "https://www.jotform.com/blog/wp-content/uploads/2020/04/credit-card-payments-online-ffb300-02-1.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 97395,
+      "width": 1720,
+      "height": 1042,
+      "total_pixels": 1792240,
+      "basic_score": 0.7854985280844988,
+      "file_name": "credit-card-payment-interface-illustration.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 78.0,
+      "clarity_score": 80.0,
+      "watermark_score": 82.0,
+      "overall_score": 75.0,
+      "explanation": "The illustration clearly depicts a digital payment process. It uses a modern flat design style that fits the query, though it lacks high-end luxury elements.",
+      "file_name": "credit-card-payment-interface-illustration.jpg",
+      "caption": "A flat-style illustration of an online checkout form with two purple credit cards on an orange background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Premium credit card payment transaction",
+    "image_info": {
+      "url": "https://cdn2.hubspot.net/hub/7379058/hubfs/Accepting%20a%20credit%20card%20at%20a%20terminal.png",
+      "img_format": "PNG",
+      "mode": "P",
+      "file_size": 410986,
+      "width": 1500,
+      "height": 1000,
+      "total_pixels": 1500000,
+      "basic_score": 0.891011806655569,
+      "file_name": "premium-credit-card-payment-transaction.jpg_91"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 72.0,
+      "clarity_score": 68.0,
+      "watermark_score": 75.0,
+      "overall_score": 70.0,
+      "explanation": "The image captures a premium credit card transaction effectively. The focus is sharp and the composition lacks intrusive branding.",
+      "file_name": "premium-credit-card-payment-transaction.jpg",
+      "caption": "A close-up of a hand using a sleek black credit card on a payment terminal with an approved status overlay.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Premium credit card payment transaction",
+    "image_info": {
+      "url": "https://www.worldpay.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fzhwqbd2ar3b8%2F3sQKXWkx0idBWtUQlKGP9H%2Fda6769f52d249feba93f5ab02e618b11%2F0009-GI-1241495031-How-Credit-Card-Processing-Works-1920-700.jpg&w=3840&q=75",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 167288,
+      "width": 1412,
+      "height": 700,
+      "total_pixels": 988400,
+      "basic_score": 0.9232480586597286,
+      "file_name": "credit-card-payment-terminal.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 68.0,
+      "clarity_score": 66.0,
+      "watermark_score": 70.0,
+      "overall_score": 67.0,
+      "explanation": "High-quality professional shot matching the payment theme without distracting elements.",
+      "file_name": "credit-card-payment-terminal.jpg",
+      "caption": "Top-down view of a credit card transaction on a white wood background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional financial advisor with client",
+    "image_info": {
+      "url": "https://www.truedata.in/content/uploads/blogimages/What-are-the-steps-for-financial-planning.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 285630,
+      "width": 1000,
+      "height": 600,
+      "total_pixels": 600000,
+      "basic_score": 0.8971050501120983,
+      "file_name": "financial-planning-steps-infographic.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 68.0,
+      "clarity_score": 74.0,
+      "watermark_score": 75.0,
+      "overall_score": 70.0,
+      "explanation": "The infographic effectively covers financial planning topics but lacks the specific human interaction requested in the prompt. Overall clarity and presentation are professional.",
+      "file_name": "financial-planning-steps-infographic.jpg",
+      "caption": "A colorful infographic detailing seven steps of financial planning, featuring a character climbing a staircase toward a trophy.",
+      "recommend": true,
+      "error": ""
+    }
+  }
+]
