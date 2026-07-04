@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { X, Eye, EyeOff, Lock, Mail, User, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Modal, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter } from '@/components/modals'
+import { BrandLogo } from '@/components/branding/BrandLogo'
 import { useStore } from '@/store'
 
 interface LoginModalProps {
@@ -106,9 +107,7 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
       <form onSubmit={handleSubmit}>
         <ModalHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-              <ShieldCheck className="w-8 h-8 text-white" />
-            </div>
+            <BrandLogo variant="auth" className="h-12" />
           </div>
           <ModalTitle className="text-2xl">Welcome Back</ModalTitle>
           <ModalDescription>Sign in to your OrbitPay account to continue</ModalDescription>

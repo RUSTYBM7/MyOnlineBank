@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, ShieldCheck, Sparkles, BarChart } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { BrandLogo } from '@/components/branding/BrandLogo'
 
 const HeroSection = () => {
   const navigate = useNavigate()
@@ -70,6 +71,11 @@ const HeroSection = () => {
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span className="text-sm font-medium text-emerald-700">FDIC Insured • Trusted by 2M+ Members</span>
             </span>
+          </motion.div>
+
+          {/* Brand Logo */}
+          <motion.div variants={itemVariants} className="mb-6">
+            <BrandLogo variant="hero" className="mx-auto" />
           </motion.div>
 
           {/* Main Headline */}

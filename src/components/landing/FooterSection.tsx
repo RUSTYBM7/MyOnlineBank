@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import { BrandLogo } from '@/components/branding/BrandLogo'
 
 const FooterSection = () => {
   const navigate = useNavigate()
@@ -51,11 +52,8 @@ const FooterSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">O</span>
-              </div>
-              <span className="text-2xl font-bold text-white">OrbitPay</span>
+            <div className="mb-6">
+              <BrandLogo variant="footer" className="max-w-[180px]" />
             </div>
             <p className="text-gray-400 mb-6 max-w-sm">
               Your trusted credit union partner for over 75 years. Building stronger

@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GlassSurface, GlassBadge, GlassCard } from '@/components/glass';
+import { BrandLogo } from '@/components/branding/BrandLogo';
 import { useStore } from '@/store';
 import {
   Bell, Eye, EyeOff, Send, Download, Plus, ArrowRight,
   ChevronRight, TrendingUp, QrCode, Receipt, CreditCard,
   TrendingUp as Invest, Bitcoin, ArrowDownLeft, PiggyBank,
   Bot, Sparkles, Target, Wallet, LineChart, Shield, Zap,
-  Building2, Headphones
+  Headphones
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -107,12 +108,7 @@ export default function HomeScreen() {
           className="flex items-center gap-3"
         >
           {/* OrbitPay Logo */}
-          <GlassSurface className="flex items-center gap-2 px-3 py-2 rounded-xl">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-md">
-              <Building2 className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-sm font-bold text-emerald-800 tracking-tight">OrbitPay</span>
-          </GlassSurface>
+          <BrandLogo variant="compact" className="h-8" />
         </motion.div>
 
         <div className="flex items-center gap-2">
