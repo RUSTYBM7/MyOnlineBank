@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, FileText, Upload, Search, Eye, CheckCircle, XCircle, Clock, AlertCircle, User, Camera, ScanLine, FileCheck, ScrollText, MapPin } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const docTypes = [
   { id: 'passport', label: 'Passport', icon: FileText },

@@ -356,7 +356,7 @@ export default function LandingPage() {
 
             {/* CTA Buttons */}
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3">
-              <button onClick={() => setShowLoginModal(true)} className="hidden sm:block text-sm font-medium text-slate-300 hover:text-emerald-400 px-4 py-2 transition-colors">
+              <button onClick={() => (() => window.location.assign("/login"))} className="hidden sm:block text-sm font-medium text-slate-300 hover:text-emerald-400 px-4 py-2 transition-colors">
                 Sign In
               </button>
               <button onClick={() => { setShowAccountWizard(true); }} className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105">
@@ -392,7 +392,7 @@ export default function LandingPage() {
                   Open Free Account
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button onClick={() => setShowLoginModal(true)} className="inline-flex items-center justify-center gap-2 bg-slate-800/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-full border border-slate-700 hover:border-emerald-500/50 hover:bg-slate-800 transition-all duration-300">
+                <button onClick={() => (() => window.location.assign("/login"))} className="inline-flex items-center justify-center gap-2 bg-slate-800/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-full border border-slate-700 hover:border-emerald-500/50 hover:bg-slate-800 transition-all duration-300">
                   Sign In
                 </button>
               </div>
@@ -1266,7 +1266,7 @@ export default function LandingPage() {
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Start Banking Better?</h2>
               <p className="text-lg text-emerald-100 mb-8 max-w-2xl mx-auto">Open your free account in minutes. No credit check required, no monthly fees, and start earning up to 5.25% APY today.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onClick={() => { setShowSignupModal(true); setShowAccountTypeModal(true); }} className="inline-flex items-center justify-center gap-2 bg-white text-emerald-600 font-bold px-8 py-4 rounded-full hover:bg-emerald-50 transition-colors">
+                <button onClick={() => { (() => window.location.assign('/signup')); setShowAccountTypeModal(true); }} className="inline-flex items-center justify-center gap-2 bg-white text-emerald-600 font-bold px-8 py-4 rounded-full hover:bg-emerald-50 transition-colors">
                   Open Free Account
                   <ArrowRight className="w-5 h-5" />
                 </button>
@@ -1566,7 +1566,7 @@ export default function LandingPage() {
                     Don't have an account?{' '}
                     <button
                       type="button"
-                      onClick={() => { setShowLoginModal(false); setShowSignupModal(true); setShowAccountTypeModal(true); }}
+                      onClick={() => { setShowLoginModal(false); (() => window.location.assign('/signup')); setShowAccountTypeModal(true); }}
                       className="text-emerald-300 hover:text-emerald-200 font-medium transition-colors"
                     >
                       Open Account
@@ -1884,7 +1884,7 @@ export default function LandingPage() {
           <AccountCreationWizard
             onComplete={() => {
               setShowAccountWizard(false);
-              setShowLoginModal(true);
+              (() => window.location.assign("/login"));
             }}
             onCancel={() => setShowAccountWizard(false)}
           />

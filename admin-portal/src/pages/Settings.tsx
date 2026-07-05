@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Settings as SettingsIcon, DollarSign, Percent, Globe, MapPin, Mail, MessageSquare, Key, Flag, Wrench, FileText, CreditCard, Bell } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const tabs = [
   { id: 'general', label: 'General', icon: SettingsIcon },

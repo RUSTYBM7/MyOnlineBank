@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CreditCard, Plus, Search, Lock, Unlock, RefreshCw, MapPin, Eye, Copy, MoreVertical } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const cardNetworks = ['Visa', 'Mastercard', 'Amex', 'Discover'];
 const cardTypes = ['Debit', 'Credit', 'Corporate', 'Prepaid'];

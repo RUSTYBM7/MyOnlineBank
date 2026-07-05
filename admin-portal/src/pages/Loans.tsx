@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Briefcase, Plus, Search, CheckCircle, XCircle, DollarSign, Calendar, AlertCircle, TrendingDown, FileText } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 export default function Loans() {
   const [loans, setLoans] = useState<any[]>([]);

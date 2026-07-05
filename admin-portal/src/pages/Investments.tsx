@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, DollarSign, Briefcase, Bitcoin, LineChart, Coins, Building, Activity } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 export default function Investments() {
   const [investments, setInvestments] = useState<any[]>([]);

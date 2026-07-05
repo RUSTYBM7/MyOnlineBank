@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Search, Download, Filter, AlertTriangle, User, Shield, CreditCard, Banknote, FileText, Eye, RefreshCw, Database, Bug } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const actionTypes = [
   { category: 'Auth', actions: ['login', 'logout', 'login_failed', 'mfa_enabled', 'mfa_disabled', 'password_reset', 'password_changed', 'pin_reset', 'pin_changed', 'biometric_login', 'session_revoked', 'session_expired'] },

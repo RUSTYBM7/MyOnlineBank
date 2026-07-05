@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, User, Send, Sparkles, Shield, TrendingUp, AlertTriangle, FileText, Search, Loader2 } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 interface Message {
   id: string;

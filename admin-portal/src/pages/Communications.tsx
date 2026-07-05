@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Send, Search, Paperclip, Image, FileText, Video, Mic, Users, Megaphone, Clock, CheckCheck } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 export default function Communications() {
   const [conversations, setConversations] = useState<any[]>([]);

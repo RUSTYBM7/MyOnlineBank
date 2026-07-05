@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Zap, Plus, Play, Pause, Trash2, Edit, Bell, Shield, Activity, GitBranch, AlertCircle, Mail, MessageSquare } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 export default function Automation() {
   const [rules, setRules] = useState<any[]>([]);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, ShieldAlert, Shield, Check, X, Search, FileText, Lock, User } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const verificationTypes = [
   { id: 'verified', label: 'Identity Verified', description: 'KYC approved by compliance team' },

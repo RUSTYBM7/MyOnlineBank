@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, Download, MoreVertical, ArrowDownRight, ArrowUpRight, RefreshCw, X, Pause, CheckCircle, XCircle, FileEdit, Copy, Mail, Upload, AlertOctagon, Send, Edit2, Trash2, Eye, RotateCcw, DollarSign, Repeat, ShieldAlert, Flag } from 'lucide-react';
-import * as api from '@/lib/api';
+import * as api from '@/lib/api-live';
 
 const allTxnTypes = ['deposit', 'withdrawal', 'transfer', 'card_purchase', 'card_refund', 'fee', 'interest', 'loan_disbursement', 'loan_repayment', 'wire_in', 'wire_out', 'reversal'];
 
