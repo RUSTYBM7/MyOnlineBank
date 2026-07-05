@@ -2,8 +2,19 @@ import { useState } from 'react';
 import { GlassCard, GlassButton } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Palette, DollarSign, Bell, Upload, Globe, Save, Check
-} from 'lucide-react';
+  Bell,
+  Bitcoin,
+  Check,
+  Cloud,
+  DollarSign,
+  Euro,
+  Globe,
+  Palette,
+  Save,
+  Send,
+  Settings,
+  Upload
+} from 'lucide-react';;
 import { cn } from '@/lib/utils';
 
 export default function AdminConfig() {

@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Users, CreditCard, DollarSign, Settings,
-  Shield, LogOut, ChevronLeft, Bell, Search, Menu, X,
-  BarChart3, FileText, AlertTriangle
-} from 'lucide-react';
+  AlertTriangle,
+  BarChart3,
+  Bell,
+  Check,
+  ChevronLeft,
+  CreditCard,
+  DollarSign,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Search,
+  Settings,
+  Shield,
+  User,
+  Users,
+  X
+} from 'lucide-react';;
 import { BrandLogo } from '@/components/branding/BrandLogo';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';

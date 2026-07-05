@@ -3,9 +3,19 @@ import { motion } from 'framer-motion';
 import { GlassCard } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  ArrowLeft, CheckCircle2, Share2, Download, Printer,
-  CreditCard, Building2, Calendar, Hash, Clock
-} from 'lucide-react';
+  ArrowLeft,
+  Building2,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  Download,
+  Hash,
+  Printer,
+  Receipt,
+  Share2,
+  User
+} from 'lucide-react';;
 
 // Mock receipt data
 const mockReceipt = {

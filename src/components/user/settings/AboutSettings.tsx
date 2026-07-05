@@ -3,10 +3,19 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { GlassCard, GlassBadge } from '@/components/glass';
 import {
-  HelpCircle, FileText, ExternalLink, ChevronRight,
-  Check, CheckCircle2, AlertTriangle, Star, MessageCircle,
-  Phone, Mail
-} from 'lucide-react';
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  ExternalLink,
+  FileText,
+  HelpCircle,
+  Info,
+  Mail,
+  MessageCircle,
+  Phone,
+  Star
+} from 'lucide-react';;
 
 export default function AboutSettings() {
   const navigate = useNavigate();

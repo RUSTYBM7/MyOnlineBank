@@ -3,11 +3,30 @@ import { motion } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  User, Shield, Smartphone, Fingerprint, Moon, Sun,
-  Bell, ChevronRight, LogOut, CreditCard, MapPin, Calendar,
-  Wallet, Receipt, Clock, TrendingUp, HelpCircle, MessageCircle,
-  Bitcoin, BarChart3, Settings, Headphones
-} from 'lucide-react';
+  BarChart3,
+  Bell,
+  Bitcoin,
+  Calendar,
+  ChevronRight,
+  Clock,
+  CreditCard,
+  Fingerprint,
+  Headphones,
+  HelpCircle,
+  Info,
+  LogOut,
+  MapPin,
+  MessageCircle,
+  Moon,
+  Receipt,
+  Settings,
+  Shield,
+  Smartphone,
+  Sun,
+  TrendingUp,
+  User,
+  Wallet
+} from 'lucide-react';;
 import { useNavigate } from 'react-router-dom';
 
 export default function ProfileScreen() {

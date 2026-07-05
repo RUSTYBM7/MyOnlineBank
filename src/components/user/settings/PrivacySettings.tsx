@@ -3,9 +3,18 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { GlassCard } from '@/components/glass';
 import {
-  Lock, Eye, EyeOff, Globe, Shield, ChevronRight,
-  Check, CheckCircle2, AlertTriangle
-} from 'lucide-react';
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Download,
+  Eye,
+  EyeOff,
+  Globe,
+  Lock,
+  Settings,
+  Shield
+} from 'lucide-react';;
 
 export default function PrivacySettings() {
   const navigate = useNavigate();

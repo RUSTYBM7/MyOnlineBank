@@ -1,7 +1,17 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard, GlassButton } from '@/components/glass';
-import { Smartphone, Monitor, Tablet, X, Check, MapPin, Clock, ChevronLeft } from 'lucide-react';
+import {
+  Check,
+  ChevronLeft,
+  Clock,
+  Info,
+  MapPin,
+  Monitor,
+  Smartphone,
+  Tablet,
+  X
+} from 'lucide-react';;
 import { useNavigate } from 'react-router-dom';
 
 interface Device {

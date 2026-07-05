@@ -1,6 +1,14 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Heart, Users, TreePine, School, Building2, Globe } from 'lucide-react'
+import {
+  Building2,
+  Globe,
+  Heart,
+  Image,
+  School,
+  TreePine,
+  Users
+} from 'lucide-react';
 
 const CommunitySection = () => {
   const ref = useRef(null)

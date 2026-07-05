@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, QrCode } from 'lucide-react';
+import {
+  Camera,
+  ChevronRight,
+  QrCode,
+  User
+} from 'lucide-react';;
 import { useState, useRef, useEffect } from 'react';
 import { GlassButton } from '@/components/glass';
 

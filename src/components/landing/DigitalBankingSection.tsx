@@ -1,6 +1,13 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Smartphone, Monitor, Sparkles, Lock, Globe } from 'lucide-react'
+import {
+  Globe,
+  Lock,
+  Monitor,
+  Send,
+  Smartphone,
+  Sparkles
+} from 'lucide-react';
 
 const DigitalBankingSection = () => {
   const ref = useRef(null)

@@ -4,10 +4,23 @@ import { motion } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  ArrowLeft, User, Mail, Phone, Lock, Eye, EyeOff,
-  Shield, Smartphone, CheckCircle2, AlertCircle, Globe,
-  KeyRound, Building2, CreditCard
-} from 'lucide-react';
+  AlertCircle,
+  ArrowLeft,
+  Building2,
+  Check,
+  CheckCircle2,
+  CreditCard,
+  Eye,
+  EyeOff,
+  Globe,
+  KeyRound,
+  Lock,
+  Mail,
+  Phone,
+  Shield,
+  Smartphone,
+  User
+} from 'lucide-react';;
 
 export default function OnlineAccessScreen() {
   const navigate = useNavigate();

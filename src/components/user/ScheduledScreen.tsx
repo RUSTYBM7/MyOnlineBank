@@ -3,9 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassSurface, GlassCard, GlassBadge, GlassButton, GlassInput } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Clock, Plus, Calendar, Repeat, Check, X, ChevronRight,
-  ArrowRight, Pause, Play, Trash2
-} from 'lucide-react';
+  ArrowRight,
+  Calendar,
+  Check,
+  ChevronRight,
+  Clock,
+  Info,
+  Pause,
+  Play,
+  Plus,
+  Repeat,
+  Trash2,
+  X
+} from 'lucide-react';;
 
 export default function ScheduledScreen() {
   const { scheduledTransfers, user, updateScheduledTransfer, deleteScheduledTransfer } = useStore();

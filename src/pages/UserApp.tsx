@@ -1,6 +1,14 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, ArrowLeftRight, CreditCard, Wallet, Settings, Scroll } from 'lucide-react';
+import {
+  ArrowLeftRight,
+  Check,
+  CreditCard,
+  Home,
+  Scroll,
+  Settings,
+  Wallet
+} from 'lucide-react';;
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store';
 import HomeScreen from '@/components/user/HomeScreen';

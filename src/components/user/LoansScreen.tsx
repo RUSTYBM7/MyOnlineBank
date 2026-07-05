@@ -3,10 +3,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassSurface, GlassCard, GlassBadge, GlassButton, GlassInput } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Wallet, Plus, TrendingUp, Calendar, AlertCircle,
-  Check, X, ChevronRight, Percent, Clock, DollarSign,
-  Home, Car, GraduationCap, Briefcase, User
-} from 'lucide-react';
+  AlertCircle,
+  Briefcase,
+  Calendar,
+  Car,
+  Check,
+  ChevronRight,
+  Clock,
+  DollarSign,
+  Filter,
+  GraduationCap,
+  Home,
+  Percent,
+  Plus,
+  TrendingUp,
+  User,
+  Wallet,
+  X
+} from 'lucide-react';;
 
 export default function LoansScreen() {
   const { loans, user, loanPayments } = useStore();

@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard, GlassButton } from '@/components/glass';
 import { useStore } from '@/store';
-import { Search, Download, FileText, DollarSign, Shield, AlertTriangle, Lock, User } from 'lucide-react';
+import {
+  AlertTriangle,
+  DollarSign,
+  Download,
+  FileText,
+  Lock,
+  Search,
+  Shield,
+  Target,
+  User
+} from 'lucide-react';;
 
 const actions: Record<string, React.ReactNode> = {
   add_funds: <DollarSign className="w-4 h-4 text-[#2ECC71]" />,

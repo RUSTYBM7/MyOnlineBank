@@ -3,10 +3,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Bitcoin, ArrowUpRight, ArrowDownRight, TrendingUp, CreditCard,
-  Wallet, Send, Download, RefreshCw, Copy, Check, ChevronRight,
-  Zap, Clock, ExternalLink, QrCode, DollarSign, TrendingDown
-} from 'lucide-react';
+  Activity,
+  ArrowDownRight,
+  ArrowUpRight,
+  Bitcoin,
+  Check,
+  ChevronRight,
+  Clock,
+  Copy,
+  CreditCard,
+  DollarSign,
+  Download,
+  ExternalLink,
+  QrCode,
+  RefreshCw,
+  Send,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
+  Zap
+} from 'lucide-react';;
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 type CryptoTab = 'portfolio' | 'prices';

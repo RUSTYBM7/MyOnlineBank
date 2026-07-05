@@ -1,6 +1,13 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { BookOpen, GraduationCap, Calculator, Video } from 'lucide-react'
+import {
+  BookOpen,
+  Building,
+  Calculator,
+  GraduationCap,
+  Power,
+  Video
+} from 'lucide-react';
 
 const EducationCenterSection = () => {
   const ref = useRef(null)

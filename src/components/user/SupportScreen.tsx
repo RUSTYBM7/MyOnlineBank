@@ -3,11 +3,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  MessageCircle, Send, Paperclip, X, ChevronDown, ChevronUp,
-  Search, Clock, Check, CheckCheck, Bot, User, Phone, Mail,
-  FileText, Image, AlertCircle, HelpCircle, Shield, CreditCard,
-  DollarSign, Lock, ChevronRight, ExternalLink, RefreshCw
-} from 'lucide-react';
+  AlertCircle,
+  Bot,
+  Check,
+  CheckCheck,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  Clock,
+  CreditCard,
+  DollarSign,
+  ExternalLink,
+  FileText,
+  HelpCircle,
+  Image,
+  Lock,
+  Mail,
+  MessageCircle,
+  Paperclip,
+  Phone,
+  RefreshCw,
+  Search,
+  Send,
+  Settings,
+  Shield,
+  User,
+  X
+} from 'lucide-react';;
 
 interface Message {
   id: string;

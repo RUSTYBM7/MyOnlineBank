@@ -4,9 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  User, Mail, Phone, MapPin, Camera, Shield, ChevronRight,
-  Check, Edit2, AlertTriangle, Download, Trash2, CheckCircle2
-} from 'lucide-react';
+  AlertTriangle,
+  Camera,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Download,
+  Edit2,
+  Home,
+  Mail,
+  MapPin,
+  Phone,
+  Settings,
+  Shield,
+  Trash2,
+  User
+} from 'lucide-react';;
 
 export default function AccountSettings() {
   const navigate = useNavigate();

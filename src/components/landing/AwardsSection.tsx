@@ -1,6 +1,13 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Trophy, Star, ShieldCheck, Sparkles } from 'lucide-react'
+import {
+  Award,
+  Power,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Trophy
+} from 'lucide-react';
 
 const AwardsSection = () => {
   const ref = useRef(null)

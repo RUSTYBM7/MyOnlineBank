@@ -1,6 +1,12 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ShieldCheck, Heart, Car, Home } from 'lucide-react'
+import {
+  Car,
+  Heart,
+  Home,
+  ShieldCheck,
+  Umbrella
+} from 'lucide-react';
 
 const InsuranceSection = () => {
   const ref = useRef(null)

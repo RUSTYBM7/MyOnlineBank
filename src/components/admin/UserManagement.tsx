@@ -3,9 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Search, Filter, Eye, Edit3, DollarSign, MinusCircle,
-  UserX, UserCheck, X, Check, AlertTriangle
-} from 'lucide-react';
+  AlertTriangle,
+  Check,
+  DollarSign,
+  Edit3,
+  Eye,
+  Filter,
+  MinusCircle,
+  Phone,
+  Save,
+  Search,
+  User,
+  UserCheck,
+  UserX,
+  Users,
+  X
+} from 'lucide-react';;
 import { cn } from '@/lib/utils';
 
 type ModalType = 'view' | 'edit' | 'addFunds' | 'debit' | 'suspend' | null;

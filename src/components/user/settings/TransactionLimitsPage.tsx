@@ -2,7 +2,15 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard, GlassButton } from '@/components/glass';
 import { useStore } from '@/store';
-import { Shield, AlertCircle, Check, ChevronLeft } from 'lucide-react';
+import {
+  AlertCircle,
+  Check,
+  ChevronLeft,
+  Info,
+  Save,
+  Shield,
+  Sliders
+} from 'lucide-react';;
 import { useNavigate } from 'react-router-dom';
 
 export default function TransactionLimitsPage() {

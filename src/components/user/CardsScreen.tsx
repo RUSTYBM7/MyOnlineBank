@@ -4,11 +4,42 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  CreditCard, Plus, Snowflake, Eye, EyeOff, Shield, Sparkles,
-  Smartphone, Globe, Settings, Trash2, Copy, Bot, TrendingUp,
-  AlertTriangle, Zap, Building2, ChevronRight, Check, X,
-  BarChart3, Clock, ArrowUpRight, ArrowDownRight, Download
-} from 'lucide-react';
+  AlertTriangle,
+  ArrowDownRight,
+  ArrowUpRight,
+  BarChart3,
+  Bot,
+  Building2,
+  Car,
+  Check,
+  ChevronRight,
+  Clock,
+  Coffee,
+  Copy,
+  CreditCard,
+  Download,
+  Eye,
+  EyeOff,
+  Filter,
+  Fuel,
+  Globe,
+  MapPin,
+  Music,
+  Plus,
+  Save,
+  Settings,
+  Shield,
+  ShoppingCart,
+  Smartphone,
+  Snowflake,
+  Sparkles,
+  Trash2,
+  TrendingUp,
+  Tv,
+  Utensils,
+  X,
+  Zap
+} from 'lucide-react';;
 
 const aiSpendingInsights = [
   { icon: TrendingUp, text: "You've spent 15% less on dining this month", color: 'emerald' },

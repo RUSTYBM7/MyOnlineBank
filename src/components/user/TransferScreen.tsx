@@ -2,7 +2,24 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GlassButton, GlassCard } from '@/components/glass';
 import { useStore } from '@/store';
-import { ArrowLeft, Search, QrCode, User, X, Check, ChevronRight, Bot, Shield, Zap, TrendingUp, Camera, Image, AlertCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  ArrowLeft,
+  Bot,
+  Camera,
+  Check,
+  ChevronRight,
+  Image,
+  Info,
+  QrCode,
+  Search,
+  Send,
+  Shield,
+  TrendingUp,
+  User,
+  X,
+  Zap
+} from 'lucide-react';;
 import { useNavigate } from 'react-router-dom';
 
 type TransferStep = 'recipient' | 'amount' | 'confirm' | 'success';

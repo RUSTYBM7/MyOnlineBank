@@ -1,6 +1,15 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import {
+  Building,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter
+} from 'lucide-react';
 import { BrandLogo } from '@/components/branding/BrandLogo'
 
 const FooterSection = () => {

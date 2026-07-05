@@ -4,9 +4,18 @@ import { motion } from 'framer-motion';
 import { GlassCard, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  ArrowLeft, Download, Share2, Printer, FileText,
-  Calendar, TrendingUp, TrendingDown, Filter, ChevronDown
-} from 'lucide-react';
+  ArrowLeft,
+  Calendar,
+  ChevronDown,
+  Download,
+  FileText,
+  Filter,
+  Info,
+  Printer,
+  Share2,
+  TrendingDown,
+  TrendingUp
+} from 'lucide-react';;
 
 // Generate mock statement data
 const generateMockStatement = (month: string, year: number) => {

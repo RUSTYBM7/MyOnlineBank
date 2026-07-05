@@ -2,7 +2,25 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GlassSurface } from '@/components/glass'
 import { useStore } from '@/store'
-import { Bell, BellOff, Check, Clock, AlertTriangle, Info, TrendingUp, TrendingDown, Shield, CreditCard, DollarSign, Send, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react'
+import {
+  Activity,
+  AlertTriangle,
+  Bell,
+  BellOff,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  CreditCard,
+  DollarSign,
+  Info,
+  RefreshCw,
+  Save,
+  Send,
+  Shield,
+  TrendingDown,
+  TrendingUp
+} from 'lucide-react';
 import { cn } from '@/lib/utils'
 
 interface Notification {

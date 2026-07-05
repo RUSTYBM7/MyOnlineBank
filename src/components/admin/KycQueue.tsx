@@ -1,11 +1,32 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Search, Filter, Check, X, Eye, EyeOff, Clock, AlertCircle,
-  User, Image, Shield, CheckCircle2, XCircle, Download,
-  ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCw, FlipHorizontal,
-  Camera, FileText, Fingerprint
-} from 'lucide-react'
+  AlertCircle,
+  Camera,
+  Check,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Download,
+  Eye,
+  EyeOff,
+  FileText,
+  Filter,
+  Fingerprint,
+  FlipHorizontal,
+  Image,
+  Info,
+  Plus,
+  RotateCw,
+  Search,
+  Shield,
+  User,
+  X,
+  XCircle,
+  ZoomIn,
+  ZoomOut
+} from 'lucide-react';
 import { cn } from '@/lib/utils'
 
 interface KycApplication {

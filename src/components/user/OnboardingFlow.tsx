@@ -3,10 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlassSurface, GlassCard, GlassBadge, GlassButton, GlassInput } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Smartphone, MessageSquare, User, CreditCard, MapPin, Check,
-  ChevronLeft, ChevronRight, Fingerprint, Shield, Building2, PiggyBank,
-  Camera, Upload, FileText, Star
-} from 'lucide-react';
+  Building2,
+  Camera,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  CreditCard,
+  FileText,
+  Fingerprint,
+  Info,
+  MapPin,
+  MessageSquare,
+  Phone,
+  PiggyBank,
+  Shield,
+  Smartphone,
+  Star,
+  Upload,
+  User
+} from 'lucide-react';;
 
 export default function OnboardingFlow() {
   const { onboardingData, updateOnboardingData, nextOnboardingStep, prevOnboardingStep, resetOnboarding } = useStore();

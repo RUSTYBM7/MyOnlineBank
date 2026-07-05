@@ -2,10 +2,25 @@ import { motion } from 'framer-motion';
 import { GlassCard } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Users, UserCheck, DollarSign, ArrowDownRight,
-  ShieldCheck, AlertTriangle, TrendingUp, Activity,
-  Server, Wifi, Clock, Bot, Zap, Globe
-} from 'lucide-react';
+  Activity,
+  AlertTriangle,
+  ArrowDownRight,
+  BarChart,
+  Bot,
+  Clock,
+  DollarSign,
+  Globe,
+  LineChart,
+  PieChart,
+  Server,
+  ShieldCheck,
+  Sun,
+  TrendingUp,
+  UserCheck,
+  Users,
+  Wifi,
+  Zap
+} from 'lucide-react';;;
 import { useState, useEffect } from 'react';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,

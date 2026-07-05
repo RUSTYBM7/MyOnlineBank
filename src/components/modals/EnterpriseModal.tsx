@@ -1,6 +1,15 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X, ChevronUp, ChevronDown, Maximize2, Minimize2 } from "lucide-react"
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Lock,
+  Maximize2,
+  Minimize2,
+  Save,
+  X
+} from 'lucide-react';
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 

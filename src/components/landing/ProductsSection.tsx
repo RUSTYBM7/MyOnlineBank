@@ -1,6 +1,16 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Wallet, Building, CreditCard, BarChart, ShieldCheck, Smartphone } from 'lucide-react'
+import {
+  BarChart,
+  Building,
+  CreditCard,
+  Home,
+  Image,
+  ShieldCheck,
+  Smartphone,
+  User,
+  Wallet
+} from 'lucide-react';
 
 const ProductsSection = () => {
   const ref = useRef(null)

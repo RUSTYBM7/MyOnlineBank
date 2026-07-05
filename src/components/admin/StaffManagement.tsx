@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
-import { Plus, X, Edit3, Eye } from 'lucide-react';
+import {
+  Edit3,
+  Eye,
+  Plus,
+  User,
+  X
+} from 'lucide-react';;
 import type { AdminRole } from '@/types';
 import { cn } from '@/lib/utils';
 

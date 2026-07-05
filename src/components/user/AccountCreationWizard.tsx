@@ -1,12 +1,47 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Smartphone, MessageSquare, User, CreditCard, MapPin, Check,
-  ChevronLeft, ChevronRight, Fingerprint, Shield, Building2, PiggyBank,
-  Camera, Upload, FileText, Star, Briefcase, GraduationCap, Users,
-  Crown, Heart, Wallet, TrendingUp, Lock, AlertCircle, Sparkles,
-  Loader2, Eye, EyeOff, X, Info, Bell, Calendar, CheckCircle2, AlertTriangle
-} from 'lucide-react';
+  AlertCircle,
+  AlertTriangle,
+  Bell,
+  Briefcase,
+  Building2,
+  Calendar,
+  Camera,
+  Check,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  CreditCard,
+  Crown,
+  Eye,
+  EyeOff,
+  FileText,
+  Fingerprint,
+  Fuel,
+  GraduationCap,
+  Heart,
+  Info,
+  Loader2,
+  Lock,
+  MapPin,
+  MessageSquare,
+  Phone,
+  PiggyBank,
+  Save,
+  Send,
+  Shield,
+  Smartphone,
+  Sparkles,
+  Star,
+  Timer,
+  TrendingUp,
+  Upload,
+  User,
+  Users,
+  Wallet,
+  X
+} from 'lucide-react';;
 import { GlassButton, GlassInput } from '@/components/glass';
 import {
   onboardingAPI,

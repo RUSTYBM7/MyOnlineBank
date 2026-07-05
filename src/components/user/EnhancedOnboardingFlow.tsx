@@ -1,6 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Check, Upload, Camera, ShieldCheck } from 'lucide-react'
+import {
+  Camera,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  ShieldCheck,
+  Upload,
+  X
+} from 'lucide-react';
 import { Button } from '@/components/ui/button'
 import { useStore } from '@/store'
 

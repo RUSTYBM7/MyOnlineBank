@@ -4,9 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { GlassCard } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  CreditCard, Shield, Smartphone, Globe, ChevronRight,
-  Check, CheckCircle2, AlertTriangle, Plus, Snowflake
-} from 'lucide-react';
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  CreditCard,
+  Globe,
+  Plus,
+  Settings,
+  Shield,
+  Smartphone,
+  Snowflake,
+  User
+} from 'lucide-react';;
 
 export default function CardSettings() {
   const navigate = useNavigate();

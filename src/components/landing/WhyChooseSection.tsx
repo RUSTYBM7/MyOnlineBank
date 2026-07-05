@@ -1,6 +1,14 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ShieldCheck, Sparkles, Globe, Heart, Lock, Star } from 'lucide-react'
+import {
+  Award,
+  Globe,
+  Heart,
+  Lock,
+  ShieldCheck,
+  Sparkles,
+  Star
+} from 'lucide-react';
 
 const WhyChooseSection = () => {
   const ref = useRef(null)

@@ -4,12 +4,33 @@ import { GlassSurface, GlassBadge, GlassCard } from '@/components/glass';
 import { BrandLogo } from '@/components/branding/BrandLogo';
 import { useStore } from '@/store';
 import {
-  Bell, Eye, EyeOff, Send, Download, Plus, ArrowRight,
-  ChevronRight, TrendingUp, QrCode, Receipt, CreditCard,
-  TrendingUp as Invest, Bitcoin, ArrowDownLeft, PiggyBank,
-  Bot, Sparkles, Target, Wallet, LineChart, Shield, Zap,
-  Headphones
-} from 'lucide-react';
+  Activity,
+  ArrowDownLeft,
+  ArrowRight,
+  BarChart,
+  Bell,
+  Bitcoin,
+  Bot,
+  ChevronRight,
+  CreditCard,
+  Download,
+  Eye,
+  EyeOff,
+  Headphones,
+  LineChart,
+  PiggyBank,
+  Plus,
+  QrCode,
+  Receipt,
+  Send,
+  Shield,
+  Sparkles,
+  Target,
+  TrendingUp,
+  User,
+  Wallet,
+  Zap
+} from 'lucide-react';;;
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
 

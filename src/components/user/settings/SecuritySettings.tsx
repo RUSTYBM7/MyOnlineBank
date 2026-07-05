@@ -4,9 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { GlassCard, GlassButton } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  Shield, Lock, Fingerprint, Smartphone, Eye, EyeOff,
-  ChevronRight, Check, AlertTriangle, CheckCircle2, Clock
-} from 'lucide-react';
+  Activity,
+  AlertTriangle,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  Eye,
+  EyeOff,
+  Fingerprint,
+  Lock,
+  Settings,
+  Shield,
+  Smartphone
+} from 'lucide-react';;
 
 export default function SecuritySettings() {
   const navigate = useNavigate();

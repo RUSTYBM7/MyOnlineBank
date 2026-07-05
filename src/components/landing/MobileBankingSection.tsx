@@ -1,6 +1,12 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Smartphone, QrCode, ArrowUpDown, Bell } from 'lucide-react'
+import {
+  ArrowUpDown,
+  Bell,
+  Image,
+  QrCode,
+  Smartphone
+} from 'lucide-react';
 
 const MobileBankingSection = () => {
   const ref = useRef(null)

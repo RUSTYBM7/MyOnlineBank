@@ -1,6 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Eye, EyeOff, Lock, Mail, ShieldCheck, Sparkles, Check, ArrowRight, Fingerprint } from 'lucide-react'
+import {
+  ArrowRight,
+  Check,
+  Eye,
+  EyeOff,
+  Fingerprint,
+  Lock,
+  Mail,
+  ShieldCheck,
+  Sparkles,
+  User,
+  X
+} from 'lucide-react';
 import { BrandLogo } from '@/components/branding/BrandLogo'
 import { useStore } from '@/store'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'

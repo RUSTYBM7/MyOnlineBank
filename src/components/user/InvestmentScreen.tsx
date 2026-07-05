@@ -1,7 +1,21 @@
 import { useState, useEffect } from 'react';
 import { GlassCard, GlassButton, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
-import { TrendingUp, DollarSign, Calendar, PieChart, History, FileText, Target, AlertCircle, Bot, Sparkles, TrendingDown } from 'lucide-react';
+import {
+  AlertCircle,
+  Bot,
+  Calendar,
+  DollarSign,
+  FileText,
+  History,
+  PieChart,
+  Sliders,
+  Sparkles,
+  Sun,
+  Target,
+  TrendingDown,
+  TrendingUp
+} from 'lucide-react';;
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 

@@ -1,6 +1,9 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Star } from 'lucide-react'
+import {
+  Plus,
+  Star
+} from 'lucide-react';
 
 const TestimonialsSection = () => {
   const ref = useRef(null)

@@ -1,6 +1,12 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ShieldCheck, Lock, Fingerprint, Server } from 'lucide-react'
+import {
+  Activity,
+  Fingerprint,
+  Lock,
+  Server,
+  ShieldCheck
+} from 'lucide-react';
 
 const SecuritySection = () => {
   const ref = useRef(null)

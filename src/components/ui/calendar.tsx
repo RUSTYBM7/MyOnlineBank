@@ -2,10 +2,11 @@
 
 import * as React from "react"
 import {
+  Calendar,
   ChevronDown,
   ChevronLeft,
-  ChevronRight,
-} from "lucide-react"
+  ChevronRight
+} from 'lucide-react';
 import {
   DayPicker,
   getDefaultClassNames,

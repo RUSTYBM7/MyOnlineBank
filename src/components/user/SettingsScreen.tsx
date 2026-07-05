@@ -3,9 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { GlassCard, GlassBadge } from '@/components/glass';
 import { useStore } from '@/store';
 import {
-  User, Shield, Bell, CreditCard, Lock, Eye, Moon,
-  Globe, FileText, ChevronRight, HelpCircle, Check, LogOut
-} from 'lucide-react';
+  Bell,
+  Check,
+  ChevronRight,
+  CreditCard,
+  Eye,
+  FileText,
+  Globe,
+  HelpCircle,
+  Info,
+  Lock,
+  LogOut,
+  Moon,
+  Settings,
+  Shield,
+  User
+} from 'lucide-react';;
 
 export default function SettingsScreen() {
   const navigate = useNavigate();
