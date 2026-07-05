@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { X, Eye, EyeOff, Lock, Mail, User, ShieldCheck } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Modal, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter } from '@/components/modals'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { X, Eye, EyeOff, Lock, Mail, User, ShieldCheck, Sparkles, Check, ArrowRight, Fingerprint } from 'lucide-react'
 import { BrandLogo } from '@/components/branding/BrandLogo'
 import { useStore } from '@/store'
 
@@ -13,11 +11,57 @@ interface LoginModalProps {
 
 type LoginType = 'email' | 'memberId' | 'username'
 
+// Sparkle particle component for glitter effect
+const SparkleParticle = ({ delay, x, y }: { delay: number; x: number; y: number }) => (
+  <motion.div
+    className="absolute w-1 h-1 bg-white rounded-full"
+    style={{ left: `${x}%`, top: `${y}%` }}
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{
+      opacity: [0, 1, 0],
+      scale: [0, 1, 0],
+    }}
+    transition={{
+      duration: 2,
+      delay: delay,
+      repeat: Infinity,
+      repeatDelay: Math.random() * 3,
+    }}
+  />
+)
+
+// Floating particles for background effect
+const FloatingParticles = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute w-2 h-2 bg-gradient-to-r from-emerald-300 to-teal-300 rounded-full opacity-20"
+        style={{
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+        }}
+        animate={{
+          y: [-20, 20, -20],
+          x: [-10, 10, -10],
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{
+          duration: 3 + Math.random() * 2,
+          repeat: Infinity,
+          delay: Math.random() * 2,
+        }}
+      />
+    ))}
+  </div>
+)
+
 const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
   const [loginType, setLoginType] = useState<LoginType>('email')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [step, setStep] = useState<'credentials' | 'mfa'>('credentials')
   const [formData, setFormData] = useState({
     email: '',
     memberId: '',
@@ -27,6 +71,31 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const { login } = useStore()
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        onOpenChange(false)
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [open, onOpenChange])
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+      setStep('credentials')
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -94,159 +163,323 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
     onOpenChange(false)
   }
 
+  const handleContinue = () => {
+    if (validateForm()) {
+      setStep('mfa')
+    }
+  }
+
   const inputValue = loginType === 'email' ? formData.email :
     loginType === 'memberId' ? formData.memberId : formData.username
 
+  if (!open) return null
+
   return (
-    <Modal
-      open={open}
-      onOpenChange={onOpenChange}
-      size="lg"
-      className="w-full max-w-lg"
-    >
-      <form onSubmit={handleSubmit}>
-        <ModalHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <BrandLogo variant="auth" className="h-12" />
-          </div>
-          <ModalTitle className="text-2xl">Welcome Back</ModalTitle>
-          <ModalDescription>Sign in to your OrbitPay account to continue</ModalDescription>
-        </ModalHeader>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      >
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          onClick={() => onOpenChange(false)}
+        />
 
-        <ModalBody className="space-y-6">
-          {/* Login Type Tabs */}
-          <div className="flex rounded-xl bg-gray-100 p-1">
-            {(['email', 'memberId', 'username'] as const).map((type) => (
+        {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="relative w-full max-w-md overflow-hidden rounded-3xl shadow-2xl"
+        >
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900" />
+
+          {/* Glass overlay */}
+          <div className="absolute inset-0 backdrop-blur-xl bg-gradient-to-br from-emerald-800/40 via-emerald-700/30 to-teal-800/40" />
+
+          {/* Sparkle effects */}
+          <FloatingParticles />
+
+          {/* Top glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-b from-emerald-400/30 to-transparent blur-3xl" />
+
+          {/* Bottom glow */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-48 bg-gradient-to-t from-teal-400/20 to-transparent blur-3xl" />
+
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Header */}
+            <div className="px-8 pt-8 pb-6 text-center">
+              {/* Close button */}
               <button
-                key={type}
-                type="button"
-                onClick={() => setLoginType(type)}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                  loginType === type
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
+                onClick={() => onOpenChange(false)}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
               >
-                {type === 'email' ? 'Email' : type === 'memberId' ? 'Member ID' : 'Username'}
+                <X className="w-5 h-5 text-white/80" />
               </button>
-            ))}
-          </div>
 
-          {/* Login Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {loginType === 'email' ? 'Email Address' : loginType === 'memberId' ? 'Member ID' : 'Username'}
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type={loginType === 'email' ? 'email' : 'text'}
-                value={inputValue}
-                onChange={(e) => handleInputChange(loginType, e.target.value)}
-                placeholder={loginType === 'email' ? 'name@example.com' : `Enter your ${loginType}`}
-                className={`w-full pl-10 pr-4 py-3 rounded-xl border ${
-                  errors[loginType] ? 'border-red-500' : 'border-gray-200'
-                } focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all`}
-              />
-            </div>
-            {errors[loginType] && (
-              <p className="mt-1 text-sm text-red-500">{errors[loginType]}</p>
-            )}
-          </div>
-
-          {/* Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder="Enter your password"
-                className={`w-full pl-10 pr-12 py-3 rounded-xl border ${
-                  errors.password ? 'border-red-500' : 'border-gray-200'
-                } focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              {/* Logo */}
+              <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="flex justify-center mb-6"
               >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                )}
-              </button>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-2xl blur-xl opacity-50" />
+                  <div className="relative bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-3 shadow-xl">
+                    <BrandLogo variant="compact" className="h-10" />
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.h2
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-2xl font-bold text-white mb-2"
+              >
+                Welcome Back
+              </motion.h2>
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-emerald-200/80 text-sm"
+              >
+                Sign in to your OrbitPay account
+              </motion.p>
             </div>
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-500">{errors.password}</p>
-            )}
-          </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-emerald-500 border-gray-300 rounded focus:ring-emerald-500"
-              />
-              <span className="text-sm text-gray-600">Remember me</span>
-            </label>
-            <a href="#" className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
-              Forgot password?
-            </a>
-          </div>
-
-          {/* MFA Placeholder */}
-          <div className="glass-card p-4 rounded-xl bg-emerald-50/50 border border-emerald-100">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                <ShieldCheck className="w-5 h-5 text-emerald-600" />
+            {/* Form */}
+            <form ref={formRef} onSubmit={handleSubmit} className="px-8 pb-8 space-y-5">
+              {/* Step Indicator */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className={`w-8 h-1 rounded-full transition-all ${step === 'credentials' ? 'bg-gradient-to-r from-emerald-400 to-teal-400' : 'bg-emerald-400'}`} />
+                <div className={`w-8 h-1 rounded-full transition-all ${step === 'mfa' ? 'bg-gradient-to-r from-emerald-400 to-teal-400' : 'bg-white/20'}`} />
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Two-Factor Authentication</p>
-                <p className="text-xs text-gray-500">Available for enhanced security</p>
+
+              {step === 'credentials' ? (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="space-y-5"
+                >
+                  {/* Login Type Tabs */}
+                  <div className="flex rounded-2xl bg-white/10 p-1 backdrop-blur-sm">
+                    {(['email', 'memberId', 'username'] as const).map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setLoginType(type)}
+                        className={`flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all ${
+                          loginType === type
+                            ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                            : 'text-emerald-100/60 hover:text-white'
+                        }`}
+                      >
+                        {type === 'email' ? 'Email' : type === 'memberId' ? 'Member ID' : 'Username'}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Login Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-emerald-100/80 mb-2">
+                      {loginType === 'email' ? 'Email Address' : loginType === 'memberId' ? 'Member ID' : 'Username'}
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Mail className="h-5 w-5 text-emerald-400/60" />
+                      </div>
+                      <input
+                        type={loginType === 'email' ? 'email' : 'text'}
+                        value={inputValue}
+                        onChange={(e) => handleInputChange(loginType, e.target.value)}
+                        placeholder={loginType === 'email' ? 'name@example.com' : `Enter your ${loginType}`}
+                        className={`w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 text-white placeholder-emerald-100/40 transition-all focus:outline-none ${
+                          errors[loginType] ? 'border-red-400 focus:border-red-400' : 'border-white/20 focus:border-emerald-400 focus:bg-white/15'
+                        }`}
+                      />
+                    </div>
+                    {errors[loginType] && (
+                      <p className="mt-2 text-sm text-red-300">{errors[loginType]}</p>
+                    )}
+                  </div>
+
+                  {/* Password Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-emerald-100/80 mb-2">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Lock className="h-5 w-5 text-emerald-400/60" />
+                      </div>
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        placeholder="Enter your password"
+                        className={`w-full pl-12 pr-14 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 text-white placeholder-emerald-100/40 transition-all focus:outline-none ${
+                          errors.password ? 'border-red-400 focus:border-red-400' : 'border-white/20 focus:border-emerald-400 focus:bg-white/15'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5 text-emerald-400/60 hover:text-emerald-300" />
+                        ) : (
+                          <Eye className="h-5 w-5 text-emerald-400/60 hover:text-emerald-300" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="mt-2 text-sm text-red-300">{errors.password}</p>
+                    )}
+                  </div>
+
+                  {/* Remember Me & Forgot Password */}
+                  <div className="flex items-center justify-between">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
+                        rememberMe ? 'bg-gradient-to-r from-emerald-500 to-teal-500 border-transparent' : 'border-white/30'
+                      }`}>
+                        {rememberMe && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="sr-only"
+                      />
+                      <span className="text-sm text-emerald-100/70">Remember me</span>
+                    </label>
+                    <button type="button" className="text-sm text-emerald-300 hover:text-emerald-200 font-medium transition-colors">
+                      Forgot password?
+                    </button>
+                  </div>
+
+                  {/* Continue Button */}
+                  <motion.button
+                    type="button"
+                    onClick={handleContinue}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 bg-size-200 hover:bg-pos-100 text-white font-semibold shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all"
+                  >
+                    <span>Continue</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-5"
+                >
+                  {/* Back button */}
+                  <button
+                    type="button"
+                    onClick={() => setStep('credentials')}
+                    className="flex items-center gap-2 text-emerald-200/60 hover:text-emerald-200 transition-colors"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    <span className="text-sm">Back</span>
+                  </button>
+
+                  {/* MFA Card */}
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400/30 to-teal-400/30 flex items-center justify-center">
+                        <Fingerprint className="w-7 h-7 text-emerald-300" />
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold">Two-Factor Authentication</p>
+                        <p className="text-emerald-200/60 text-sm">Verify your identity</p>
+                      </div>
+                    </div>
+                    <p className="text-emerald-100/70 text-sm">
+                      We've sent a verification code to your registered device. Enter the code below to continue.
+                    </p>
+                  </div>
+
+                  {/* MFA Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-emerald-100/80 mb-2">
+                      Verification Code
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <ShieldCheck className="h-5 w-5 text-emerald-400/60" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Enter 6-digit code"
+                        maxLength={6}
+                        className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white placeholder-emerald-100/40 text-center text-2xl tracking-widest focus:outline-none focus:border-emerald-400 focus:bg-white/15"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sign In Button */}
+                  <motion.button
+                    type="submit"
+                    disabled={isLoading}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 bg-size-200 hover:bg-pos-100 text-white font-semibold shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all disabled:opacity-70"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Signing in...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <span>Sign In</span>
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </motion.button>
+                </motion.div>
+              )}
+
+              {/* Footer Links */}
+              <div className="text-center pt-4">
+                <p className="text-emerald-200/60 text-sm">
+                  Don't have an account?{' '}
+                  <button type="button" className="text-emerald-300 hover:text-emerald-200 font-medium transition-colors">
+                    Open Account
+                  </button>
+                </p>
+              </div>
+            </form>
+
+            {/* Security Badge */}
+            <div className="px-8 pb-6">
+              <div className="flex items-center justify-center gap-2 text-emerald-200/50 text-xs">
+                <ShieldCheck className="w-4 h-4" />
+                <span>Bank-grade 256-bit encryption</span>
+                <Sparkles className="w-4 h-4" />
               </div>
             </div>
           </div>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            className="w-full sm:w-auto"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
-          >
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Signing in...
-              </div>
-            ) : (
-              'Sign In'
-            )}
-          </Button>
-        </ModalFooter>
-      </form>
-    </Modal>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 

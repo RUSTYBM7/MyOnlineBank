@@ -12,7 +12,7 @@ import {
   ArrowUpRight, ArrowDownRight, PieChart, Target, Calculator, Handshake,
   Building, Landmark, User, Send, Scan, Gift, FileText, Heart, Leaf,
   Cpu, Network, Cloud, Database, LineChart, WalletCards, Coins, Scale, Car,
-  Download
+  Download, X, ShieldCheck
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import AccountCreationWizard from '@/components/user/AccountCreationWizard';
@@ -1286,92 +1286,249 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* Login Modal - Fixed Responsive */}
-      {/* Login Modal - Using EnterpriseModal for Production Readiness */}
-      <EnterpriseModal
-        open={showLoginModal}
-        onOpenChange={setShowLoginModal}
-        title="Welcome Back"
-        subtitle="Sign in to your OrbitPay account"
-        size="lg"
-        position="center"
-      >
-        {/* Modal Header Icon */}
-        <div className="flex justify-center mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-            <Landmark className="w-7 h-7 text-white" />
-          </div>
-        </div>
+      {/* Login Modal - Dark Green Professional Design */}
+      {showLoginModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          onClick={(e) => e.target === e.currentTarget && setShowLoginModal(false)}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-black/70 backdrop-blur-md"
+          />
 
-        {/* Error Alert */}
-        {loginError && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-            <p className="text-sm text-red-400">{loginError}</p>
-          </div>
-        )}
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="relative w-full max-w-md overflow-hidden rounded-3xl shadow-2xl"
+          >
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900" />
 
-        {/* Login Form */}
-        <div className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
-                type="email"
-                value={loginForm.email}
-                onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-                placeholder="you@example.com"
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-slate-800/50 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-white placeholder:text-slate-500"
-              />
+            {/* Glass overlay */}
+            <div className="absolute inset-0 backdrop-blur-xl bg-gradient-to-br from-emerald-800/40 via-emerald-700/30 to-teal-800/40" />
+
+            {/* Floating particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-gradient-to-r from-emerald-300 to-teal-300 rounded-full opacity-20"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    y: [-20, 20, -20],
+                    x: [-10, 10, -10],
+                    opacity: [0.1, 0.3, 0.1],
+                  }}
+                  transition={{
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2,
+                  }}
+                />
+              ))}
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={loginForm.password}
-                onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                placeholder="Enter your password"
-                className="w-full pl-12 pr-12 py-3.5 rounded-xl bg-slate-800/50 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-white placeholder:text-slate-500"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300"
-              >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
+            {/* Top glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-b from-emerald-400/30 to-transparent blur-3xl" />
+
+            {/* Bottom glow */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-48 bg-gradient-to-t from-teal-400/20 to-transparent blur-3xl" />
+
+            {/* Content */}
+            <div className="relative z-10">
+              {/* Header */}
+              <div className="px-8 pt-8 pb-6 text-center">
+                {/* Close button */}
+                <button
+                  onClick={() => setShowLoginModal(false)}
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
+                >
+                  <X className="w-5 h-5 text-white/80" />
+                </button>
+
+                {/* Logo */}
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  className="flex justify-center mb-6"
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-2xl blur-xl opacity-50" />
+                    <div className="relative bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-3 shadow-xl">
+                      <Landmark className="w-10 h-10 text-white" />
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.h2
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="text-2xl font-bold text-white mb-2"
+                >
+                  Welcome Back
+                </motion.h2>
+                <motion.p
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-emerald-200/80 text-sm"
+                >
+                  Sign in to your OrbitPay account
+                </motion.p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="px-8 pb-8 space-y-5">
+                {/* Error Alert */}
+                {loginError && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="p-4 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center gap-3"
+                  >
+                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                    <p className="text-sm text-red-300">{loginError}</p>
+                  </motion.div>
+                )}
+
+                {/* Login Field */}
+                <div>
+                  <label className="block text-sm font-medium text-emerald-100/80 mb-2">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-emerald-400/60" />
+                    </div>
+                    <input
+                      type="email"
+                      value={loginForm.email}
+                      onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                      placeholder="you@example.com"
+                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white placeholder-emerald-100/40 transition-all focus:outline-none focus:border-emerald-400 focus:bg-white/15"
+                    />
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label className="block text-sm font-medium text-emerald-100/80 mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-emerald-400/60" />
+                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={loginForm.password}
+                      onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                      placeholder="Enter your password"
+                      className="w-full pl-12 pr-14 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white placeholder-emerald-100/40 transition-all focus:outline-none focus:border-emerald-400 focus:bg-white/15"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5 text-emerald-400/60 hover:text-emerald-300" />
+                      ) : (
+                        <Eye className="h-5 w-5 text-emerald-400/60 hover:text-emerald-300" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Remember Me & Forgot Password */}
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
+                      loginForm.rememberMe ? 'bg-gradient-to-r from-emerald-500 to-teal-500 border-transparent' : 'border-white/30'
+                    }`}>
+                      {loginForm.rememberMe && <Check className="w-3 h-3 text-white" />}
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={loginForm.rememberMe}
+                      onChange={(e) => setLoginForm({ ...loginForm, rememberMe: e.target.checked })}
+                      className="sr-only"
+                    />
+                    <span className="text-sm text-emerald-100/70">Remember me</span>
+                  </label>
+                  <button type="button" className="text-sm text-emerald-300 hover:text-emerald-200 font-medium transition-colors">
+                    Forgot password?
+                  </button>
+                </div>
+
+                {/* Continue Button - NOW VISIBLE! */}
+                <motion.button
+                  type="submit"
+                  disabled={isLoggingIn}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 text-white font-semibold shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-2 transition-all disabled:opacity-70"
+                >
+                  {isLoggingIn ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Signing in...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <span>Continue</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </motion.button>
+
+                {/* Demo Login */}
+                <button
+                  type="button"
+                  onClick={handleDemoLogin}
+                  className="w-full py-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-emerald-100 font-medium hover:bg-white/20 transition-all"
+                >
+                  Try Demo Account
+                </button>
+
+                {/* Footer Links */}
+                <div className="text-center pt-2">
+                  <p className="text-emerald-200/60 text-sm">
+                    Don't have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => { setShowLoginModal(false); setShowSignupModal(true); setShowAccountTypeModal(true); }}
+                      className="text-emerald-300 hover:text-emerald-200 font-medium transition-colors"
+                    >
+                      Open Account
+                    </button>
+                  </p>
+                </div>
+              </form>
+
+              {/* Security Badge */}
+              <div className="px-8 pb-6">
+                <div className="flex items-center justify-center gap-2 text-emerald-200/50 text-xs">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Bank-grade 256-bit encryption</span>
+                  <Sparkles className="w-4 h-4" />
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={loginForm.rememberMe}
-                onChange={(e) => setLoginForm({ ...loginForm, rememberMe: e.target.checked })}
-                className="w-4 h-4 rounded border-slate-600 text-emerald-600 focus:ring-emerald-500"
-              />
-              <span className="text-sm text-slate-400">Remember me</span>
-            </label>
-            <a href="#" className="text-sm font-medium text-emerald-400 hover:text-emerald-300">Forgot password?</a>
-          </div>
-
-          <p className="text-center text-sm text-slate-400">
-            Don't have an account?{' '}
-            <button
-              onClick={() => { setShowLoginModal(false); setShowSignupModal(true); setShowAccountTypeModal(true); }}
-              className="font-semibold text-emerald-400 hover:text-emerald-300"
-            >
-              Open Account
-            </button>
-          </p>
-        </div>
-      </EnterpriseModal>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Signup Flow Modal - Using EnterpriseModal for Production Readiness */}
       <EnterpriseModal
