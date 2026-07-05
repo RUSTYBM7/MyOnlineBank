@@ -1,23 +1,40 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassSurface, GlassCard, GlassBadge, GlassButton, GlassInput } from '@/components/glass';
-import { useStore } from '@/store';
 import {
   Smartphone, MessageSquare, User, CreditCard, MapPin, Check,
   ChevronLeft, ChevronRight, Fingerprint, Shield, Building2, PiggyBank,
   Camera, Upload, FileText, Star, Briefcase, GraduationCap, Users,
-  Crown, Heart, Wallet, TrendingUp, Lock, Eye, EyeOff, Calendar,
-  Mail, Phone, Home, DollarSign, AlertCircle, Sparkles,
-  Car, Plane, GraduationCap as StudentIcon, Gift, Umbrella
+  Crown, Heart, Wallet, TrendingUp, Lock, AlertCircle, Sparkles,
+  Loader2, Eye, EyeOff, X, Info, Bell, Calendar, CheckCircle2, AlertTriangle
 } from 'lucide-react';
+import { GlassButton, GlassInput } from '@/components/glass';
+import {
+  onboardingAPI,
+  validateStepWelcome,
+  validateStepPersonalInfo,
+  validateStepContact,
+  validateStepAddress,
+  validateStepIDVerification,
+  validateStepBusiness,
+  validateStepJointPartner,
+  validateEmail,
+  validatePhone,
+  validateDateOfBirth,
+  validateSSN,
+  validateAddress,
+  validateZipCode,
+  maskEmail,
+  maskPhone,
+  formatPhoneNumber,
+  OnboardingData
+} from '@/lib/onboarding-api';
 
-// Account type definitions with icons and colors
+// Account type definitions
 export type AccountType = 'savings' | 'checking' | 'student' | 'business' | 'joint' | 'youth' | 'premium' | 'retirement';
 
 interface AccountTypeConfig {
   id: AccountType;
   name: string;
-  icon: React.ElementType;
   tagline: string;
   color: string;
   bgGradient: string;
@@ -29,7 +46,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   savings: {
     id: 'savings',
     name: 'Savings Account',
-    icon: PiggyBank,
     tagline: 'Grow your wealth with competitive interest rates',
     color: 'from-green-500 to-emerald-500',
     bgGradient: 'bg-gradient-to-br from-green-50 to-emerald-50',
@@ -38,7 +54,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   checking: {
     id: 'checking',
     name: 'Checking Account',
-    icon: Wallet,
     tagline: 'Daily banking with unlimited flexibility',
     color: 'from-blue-500 to-cyan-500',
     bgGradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
@@ -47,7 +62,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   student: {
     id: 'student',
     name: 'Student Account',
-    icon: GraduationCap,
     tagline: 'Designed for your education journey',
     color: 'from-purple-500 to-pink-500',
     bgGradient: 'bg-gradient-to-br from-purple-50 to-pink-50',
@@ -57,7 +71,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   business: {
     id: 'business',
     name: 'Business Account',
-    icon: Briefcase,
     tagline: 'Fuel your business growth',
     color: 'from-amber-500 to-orange-500',
     bgGradient: 'bg-gradient-to-br from-amber-50 to-orange-50',
@@ -66,7 +79,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   joint: {
     id: 'joint',
     name: 'Joint Account',
-    icon: Users,
     tagline: 'Shared banking for couples & partners',
     color: 'from-rose-500 to-red-500',
     bgGradient: 'bg-gradient-to-br from-rose-50 to-red-50',
@@ -75,7 +87,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   youth: {
     id: 'youth',
     name: 'Youth Account',
-    icon: Heart,
     tagline: 'Teaching smart money habits early',
     color: 'from-indigo-500 to-violet-500',
     bgGradient: 'bg-gradient-to-br from-indigo-50 to-violet-50',
@@ -85,7 +96,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   premium: {
     id: 'premium',
     name: 'Premium Membership',
-    icon: Crown,
     tagline: 'Exclusive benefits & premium service',
     color: 'from-yellow-500 to-amber-500',
     bgGradient: 'bg-gradient-to-br from-yellow-50 to-amber-50',
@@ -94,7 +104,6 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   retirement: {
     id: 'retirement',
     name: 'Retirement Account',
-    icon: TrendingUp,
     tagline: 'Secure your future today',
     color: 'from-teal-500 to-cyan-500',
     bgGradient: 'bg-gradient-to-br from-teal-50 to-cyan-50',
@@ -102,28 +111,23 @@ export const accountTypeConfigs: Record<AccountType, AccountTypeConfig> = {
   },
 };
 
-// Step definitions for each account type
+// Wizard steps for each account type
 interface Step {
   id: string;
   title: string;
   subtitle: string;
   icon: React.ElementType;
+  validate?: (data: Partial<OnboardingData>, accountType: string) => { valid: boolean; errors: Record<string, string> };
 }
 
 const getStepsForAccountType = (type: AccountType): Step[] => {
-  const commonSteps: Step[] = [
-    { id: 'welcome', title: 'Welcome', subtitle: 'Get started', icon: Star },
-    { id: 'personal_info', title: 'Personal Info', subtitle: 'Your details', icon: User },
-    { id: 'contact', title: 'Contact', subtitle: 'Reach you', icon: Phone },
-    { id: 'address', title: 'Address', subtitle: 'Your location', icon: Home },
-  ];
-
-  const verificationSteps: Step[] = [
+  const baseSteps: Step[] = [
+    { id: 'welcome', title: 'Welcome', subtitle: 'Review terms', icon: Star },
+    { id: 'personal_info', title: 'Personal Info', subtitle: 'Your details', icon: User, validate: validateStepPersonalInfo },
+    { id: 'contact', title: 'Contact', subtitle: 'Reach you', icon: Smartphone, validate: validateStepContact },
+    { id: 'address', title: 'Address', subtitle: 'Your location', icon: MapPin, validate: validateStepAddress },
     { id: 'verification', title: 'Verify', subtitle: 'Identity check', icon: Shield },
-    { id: 'id_upload', title: 'ID Upload', subtitle: 'Document check', icon: CreditCard },
-  ];
-
-  const finalSteps: Step[] = [
+    { id: 'id_upload', title: 'ID Upload', subtitle: 'Document check', icon: CreditCard, validate: validateStepIDVerification },
     { id: 'review', title: 'Review', subtitle: 'Confirm details', icon: FileText },
     { id: 'complete', title: 'Complete', subtitle: 'All done', icon: Check },
   ];
@@ -131,61 +135,42 @@ const getStepsForAccountType = (type: AccountType): Step[] => {
   switch (type) {
     case 'business':
       return [
-        ...commonSteps,
-        { id: 'business_info', title: 'Business', subtitle: 'Company details', icon: Briefcase },
-        ...verificationSteps,
-        { id: 'business_docs', title: 'Documents', subtitle: 'Business docs', icon: FileText },
-        ...finalSteps,
+        ...baseSteps.slice(0, 2),
+        { id: 'business_info', title: 'Business', subtitle: 'Company details', icon: Briefcase, validate: validateStepBusiness },
+        ...baseSteps.slice(2),
       ];
     case 'joint':
       return [
-        ...commonSteps,
-        { id: 'joint_partner', title: 'Partner', subtitle: 'Second holder', icon: Users },
-        ...verificationSteps,
-        { id: 'selfie', title: 'Selfie', subtitle: 'Verify identity', icon: Camera },
-        ...finalSteps,
+        ...baseSteps.slice(0, 2),
+        { id: 'joint_partner', title: 'Partner', subtitle: 'Second holder', icon: Users, validate: validateStepJointPartner },
+        ...baseSteps.slice(2),
       ];
     case 'student':
       return [
-        ...commonSteps,
+        ...baseSteps.slice(0, 2),
         { id: 'student_info', title: 'Student', subtitle: 'Education details', icon: GraduationCap },
-        { id: 'parent_info', title: 'Parent', subtitle: 'Guardian info', icon: Users },
-        ...verificationSteps,
-        { id: 'selfie', title: 'Selfie', subtitle: 'Verify identity', icon: Camera },
-        ...finalSteps,
+        ...baseSteps.slice(2),
       ];
     case 'youth':
       return [
-        ...commonSteps,
-        { id: 'youth_info', title: 'Guardian', subtitle: 'Parent consent', icon: Users },
-        { id: 'guardian_verify', title: 'Verify', subtitle: 'Guardian ID', icon: Shield },
-        ...finalSteps,
+        ...baseSteps.slice(0, 2),
+        { id: 'guardian_info', title: 'Guardian', subtitle: 'Parent info', icon: Users },
+        ...baseSteps.slice(2),
       ];
     case 'premium':
       return [
-        ...commonSteps,
+        ...baseSteps.slice(0, 2),
         { id: 'premium_info', title: 'Premium', subtitle: 'Membership tier', icon: Crown },
-        { id: 'income_verify', title: 'Income', subtitle: 'Verification', icon: DollarSign },
-        ...verificationSteps,
-        { id: 'selfie', title: 'Selfie', subtitle: 'Verify identity', icon: Camera },
-        ...finalSteps,
+        ...baseSteps.slice(2),
       ];
     case 'retirement':
       return [
-        ...commonSteps,
+        ...baseSteps.slice(0, 2),
         { id: 'retirement_info', title: 'Retirement', subtitle: 'Plan details', icon: TrendingUp },
-        { id: 'employment', title: 'Employment', subtitle: 'Work status', icon: Briefcase },
-        ...verificationSteps,
-        { id: 'selfie', title: 'Selfie', subtitle: 'Verify identity', icon: Camera },
-        ...finalSteps,
+        ...baseSteps.slice(2),
       ];
     default:
-      return [
-        ...commonSteps,
-        ...verificationSteps,
-        { id: 'selfie', title: 'Selfie', subtitle: 'Verify identity', icon: Camera },
-        ...finalSteps,
-      ];
+      return baseSteps;
   }
 };
 
@@ -195,91 +180,204 @@ interface AccountCreationWizardProps {
 }
 
 export default function AccountCreationWizard({ onComplete, onCancel }: AccountCreationWizardProps) {
-  const { updateOnboardingData, resetOnboarding } = useStore();
   const [selectedType, setSelectedType] = useState<AccountType | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<Partial<OnboardingData>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpMaskedTarget, setOtpMaskedTarget] = useState('');
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [idFrontPreview, setIdFrontPreview] = useState<string | null>(null);
+  const [idBackPreview, setIdBackPreview] = useState<string | null>(null);
+  const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const idFrontRef = useRef<HTMLInputElement>(null);
+  const idBackRef = useRef<HTMLInputElement>(null);
+  const selfieRef = useRef<HTMLInputElement>(null);
 
   const steps = selectedType ? getStepsForAccountType(selectedType) : [];
   const currentStep = steps[currentStepIndex];
-  const progress = ((currentStepIndex + 1) / steps.length) * 100;
+  const progress = steps.length > 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
   const config = selectedType ? accountTypeConfigs[selectedType] : null;
 
-  const updateFormData = (key: string, value: string) => {
-    setFormData(prev => ({ ...prev, [key]: value }));
+  // OTP Timer
+  useEffect(() => {
+    if (otpTimer > 0) {
+      const timer = setTimeout(() => setOtpTimer(otpTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [otpTimer]);
+
+  // Initialize session when account type is selected
+  const handleSelectAccountType = async (type: AccountType) => {
+    setSelectedType(type);
+    setCurrentStepIndex(0);
+    setFormData({});
+    setErrors({});
+
+    try {
+      const session = await onboardingAPI.createSession(type);
+      setSessionId(session.session_id);
+    } catch (error) {
+      console.error('Error creating session:', error);
+    }
   };
 
+  // Update form data and clear field errors
+  const updateFormData = (key: keyof OnboardingData, value: unknown) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[key];
+        return newErrors;
+      });
+    }
+  };
+
+  // Validate current step
+  const validateCurrentStep = useCallback((): boolean => {
+    if (!currentStep?.validate) return true;
+
+    const result = currentStep.validate(formData, selectedType || '');
+    if (!result.valid) {
+      setErrors(result.errors);
+      return false;
+    }
+    return true;
+  }, [currentStep, formData, selectedType]);
+
+  // Check if can proceed
   const canProceed = (): boolean => {
     if (!currentStep) return false;
 
     switch (currentStep.id) {
       case 'welcome':
-        return agreedToTerms;
+        return formData.agreed_to_terms && formData.agreed_to_privacy && formData.agreed_to_membership;
       case 'personal_info':
-        return formData.firstName && formData.lastName && formData.dateOfBirth && formData.ssn;
+        return !!(formData.first_name && formData.last_name && formData.date_of_birth && formData.ssn_last4);
       case 'contact':
-        return formData.email && formData.phone;
+        return !!(formData.email && formData.phone);
       case 'address':
-        return formData.streetAddress && formData.city && formData.state && formData.zipCode;
-      case 'business_info':
-        return formData.businessName && formData.businessType && formData.ein;
-      case 'student_info':
-        return formData.schoolName && formData.studentId;
-      case 'parent_info':
-        return formData.parentName && formData.parentPhone;
-      case 'youth_info':
-        return formData.parentName && formData.parentPhone;
-      case 'guardian_verify':
-        return true; // ID verification
+        return !!(formData.street_address && formData.city && formData.state && formData.zip_code);
       case 'verification':
         return otp.join('').length === 6;
       case 'id_upload':
-        return formData.idType && formData.idNumber;
+        return !!(formData.id_type && formData.id_number);
+      case 'business_info':
+        return !!(formData.business_name && formData.business_type && formData.ein);
       case 'joint_partner':
-        return formData.partnerFirstName && formData.partnerLastName && formData.partnerEmail;
-      case 'selfie':
-        return true; // Selfie is optional for now
-      case 'premium_info':
-        return true;
-      case 'income_verify':
-        return true;
-      case 'retirement_info':
-        return true;
-      case 'employment':
-        return true;
-      case 'business_docs':
-        return true;
+        return !!(formData.partner_first_name && formData.partner_last_name && formData.partner_email);
       case 'review':
-        return agreedToTerms;
-      case 'complete':
-        return true;
+        return formData.agreed_to_terms === true;
       default:
         return true;
     }
   };
 
-  const handleNext = () => {
+  // Handle next step
+  const handleNext = async () => {
+    // Validate before proceeding
+    if (!validateCurrentStep()) {
+      return;
+    }
+
+    // Special handling for verification step - send OTP
+    if (currentStep.id === 'contact' && !otpSent) {
+      try {
+        await handleSendOTP();
+        return;
+      } catch (error) {
+        console.error('Error sending OTP:', error);
+      }
+    }
+
+    // Save current step data
+    if (sessionId) {
+      await onboardingAPI.updateSession(sessionId, formData, currentStepIndex + 1);
+    }
+
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
+      setErrors({});
     }
   };
 
+  // Handle back - NO GOING BACK from verification/security steps
   const handleBack = () => {
+    const restrictedSteps = ['verification', 'id_upload', 'review'];
+    if (restrictedSteps.includes(currentStep.id)) {
+      return; // Cannot go back from security steps
+    }
+
     if (currentStepIndex > 0) {
       setCurrentStepIndex(prev => prev - 1);
+      setErrors({});
+    } else {
+      setSelectedType(null);
+      setCurrentStepIndex(0);
     }
   };
 
+  // Send OTP
+  const handleSendOTP = async () => {
+    if (!sessionId) return;
+
+    const type = formData.phone ? 'phone' : 'email';
+    const result = await onboardingAPI.sendOTP(sessionId, type);
+
+    if (result.success) {
+      setOtpSent(true);
+      setOtpMaskedTarget(result.masked_target);
+      setOtpTimer(300); // 5 minutes
+      setCurrentStepIndex(prev => prev + 1); // Move to verification step
+    }
+  };
+
+  // Verify OTP
+  const handleVerifyOTP = async () => {
+    if (!sessionId || otp.join('').length !== 6) return;
+
+    setIsSubmitting(true);
+    const result = await onboardingAPI.verifyOTP(sessionId, otp.join(''));
+    setIsSubmitting(false);
+
+    if (result.success) {
+      if (currentStepIndex < steps.length - 1) {
+        setCurrentStepIndex(prev => prev + 1);
+        setOtp(['', '', '', '', '', '']);
+      }
+    } else {
+      setErrors({ otp: result.error || 'Invalid code' });
+      setOtp(['', '', '', '', '', '']);
+    }
+  };
+
+  // Resend OTP
+  const handleResendOTP = async () => {
+    if (otpTimer > 0) return;
+    await handleSendOTP();
+  };
+
+  // OTP input handlers
   const handleOtpChange = (value: string, index: number) => {
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value.slice(-1);
     setOtp(newOtp);
+
     if (value && index < 5) {
       const nextInput = document.getElementById(`otp-${index + 1}`);
       nextInput?.focus();
+    }
+
+    // Auto-verify when complete
+    if (newOtp.every(digit => digit) && newOtp.join('').length === 6) {
+      setTimeout(handleVerifyOTP, 100);
     }
   };
 
@@ -290,142 +388,287 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
     }
   };
 
+  // File upload handlers
+  const handleFileUpload = (type: 'id_front' | 'id_back' | 'selfie') => {
+    if (type === 'id_front') idFrontRef.current?.click();
+    if (type === 'id_back') idBackRef.current?.click();
+    if (type === 'selfie') selfieRef.current?.click();
+  };
+
+  const handleFileChange = async (type: 'id_front' | 'id_back' | 'selfie', e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !sessionId) return;
+
+    // Validate file
+    if (!file.type.startsWith('image/')) {
+      setErrors({ [type]: 'Please upload an image file' });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setErrors({ [type]: 'File size must be less than 10MB' });
+      return;
+    }
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (type === 'id_front') setIdFrontPreview(event.target?.result as string);
+      if (type === 'id_back') setIdBackPreview(event.target?.result as string);
+      if (type === 'selfie') setSelfiePreview(event.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload to backend
+    try {
+      const result = await onboardingAPI.uploadDocument(sessionId, type, file);
+      if (!result.success) {
+        setErrors({ [type]: result.error || 'Upload failed' });
+      }
+    } catch (error) {
+      setErrors({ [type]: 'Upload failed. Please try again.' });
+    }
+  };
+
+  // Submit application
+  const handleSubmit = async () => {
+    if (!sessionId) return;
+
+    setIsSubmitting(true);
+    try {
+      const result = await onboardingAPI.submitApplication(sessionId);
+      if (result.success) {
+        setCurrentStepIndex(steps.length - 1); // Go to complete step
+      } else {
+        setErrors({ submit: result.error || 'Submission failed' });
+      }
+    } catch (error) {
+      setErrors({ submit: 'An error occurred. Please try again.' });
+    }
+    setIsSubmitting(false);
+  };
+
+  // Handle completion
   const handleComplete = () => {
-    resetOnboarding();
+    localStorage.removeItem(`onboarding_${sessionId}`);
     if (onComplete) onComplete();
   };
 
-  // Account Type Selection Screen
-  if (!selectedType) {
-    return (
-      <div className="min-h-screen bg-[#F7F9F4]">
-        <div className="max-w-lg mx-auto px-5 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#059669] to-[#10B981] mx-auto mb-4 flex items-center justify-center">
-              <Building2 className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-[#0A0A0A] mb-2">Choose Your Account</h1>
-            <p className="text-[#0A0A0A]/60">Select the account type that best fits your needs</p>
-          </div>
+  // Real-time validation
+  const validateFieldLive = (field: string, value: string): string | null => {
+    switch (field) {
+      case 'first_name':
+      case 'last_name':
+        if (value && value.length < 2) return 'Must be at least 2 characters';
+        if (value && !/^[a-zA-Z\s'-]+$/.test(value)) return 'Letters only';
+        return null;
+      case 'email':
+        return validateEmail(value);
+      case 'phone':
+        return validatePhone(value);
+      case 'date_of_birth':
+        return validateDateOfBirth(value, selectedType === 'youth' ? 13 : 18);
+      case 'ssn_last4':
+        return validateSSN(value);
+      case 'street_address':
+        return validateAddress(value);
+      case 'city':
+        return value && value.length < 2 ? 'Required' : null;
+      case 'state':
+        return value && value.length < 2 ? 'Required' : null;
+      case 'zip_code':
+        return validateZipCode(value);
+      case 'id_number':
+        return value && !/^[A-Z0-9]{5,20}$/i.test(value) ? 'Invalid ID format' : null;
+      case 'business_name':
+        return value && value.length < 3 ? 'Must be at least 3 characters' : null;
+      case 'ein':
+        return value && !/^[0-9]{2}-[0-9]{7}$/.test(value) ? 'Format: XX-XXXXXXX' : null;
+      case 'partner_email':
+        return value ? validateEmail(value) : null;
+      default:
+        return null;
+    }
+  };
 
-          {/* Account Types Grid */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {Object.values(accountTypeConfigs).map((typeConfig) => {
-              const Icon = typeConfig.icon;
-              return (
-                <motion.button
-                  key={typeConfig.id}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setSelectedType(typeConfig.id)}
-                  className={`p-4 rounded-2xl border-2 border-gray-200 text-left transition-all hover:border-[#059669] ${typeConfig.bgGradient}`}
-                >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${typeConfig.color} flex items-center justify-center mb-3`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-[#0A0A0A] mb-1">{typeConfig.name}</h3>
-                  <p className="text-xs text-[#0A0A0A]/60 line-clamp-2">{typeConfig.tagline}</p>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Cancel Button */}
-          <GlassButton variant="outline" onClick={onCancel} className="w-full">
-            Cancel
-          </GlassButton>
-        </div>
-      </div>
-    );
-  }
-
-  // Render current step content
+  // Render step content
   const renderStepContent = () => {
     if (!currentStep) return null;
 
     switch (currentStep.id) {
       case 'welcome':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
             <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${config?.color} mx-auto mb-6 flex items-center justify-center`}>
-              {config && <config.icon className="w-10 h-10 text-white" />}
+              <Shield className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-[#0A0A0A] mb-2">{config?.name}</h2>
-            <p className="text-[#0A0A0A]/60 mb-6">{config?.tagline}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{config?.name}</h2>
+            <p className="text-gray-600 mb-6">{config?.tagline}</p>
 
             {/* Features */}
             <div className="grid grid-cols-2 gap-3 mb-6">
               {config?.features.map((feature, i) => (
                 <div key={i} className="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-100">
-                  <Check className="w-4 h-4 text-[#059669]" />
-                  <span className="text-sm text-[#0A0A0A]">{feature}</span>
+                  <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <span className="text-sm text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
 
-            <label className="flex items-start gap-3 p-4 bg-white rounded-xl cursor-pointer border border-gray-200">
-              <input
-                type="checkbox"
-                checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-5 h-5 rounded border-gray-300 text-[#059669]"
-              />
-              <span className="text-sm text-[#0A0A0A]/70 text-left">
-                I agree to the <span className="text-[#059669] font-medium">Terms of Service</span>,{' '}
-                <span className="text-[#059669] font-medium">Privacy Policy</span>, and{' '}
-                <span className="text-[#059669] font-medium">Membership Agreement</span>
-              </span>
-            </label>
+            {/* Terms Agreement */}
+            <div className="space-y-3 text-left">
+              <label className="flex items-start gap-3 p-4 bg-white rounded-xl border cursor-pointer hover:bg-gray-50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={formData.agreed_to_terms || false}
+                  onChange={(e) => updateFormData('agreed_to_terms', e.target.checked)}
+                  className="mt-1 w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                />
+                <span className="text-sm text-gray-700">
+                  I agree to the <span className="text-emerald-600 font-medium">Terms of Service</span>
+                </span>
+              </label>
+              <label className="flex items-start gap-3 p-4 bg-white rounded-xl border cursor-pointer hover:bg-gray-50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={formData.agreed_to_privacy || false}
+                  onChange={(e) => updateFormData('agreed_to_privacy', e.target.checked)}
+                  className="mt-1 w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                />
+                <span className="text-sm text-gray-700">
+                  I agree to the <span className="text-emerald-600 font-medium">Privacy Policy</span>
+                </span>
+              </label>
+              <label className="flex items-start gap-3 p-4 bg-white rounded-xl border cursor-pointer hover:bg-gray-50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={formData.agreed_to_membership || false}
+                  onChange={(e) => updateFormData('agreed_to_membership', e.target.checked)}
+                  className="mt-1 w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                />
+                <span className="text-sm text-gray-700">
+                  I agree to the <span className="text-emerald-600 font-medium">Membership Agreement</span> and <span className="text-emerald-600 font-medium">Fee Schedule</span>
+                </span>
+              </label>
+            </div>
+
+            {errors.agreed_to_terms && (
+              <p className="text-red-500 text-sm mt-3 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                You must agree to all terms to continue
+              </p>
+            )}
           </motion.div>
         );
 
       case 'personal_info':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="text-center mb-6">
-              <User className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Personal Information</h2>
-              <p className="text-[#0A0A0A]/60">Enter your legal name as it appears on your ID</p>
+              <User className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Personal Information</h2>
+              <p className="text-gray-600 text-sm">Enter your legal name as shown on your government-issued ID</p>
             </div>
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <GlassInput
-                  label="First Name *"
-                  placeholder="John"
-                  value={formData.firstName || ''}
-                  onChange={(e) => updateFormData('firstName', e.target.value)}
-                />
-                <GlassInput
-                  label="Last Name *"
-                  placeholder="Doe"
-                  value={formData.lastName || ''}
-                  onChange={(e) => updateFormData('lastName', e.target.value)}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">First Name *</label>
+                  <input
+                    type="text"
+                    value={formData.first_name || ''}
+                    onChange={(e) => {
+                      updateFormData('first_name', e.target.value);
+                      const err = validateFieldLive('first_name', e.target.value);
+                      if (err) setErrors(prev => ({ ...prev, first_name: err }));
+                    }}
+                    onBlur={(e) => {
+                      const err = validateFieldLive('first_name', e.target.value);
+                      if (err) setErrors(prev => ({ ...prev, first_name: err }));
+                      else setErrors(prev => { const ne = {...prev}; delete ne.first_name; return ne; });
+                    }}
+                    placeholder="John"
+                    autoComplete="given-name"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.first_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.first_name && <p className="text-red-500 text-xs mt-1">{errors.first_name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Last Name *</label>
+                  <input
+                    type="text"
+                    value={formData.last_name || ''}
+                    onChange={(e) => {
+                      updateFormData('last_name', e.target.value);
+                    }}
+                    placeholder="Doe"
+                    autoComplete="family-name"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.last_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.last_name && <p className="text-red-500 text-xs mt-1">{errors.last_name}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Middle Name (Optional)</label>
+                <input
+                  type="text"
+                  value={formData.middle_name || ''}
+                  onChange={(e) => updateFormData('middle_name', e.target.value)}
+                  placeholder="William"
+                  autoComplete="additional-name"
+                  className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                 />
               </div>
-              <GlassInput
-                label="Date of Birth *"
-                type="date"
-                value={formData.dateOfBirth || ''}
-                onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
-              />
-              <div className="relative">
-                <GlassInput
-                  label="SSN (Last 4) *"
-                  type="text"
-                  placeholder="1234"
-                  maxLength={4}
-                  value={formData.ssn || ''}
-                  onChange={(e) => updateFormData('ssn', e.target.value)}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Date of Birth *</label>
+                <input
+                  type="date"
+                  value={formData.date_of_birth || ''}
+                  onChange={(e) => updateFormData('date_of_birth', e.target.value)}
+                  autoComplete="bday"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.date_of_birth ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
                 />
-                <Lock className="absolute right-3 top-9 w-4 h-4 text-[#0A0A0A]/30" />
+                {errors.date_of_birth && <p className="text-red-500 text-xs mt-1">{errors.date_of_birth}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">SSN (Last 4 Digits) *</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={4}
+                    value={formData.ssn_last4 || ''}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                      updateFormData('ssn_last4', value);
+                    }}
+                    placeholder="1234"
+                    autoComplete="off"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.ssn_last4 ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all pr-12`}
+                  />
+                  <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                </div>
+                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                  <Shield className="w-3 h-3" />
+                  Your SSN is encrypted and secure
+                </p>
+                {errors.ssn_last4 && <p className="text-red-500 text-xs mt-1">{errors.ssn_last4}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Nationality *</label>
+                <select
+                  value={formData.nationality || 'US'}
+                  onChange={(e) => updateFormData('nationality', e.target.value)}
+                  className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                >
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="OTHER">Other</option>
+                </select>
               </div>
             </div>
           </motion.div>
@@ -433,152 +676,75 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
 
       case 'contact':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="text-center mb-6">
-              <Phone className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Contact Information</h2>
-              <p className="text-[#0A0A0A]/60">How can we reach you?</p>
+              <Smartphone className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Contact Information</h2>
+              <p className="text-gray-600 text-sm">We'll send a verification code to this contact</p>
             </div>
 
             <div className="space-y-4">
-              <GlassInput
-                label="Email Address *"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email || ''}
-                onChange={(e) => updateFormData('email', e.target.value)}
-              />
-              <GlassInput
-                label="Phone Number *"
-                type="tel"
-                placeholder="+1 (555) 123-4567"
-                value={formData.phone || ''}
-                onChange={(e) => updateFormData('phone', e.target.value)}
-              />
-            </div>
-          </motion.div>
-        );
-
-      case 'address':
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-center mb-6">
-              <Home className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Residential Address</h2>
-              <p className="text-[#0A0A0A]/60">Your current address for verification</p>
-            </div>
-
-            <div className="space-y-4">
-              <GlassInput
-                label="Street Address *"
-                placeholder="123 Main St"
-                value={formData.streetAddress || ''}
-                onChange={(e) => updateFormData('streetAddress', e.target.value)}
-              />
-              <div className="grid grid-cols-2 gap-4">
-                <GlassInput
-                  label="City *"
-                  placeholder="San Francisco"
-                  value={formData.city || ''}
-                  onChange={(e) => updateFormData('city', e.target.value)}
-                />
-                <GlassInput
-                  label="State *"
-                  placeholder="CA"
-                  value={formData.state || ''}
-                  onChange={(e) => updateFormData('state', e.target.value)}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <GlassInput
-                  label="ZIP Code *"
-                  placeholder="94105"
-                  value={formData.zipCode || ''}
-                  onChange={(e) => updateFormData('zipCode', e.target.value)}
-                />
-                <GlassInput
-                  label="Country"
-                  placeholder="United States"
-                  value={formData.country || 'United States'}
-                  onChange={(e) => updateFormData('country', e.target.value)}
-                />
-              </div>
-            </div>
-          </motion.div>
-        );
-
-      case 'business_info':
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-center mb-6">
-              <Briefcase className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Business Information</h2>
-              <p className="text-[#0A0A0A]/60">Tell us about your business</p>
-            </div>
-
-            <div className="space-y-4">
-              <GlassInput
-                label="Business Name *"
-                placeholder="Acme Corporation"
-                value={formData.businessName || ''}
-                onChange={(e) => updateFormData('businessName', e.target.value)}
-              />
               <div>
-                <label className="block text-sm font-medium text-[#0A0A0A] mb-2">Business Type *</label>
-                <select
-                  className="w-full px-4 py-3 bg-[#F7F9F4] rounded-xl text-[#0A0A0A] focus:outline-none focus:ring-2 focus:ring-[#059669]/30"
-                  value={formData.businessType || ''}
-                  onChange={(e) => updateFormData('businessType', e.target.value)}
-                >
-                  <option value="">Select type</option>
-                  <option value="llc">LLC</option>
-                  <option value="corporation">Corporation</option>
-                  <option value="partnership">Partnership</option>
-                  <option value="sole_proprietorship">Sole Proprietorship</option>
-                </select>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address *</label>
+                <input
+                  type="email"
+                  inputMode="email"
+                  value={formData.email || ''}
+                  onChange={(e) => updateFormData('email', e.target.value)}
+                  placeholder="john.doe@example.com"
+                  autoComplete="email"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
               </div>
-              <GlassInput
-                label="EIN *"
-                placeholder="12-3456789"
-                value={formData.ein || ''}
-                onChange={(e) => updateFormData('ein', e.target.value)}
-              />
-              <GlassInput
-                label="Industry"
-                placeholder="Technology, Healthcare, etc."
-                value={formData.industry || ''}
-                onChange={(e) => updateFormData('industry', e.target.value)}
-              />
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number *</label>
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  value={formData.phone || ''}
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 10) value = value.slice(0, 10);
+                    if (!value.startsWith('1') && value.length === 10) value = '1' + value;
+                    if (value.length > 0 && !value.startsWith('1')) value = '';
+                    if (value.length > 0) value = '+' + value;
+                    updateFormData('phone', value);
+                  }}
+                  placeholder="+1 (555) 123-4567"
+                  autoComplete="tel"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.phone ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                <p className="text-xs text-gray-500 mt-1">Enter a valid US phone number for SMS verification</p>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+                <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm text-blue-800 font-medium">Verification Required</p>
+                  <p className="text-xs text-blue-700 mt-1">We'll send a 6-digit code to your phone number to verify your identity. This helps protect your account from unauthorized access.</p>
+                </div>
+              </div>
             </div>
           </motion.div>
         );
 
       case 'verification':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="text-center mb-6">
               <div className="w-16 h-16 mx-auto mb-4 relative">
-                <div className="absolute inset-0 bg-[#059669]/20 rounded-full animate-ping" />
-                <div className="relative w-16 h-16 bg-gradient-to-br from-[#059669] to-[#10B981] rounded-full flex items-center justify-center">
+                <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping" />
+                <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center">
                   <MessageSquare className="w-8 h-8 text-white" />
                 </div>
               </div>
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Verify Your Identity</h2>
-              <p className="text-[#0A0A0A]/60">
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Verify Your Identity</h2>
+              <p className="text-gray-600 text-sm">
                 Enter the 6-digit code sent to<br />
-                <span className="font-semibold text-[#0A0A0A]">{formData.phone || formData.email}</span>
+                <span className="font-semibold text-gray-900">{otpMaskedTarget || maskPhone(formData.phone || '')}</span>
               </p>
             </div>
 
@@ -593,250 +759,130 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
                   value={digit}
                   onChange={(e) => handleOtpChange(e.target.value, index)}
                   onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                  className="w-12 h-14 text-center text-xl font-bold bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#059669] focus:ring-2 focus:ring-[#059669]/20 transition-all"
+                  autoFocus={index === 0}
+                  className={`w-12 h-14 text-center text-xl font-bold bg-white border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${errors.otp ? 'border-red-500' : 'border-gray-200 focus:border-emerald-500'}`}
                 />
               ))}
             </div>
 
+            {errors.otp && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600" />
+                <p className="text-sm text-red-700">{errors.otp}</p>
+              </div>
+            )}
+
             <div className="text-center">
-              <p className="text-sm text-[#0A0A0A]/60 mb-4">
-                Code expires in <span className="font-semibold text-[#059669]">10:00</span>
+              <p className="text-sm text-gray-600 mb-4">
+                Code expires in <span className="font-semibold text-emerald-600">{Math.floor(otpTimer / 60)}:{String(otpTimer % 60).padStart(2, '0')}</span>
               </p>
-              <button className="text-[#059669] font-medium text-sm">Didn't receive a code? Resend</button>
+              <button
+                onClick={handleResendOTP}
+                disabled={otpTimer > 0}
+                className={`text-emerald-600 font-medium text-sm ${otpTimer > 0 ? 'opacity-50 cursor-not-allowed' : 'hover:underline'}`}
+              >
+                {otpTimer > 0 ? `Resend code in ${otpTimer}s` : "Didn't receive a code? Resend"}
+              </button>
             </div>
           </motion.div>
         );
 
-      case 'id_upload':
+      case 'address':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="text-center mb-6">
-              <CreditCard className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Upload Your ID</h2>
-              <p className="text-[#0A0A0A]/60">We accept government-issued photo IDs</p>
-            </div>
-
-            <div className="space-y-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-[#0A0A0A] mb-2">ID Type</label>
-                <select
-                  className="w-full px-4 py-3 bg-[#F7F9F4] rounded-xl text-[#0A0A0A] focus:outline-none focus:ring-2 focus:ring-[#059669]/30"
-                  value={formData.idType || ''}
-                  onChange={(e) => updateFormData('idType', e.target.value)}
-                >
-                  <option value="">Select ID type</option>
-                  <option value="drivers_license">Driver's License</option>
-                  <option value="passport">Passport</option>
-                  <option value="state_id">State ID</option>
-                  <option value="military_id">Military ID</option>
-                </select>
-              </div>
-              <GlassInput
-                label="ID Number *"
-                placeholder="Enter your ID number"
-                value={formData.idNumber || ''}
-                onChange={(e) => updateFormData('idNumber', e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div
-                className="aspect-[3/2] rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#059669] hover:bg-[#059669]/5 transition-all bg-gray-50"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                <span className="text-sm text-gray-500">Front</span>
-              </div>
-              <div
-                className="aspect-[3/2] rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#059669] hover:bg-[#059669]/5 transition-all bg-gray-50"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                <span className="text-sm text-gray-500">Back</span>
-              </div>
-            </div>
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" />
-          </motion.div>
-        );
-
-      case 'review':
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-center mb-6">
-              <FileText className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Review Your Application</h2>
-              <p className="text-[#0A0A0A]/60">Please verify all information is correct</p>
+              <MapPin className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Residential Address</h2>
+              <p className="text-gray-600 text-sm">Your current address for account verification</p>
             </div>
 
             <div className="space-y-4">
-              {/* Account Type */}
-              <div className="p-4 bg-[#059669]/5 rounded-xl border border-[#059669]/20">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${config?.color} flex items-center justify-center`}>
-                    {config && <config.icon className="w-5 h-5 text-white" />}
-                  </div>
-                  <div>
-                    <p className="font-medium text-[#0A0A0A]">{config?.name}</p>
-                    <p className="text-sm text-[#0A0A0A]/60">{config?.tagline}</p>
-                  </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Street Address *</label>
+                <input
+                  type="text"
+                  value={formData.street_address || ''}
+                  onChange={(e) => updateFormData('street_address', e.target.value)}
+                  placeholder="123 Main Street"
+                  autoComplete="address-line1"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.street_address ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.street_address && <p className="text-red-500 text-xs mt-1">{errors.street_address}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Apartment, Suite, etc. (Optional)</label>
+                <input
+                  type="text"
+                  value={formData.address_line2 || ''}
+                  onChange={(e) => updateFormData('address_line2', e.target.value)}
+                  placeholder="Apt 4B"
+                  autoComplete="address-line2"
+                  className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">City *</label>
+                  <input
+                    type="text"
+                    value={formData.city || ''}
+                    onChange={(e) => updateFormData('city', e.target.value)}
+                    placeholder="San Francisco"
+                    autoComplete="address-level2"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.city ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">State *</label>
+                  <select
+                    value={formData.state || ''}
+                    onChange={(e) => updateFormData('state', e.target.value)}
+                    autoComplete="address-level1"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.state ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  >
+                    <option value="">Select</option>
+                    <option value="CA">California</option>
+                    <option value="NY">New York</option>
+                    <option value="TX">Texas</option>
+                    <option value="FL">Florida</option>
+                    <option value="IL">Illinois</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="OH">Ohio</option>
+                    <option value="GA">Georgia</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="MI">Michigan</option>
+                  </select>
+                  {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                 </div>
               </div>
 
-              {/* Personal Info */}
-              <div className="p-4 bg-gray-50 rounded-xl">
-                <h4 className="text-sm font-medium text-[#0A0A0A]/60 mb-2">Personal Information</h4>
-                <p className="text-sm text-[#0A0A0A]">{formData.firstName} {formData.lastName}</p>
-                <p className="text-xs text-[#0A0A0A]/50">DOB: {formData.dateOfBirth}</p>
-              </div>
-
-              {/* Contact */}
-              <div className="p-4 bg-gray-50 rounded-xl">
-                <h4 className="text-sm font-medium text-[#0A0A0A]/60 mb-2">Contact Information</h4>
-                <p className="text-sm text-[#0A0A0A]">{formData.email}</p>
-                <p className="text-xs text-[#0A0A0A]/50">{formData.phone}</p>
-              </div>
-
-              {/* Address */}
-              <div className="p-4 bg-gray-50 rounded-xl">
-                <h4 className="text-sm font-medium text-[#0A0A0A]/60 mb-2">Address</h4>
-                <p className="text-sm text-[#0A0A0A]">{formData.streetAddress}</p>
-                <p className="text-xs text-[#0A0A0A]/50">{formData.city}, {formData.state} {formData.zipCode}</p>
-              </div>
-            </div>
-
-            <label className="flex items-start gap-3 p-4 bg-[#F7F9F4] rounded-xl cursor-pointer border border-gray-200 mt-6">
-              <input type="checkbox" defaultChecked className="mt-1 w-5 h-5 rounded border-gray-300 text-[#059669]" />
-              <span className="text-sm text-[#0A0A0A]/70 text-left">
-                I confirm that all information provided is accurate and complete.
-              </span>
-            </label>
-          </motion.div>
-        );
-
-      case 'complete':
-        return (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-8"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring' }}
-              className="w-24 h-24 rounded-full bg-gradient-to-br from-[#059669] to-[#10B981] mx-auto mb-6 flex items-center justify-center"
-            >
-              <Check className="w-12 h-12 text-white" />
-            </motion.div>
-
-            <h2 className="text-2xl font-bold text-[#0A0A0A] mb-3">Application Submitted!</h2>
-            <p className="text-[#0A0A0A]/60 mb-6 max-w-sm mx-auto">
-              Thank you for choosing OrbitPay Credit Union. Your application is being reviewed.
-            </p>
-
-            <div className="p-4 bg-[#059669]/10 rounded-xl border border-[#059669]/20 mb-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Calendar className="w-5 h-5 text-[#059669]" />
-                <span className="font-medium text-[#0A0A0A]">Processing Time</span>
-              </div>
-              <p className="text-sm text-[#0A0A0A]/70">24-48 hours for standard applications</p>
-            </div>
-
-            <div className="p-4 bg-[#F7F9F4] rounded-xl">
-              <p className="text-sm text-[#0A0A0A]">
-                <strong>Application ID:</strong> <span className="font-mono">OP-{Date.now().toString().slice(-8)}</span>
-              </p>
-            </div>
-          </motion.div>
-        );
-
-      // Additional steps based on account type
-      case 'joint_partner':
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-center mb-6">
-              <Users className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Joint Account Holder</h2>
-              <p className="text-[#0A0A0A]/60">Enter the second account holder's information</p>
-            </div>
-            <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <GlassInput
-                  label="First Name"
-                  placeholder="Jane"
-                  value={formData.partnerFirstName || ''}
-                  onChange={(e) => updateFormData('partnerFirstName', e.target.value)}
-                />
-                <GlassInput
-                  label="Last Name"
-                  placeholder="Doe"
-                  value={formData.partnerLastName || ''}
-                  onChange={(e) => updateFormData('partnerLastName', e.target.value)}
-                />
-              </div>
-              <GlassInput
-                label="Email Address"
-                type="email"
-                placeholder="jane@example.com"
-                value={formData.partnerEmail || ''}
-                onChange={(e) => updateFormData('partnerEmail', e.target.value)}
-              />
-              <GlassInput
-                label="Phone Number"
-                type="tel"
-                placeholder="+1 (555) 123-4567"
-                value={formData.partnerPhone || ''}
-                onChange={(e) => updateFormData('partnerPhone', e.target.value)}
-              />
-            </div>
-          </motion.div>
-        );
-
-      case 'student_info':
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="text-center mb-6">
-              <GraduationCap className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Student Information</h2>
-              <p className="text-[#0A0A0A]/60">Tell us about your education</p>
-            </div>
-            <div className="space-y-4">
-              <GlassInput
-                label="School/University Name"
-                placeholder="Stanford University"
-                value={formData.schoolName || ''}
-                onChange={(e) => updateFormData('schoolName', e.target.value)}
-              />
-              <div className="grid grid-cols-2 gap-4">
-                <GlassInput
-                  label="Student ID"
-                  placeholder="12345678"
-                  value={formData.studentId || ''}
-                  onChange={(e) => updateFormData('studentId', e.target.value)}
-                />
                 <div>
-                  <label className="block text-sm font-medium text-[#0A0A0A] mb-2">Expected Graduation</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">ZIP Code *</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={10}
+                    value={formData.zip_code || ''}
+                    onChange={(e) => updateFormData('zip_code', e.target.value)}
+                    placeholder="94105"
+                    autoComplete="postal-code"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.zip_code ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.zip_code && <p className="text-red-500 text-xs mt-1">{errors.zip_code}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Country</label>
                   <select
-                    className="w-full px-4 py-3 bg-[#F7F9F4] rounded-xl text-[#0A0A0A] focus:outline-none focus:ring-2 focus:ring-[#059669]/30"
-                    value={formData.graduationYear || ''}
-                    onChange={(e) => updateFormData('graduationYear', e.target.value)}
+                    value={formData.country || 'US'}
+                    onChange={(e) => updateFormData('country', e.target.value)}
+                    className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                   >
-                    <option value="">Select year</option>
-                    {[2025, 2026, 2027, 2028, 2029, 2030].map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
                   </select>
                 </div>
               </div>
@@ -844,69 +890,514 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
           </motion.div>
         );
 
-      case 'selfie':
+      case 'id_upload':
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="text-center mb-6">
-              <Camera className="w-12 h-12 mx-auto text-[#059669] mb-3" />
-              <h2 className="text-xl font-bold text-[#0A0A0A] mb-1">Take a Selfie</h2>
-              <p className="text-[#0A0A0A]/60">We'll compare your selfie with your ID</p>
+              <CreditCard className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Upload Your ID</h2>
+              <p className="text-gray-600 text-sm">We accept government-issued photo IDs</p>
             </div>
-            <div
-              className="aspect-[3/4] rounded-3xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#059669] hover:bg-[#059669]/5 transition-all bg-gray-50 mb-6"
-              onClick={() => fileInputRef.current?.click()}
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">ID Type *</label>
+                <select
+                  value={formData.id_type || ''}
+                  onChange={(e) => updateFormData('id_type', e.target.value)}
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.id_type ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                >
+                  <option value="">Select ID type</option>
+                  <option value="drivers_license">Driver's License</option>
+                  <option value="passport">Passport</option>
+                  <option value="state_id">State ID</option>
+                  <option value="military_id">Military ID</option>
+                </select>
+                {errors.id_type && <p className="text-red-500 text-xs mt-1">{errors.id_type}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">ID Number *</label>
+                <input
+                  type="text"
+                  value={formData.id_number || ''}
+                  onChange={(e) => updateFormData('id_number', e.target.value.toUpperCase())}
+                  placeholder="ABC1234567890"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.id_number ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.id_number && <p className="text-red-500 text-xs mt-1">{errors.id_number}</p>}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Front of ID *</label>
+                <div
+                  onClick={() => handleFileUpload('id_front')}
+                  className={`aspect-[3/2] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
+                    idFrontPreview
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : errors.id_front
+                      ? 'border-red-500 bg-red-50'
+                      : 'border-gray-300 bg-gray-50 hover:border-emerald-500 hover:bg-emerald-50'
+                  }`}
+                >
+                  {idFrontPreview ? (
+                    <img src={idFrontPreview} alt="ID Front" className="w-full h-full object-cover rounded-xl" />
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-500">Tap to upload</span>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={idFrontRef}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(e) => handleFileChange('id_front', e)}
+                  className="hidden"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Back of ID *</label>
+                <div
+                  onClick={() => handleFileUpload('id_back')}
+                  className={`aspect-[3/2] rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
+                    idBackPreview
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : errors.id_back
+                      ? 'border-red-500 bg-red-50'
+                      : 'border-gray-300 bg-gray-50 hover:border-emerald-500 hover:bg-emerald-50'
+                  }`}
+                >
+                  {idBackPreview ? (
+                    <img src={idBackPreview} alt="ID Back" className="w-full h-full object-cover rounded-xl" />
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-500">Tap to upload</span>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={idBackRef}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(e) => handleFileChange('id_back', e)}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Selfie Verification *</label>
+              <div
+                onClick={() => handleFileUpload('selfie')}
+                className={`aspect-[3/4] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
+                  selfiePreview
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : errors.selfie
+                    ? 'border-red-500 bg-red-50'
+                    : 'border-gray-300 bg-gray-50 hover:border-emerald-500 hover:bg-emerald-50'
+                }`}
+              >
+                {selfiePreview ? (
+                  <img src={selfiePreview} alt="Selfie" className="w-full h-full object-cover rounded-2xl" />
+                ) : (
+                  <>
+                    <Camera className="w-12 h-12 text-gray-400 mb-3" />
+                    <span className="text-sm text-gray-500">Take a selfie</span>
+                    <span className="text-xs text-gray-400 mt-1">Make sure your face is clearly visible</span>
+                  </>
+                )}
+              </div>
+              <input
+                ref={selfieRef}
+                type="file"
+                accept="image/*"
+                capture="user"
+                onChange={(e) => handleFileChange('selfie', e)}
+                className="hidden"
+              />
+            </div>
+          </motion.div>
+        );
+
+      case 'business_info':
+        return (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="text-center mb-6">
+              <Briefcase className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Business Information</h2>
+              <p className="text-gray-600 text-sm">Tell us about your business</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Legal Business Name *</label>
+                <input
+                  type="text"
+                  value={formData.business_name || ''}
+                  onChange={(e) => updateFormData('business_name', e.target.value)}
+                  placeholder="Acme Corporation"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.business_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.business_name && <p className="text-red-500 text-xs mt-1">{errors.business_name}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Business Type *</label>
+                <select
+                  value={formData.business_type || ''}
+                  onChange={(e) => updateFormData('business_type', e.target.value)}
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.business_type ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                >
+                  <option value="">Select type</option>
+                  <option value="llc">LLC</option>
+                  <option value="corporation">Corporation</option>
+                  <option value="partnership">Partnership</option>
+                  <option value="sole_proprietorship">Sole Proprietorship</option>
+                </select>
+                {errors.business_type && <p className="text-red-500 text-xs mt-1">{errors.business_type}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">EIN (Employer ID Number) *</label>
+                <input
+                  type="text"
+                  value={formData.ein || ''}
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 9) value = value.slice(0, 9);
+                    if (value.length > 2) value = value.slice(0, 2) + '-' + value.slice(2);
+                    updateFormData('ein', value);
+                  }}
+                  placeholder="12-3456789"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.ein ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.ein && <p className="text-red-500 text-xs mt-1">{errors.ein}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Industry</label>
+                <select
+                  value={formData.industry || ''}
+                  onChange={(e) => updateFormData('industry', e.target.value)}
+                  className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                >
+                  <option value="">Select industry</option>
+                  <option value="technology">Technology</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="finance">Finance</option>
+                  <option value="retail">Retail</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </motion.div>
+        );
+
+      case 'joint_partner':
+        return (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="text-center mb-6">
+              <Users className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Joint Account Partner</h2>
+              <p className="text-gray-600 text-sm">Enter the second account holder's information</p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Partner First Name *</label>
+                  <input
+                    type="text"
+                    value={formData.partner_first_name || ''}
+                    onChange={(e) => updateFormData('partner_first_name', e.target.value)}
+                    placeholder="Jane"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.partner_first_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.partner_first_name && <p className="text-red-500 text-xs mt-1">{errors.partner_first_name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Partner Last Name *</label>
+                  <input
+                    type="text"
+                    value={formData.partner_last_name || ''}
+                    onChange={(e) => updateFormData('partner_last_name', e.target.value)}
+                    placeholder="Doe"
+                    className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.partner_last_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                  />
+                  {errors.partner_last_name && <p className="text-red-500 text-xs mt-1">{errors.partner_last_name}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Partner Email *</label>
+                <input
+                  type="email"
+                  value={formData.partner_email || ''}
+                  onChange={(e) => updateFormData('partner_email', e.target.value)}
+                  placeholder="jane.doe@example.com"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.partner_email ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.partner_email && <p className="text-red-500 text-xs mt-1">{errors.partner_email}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Partner Phone *</label>
+                <input
+                  type="tel"
+                  value={formData.partner_phone || ''}
+                  onChange={(e) => updateFormData('partner_phone', e.target.value)}
+                  placeholder="+1 (555) 123-4567"
+                  className={`w-full px-4 py-3 bg-white rounded-xl border ${errors.partner_phone ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all`}
+                />
+                {errors.partner_phone && <p className="text-red-500 text-xs mt-1">{errors.partner_phone}</p>}
+              </div>
+            </div>
+          </motion.div>
+        );
+
+      case 'review':
+        return (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="text-center mb-6">
+              <FileText className="w-12 h-12 mx-auto text-emerald-600 mb-3" />
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Review Your Application</h2>
+              <p className="text-gray-600 text-sm">Please verify all information is correct</p>
+            </div>
+
+            <div className="space-y-4">
+              {/* Account Type */}
+              <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${config?.color} flex items-center justify-center`}>
+                    <Building2 className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{config?.name}</p>
+                    <p className="text-sm text-gray-600">{config?.tagline}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Info */}
+              <div className="p-4 bg-white rounded-xl border">
+                <h4 className="text-sm font-medium text-gray-500 mb-2">Personal Information</h4>
+                <p className="text-gray-900">{formData.first_name} {formData.last_name}</p>
+                <p className="text-sm text-gray-600">DOB: {formData.date_of_birth}</p>
+                <p className="text-xs text-gray-400">SSN: ***-**-{formData.ssn_last4}</p>
+              </div>
+
+              {/* Contact */}
+              <div className="p-4 bg-white rounded-xl border">
+                <h4 className="text-sm font-medium text-gray-500 mb-2">Contact Information</h4>
+                <p className="text-gray-900">{formData.email}</p>
+                <p className="text-sm text-gray-600">{formData.phone}</p>
+              </div>
+
+              {/* Address */}
+              <div className="p-4 bg-white rounded-xl border">
+                <h4 className="text-sm font-medium text-gray-500 mb-2">Address</h4>
+                <p className="text-gray-900">{formData.street_address}</p>
+                <p className="text-sm text-gray-600">{formData.city}, {formData.state} {formData.zip_code}</p>
+              </div>
+
+              {/* ID */}
+              <div className="p-4 bg-white rounded-xl border">
+                <h4 className="text-sm font-medium text-gray-500 mb-2">ID Verification</h4>
+                <p className="text-gray-900 capitalize">{formData.id_type?.replace('_', ' ')}</p>
+                <p className="text-sm text-gray-600">ID Number: {formData.id_number}</p>
+              </div>
+
+              {formData.business_name && (
+                <div className="p-4 bg-white rounded-xl border">
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">Business Information</h4>
+                  <p className="text-gray-900">{formData.business_name}</p>
+                  <p className="text-sm text-gray-600 capitalize">{formData.business_type?.replace('_', ' ')}</p>
+                  <p className="text-xs text-gray-400">EIN: {formData.ein}</p>
+                </div>
+              )}
+
+              {formData.partner_first_name && (
+                <div className="p-4 bg-white rounded-xl border">
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">Joint Partner</h4>
+                  <p className="text-gray-900">{formData.partner_first_name} {formData.partner_last_name}</p>
+                  <p className="text-sm text-gray-600">{formData.partner_email}</p>
+                </div>
+              )}
+            </div>
+
+            <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer border border-gray-200 mt-6 hover:bg-gray-100 transition-colors">
+              <input
+                type="checkbox"
+                checked={formData.agreed_to_terms}
+                onChange={(e) => updateFormData('agreed_to_terms', e.target.checked)}
+                className="mt-1 w-5 h-5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="text-sm text-gray-700 text-left">
+                I confirm that all information provided is accurate and complete. I understand that providing false information may result in account closure and legal consequences.
+              </span>
+            </label>
+
+            {errors.submit && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mt-4 flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600" />
+                <p className="text-sm text-red-700">{errors.submit}</p>
+              </div>
+            )}
+          </motion.div>
+        );
+
+      case 'complete':
+        return (
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-8">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 mx-auto mb-6 flex items-center justify-center"
             >
-              <Camera className="w-16 h-16 text-gray-400 mb-4" />
-              <span className="text-sm text-gray-500 mb-2">Tap to take a photo</span>
-              <span className="text-xs text-gray-400">Make sure your face is clearly visible</span>
+              <CheckCircle2 className="w-12 h-12 text-white" />
+            </motion.div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Application Submitted!</h2>
+            <p className="text-gray-600 mb-6 max-w-sm mx-auto">
+              Thank you for choosing OrbitPay Credit Union. Your application is being reviewed.
+            </p>
+
+            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 mb-6 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <Calendar className="w-5 h-5 text-emerald-600" />
+                <span className="font-medium text-gray-900">Processing Time</span>
+              </div>
+              <p className="text-sm text-gray-700">24-48 hours for standard applications</p>
+              <p className="text-xs text-gray-500 mt-1">Premium applications processed within 4 hours</p>
             </div>
-            <input ref={fileInputRef} type="file" accept="image/*" capture="user" className="hidden" />
+
+            <div className="p-4 bg-gray-100 rounded-xl">
+              <p className="text-sm text-gray-700">
+                <strong>Application ID:</strong>{' '}
+                <span className="font-mono text-emerald-600">{sessionId?.split('_')[1] || 'OP-' + Date.now().toString(36).toUpperCase()}</span>
+              </p>
+            </div>
+
+            <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Bell className="w-5 h-5 text-blue-600" />
+                <span className="font-medium text-blue-900">What's Next?</span>
+              </div>
+              <ul className="text-sm text-blue-800 text-left space-y-1">
+                <li className="flex items-center gap-2"><Check className="w-4 h-4" /> Check your email for confirmation</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4" /> You'll receive SMS updates</li>
+                <li className="flex items-center gap-2"><Check className="w-4 h-4" /> Your account will be activated upon approval</li>
+              </ul>
+            </div>
           </motion.div>
         );
 
       default:
         return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#059669] to-[#10B981] mx-auto mb-6 flex items-center justify-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 mx-auto mb-6 flex items-center justify-center">
               <currentStep.icon className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-[#0A0A0A] mb-2">{currentStep.title}</h2>
-            <p className="text-[#0A0A0A]/60">{currentStep.subtitle}</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">{currentStep.title}</h2>
+            <p className="text-gray-600">{currentStep.subtitle}</p>
           </motion.div>
         );
     }
   };
 
+  // Account Type Selection Screen
+  if (!selectedType) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+        <div className="max-w-lg mx-auto px-5 py-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 mx-auto mb-4 flex items-center justify-center">
+              <Building2 className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Open Your Account</h1>
+            <p className="text-gray-600">Select the account type that best fits your needs</p>
+          </div>
+
+          {/* Account Types Grid */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {Object.values(accountTypeConfigs).map((typeConfig) => (
+              <motion.button
+                key={typeConfig.id}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => handleSelectAccountType(typeConfig.id)}
+                className={`p-4 rounded-2xl border-2 text-left transition-all hover:border-emerald-500 ${typeConfig.bgGradient}`}
+              >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${typeConfig.color} flex items-center justify-center mb-3`}>
+                  {typeConfig.id === 'savings' && <PiggyBank className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'checking' && <Wallet className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'student' && <GraduationCap className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'business' && <Briefcase className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'joint' && <Users className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'youth' && <Heart className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'premium' && <Crown className="w-6 h-6 text-white" />}
+                  {typeConfig.id === 'retirement' && <TrendingUp className="w-6 h-6 text-white" />}
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-1">{typeConfig.name}</h3>
+                <p className="text-xs text-gray-600 line-clamp-2">{typeConfig.tagline}</p>
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Cancel Button */}
+          <button
+            onClick={onCancel}
+            className="w-full py-3 text-gray-600 font-medium hover:text-gray-900 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const restrictedBackSteps = ['verification', 'id_upload', 'review'];
+
   return (
-    <div className="min-h-screen bg-[#F7F9F4]">
-      {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      {/* Header - Hidden on welcome and complete */}
       {currentStep.id !== 'welcome' && currentStep.id !== 'complete' && (
-        <div className="sticky top-0 bg-white/80 backdrop-blur-lg z-50 border-b border-gray-100">
+        <div className="sticky top-0 bg-white/90 backdrop-blur-lg z-50 border-b border-gray-100">
           <div className="max-w-lg mx-auto px-5 py-3">
             <div className="flex items-center justify-between mb-3">
-              <button
-                onClick={currentStepIndex === 0 ? () => setSelectedType(null) : handleBack}
-                className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
-              >
-                <ChevronLeft className="w-5 h-5 text-[#0A0A0A]" />
-              </button>
+              {/* Back Button - Hidden on restricted steps */}
+              {!restrictedBackSteps.includes(currentStep.id) ? (
+                <button
+                  onClick={handleBack}
+                  className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5 text-gray-700" />
+                </button>
+              ) : (
+                <div className="w-10 h-10 flex items-center justify-center">
+                  <Lock className="w-4 h-4 text-gray-400" />
+                </div>
+              )}
 
               {/* Account Type Badge */}
               <div className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${config?.color} flex items-center justify-center`}>
-                  {config && <config.icon className="w-4 h-4 text-white" />}
+                  <Building2 className="w-4 h-4 text-white" />
                 </div>
-                <span className="font-medium text-[#0A0A0A] text-sm">{config?.name}</span>
+                <span className="font-medium text-gray-900 text-sm">{config?.name}</span>
               </div>
 
-              <span className="text-sm text-[#0A0A0A]/50">
+              <span className="text-sm text-gray-500">
                 {currentStepIndex + 1}/{steps.length}
               </span>
             </div>
@@ -917,13 +1408,18 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}
-                className="h-full bg-gradient-to-r from-[#059669] to-[#10B981]"
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
               />
             </div>
 
             {/* Step Label */}
-            <p className="text-center text-xs text-[#0A0A0A]/50 mt-2">
+            <p className="text-center text-xs text-gray-500 mt-2">
               {currentStep.title}
+              {restrictedBackSteps.includes(currentStep.id) && (
+                <span className="ml-2 inline-flex items-center gap-1 text-emerald-600">
+                  <Lock className="w-3 h-3" /> Secure step
+                </span>
+              )}
             </p>
           </div>
         </div>
@@ -940,28 +1436,39 @@ export default function AccountCreationWizard({ onComplete, onCancel }: AccountC
       {currentStep.id !== 'complete' ? (
         <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 z-50">
           <div className="max-w-lg mx-auto px-5 py-4">
-            <GlassButton
-              className="w-full"
-              disabled={!canProceed()}
-              onClick={currentStep.id === 'review' ? handleComplete : handleNext}
-              size="lg"
+            <button
+              className={`w-full py-4 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${
+                canProceed()
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
+                  : 'bg-gray-300 cursor-not-allowed'
+              }`}
+              disabled={!canProceed() || isSubmitting}
+              onClick={currentStep.id === 'review' ? handleSubmit : handleNext}
             >
-              {currentStep.id === 'review' ? 'Submit Application' : 'Continue'}
-              <ChevronRight className="w-5 h-5 ml-2" />
-            </GlassButton>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  {currentStep.id === 'review' ? 'Submit Application' : 'Continue'}
+                  <ChevronRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
           </div>
         </div>
       ) : (
         <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 z-50">
           <div className="max-w-lg mx-auto px-5 py-4">
-            <GlassButton
-              className="w-full"
+            <button
+              className="w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 transition-all flex items-center justify-center gap-2"
               onClick={handleComplete}
-              size="lg"
             >
               Go to Login
-              <ChevronRight className="w-5 h-5 ml-2" />
-            </GlassButton>
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       )}
