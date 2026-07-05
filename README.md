@@ -1,9 +1,9 @@
 # OrbitPay Credit Union - Enterprise Digital Banking Platform
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-059669?style=for-the-badge" alt="Version">
-  <img src="https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5.5-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/version-2.0.0-059669?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
   <img src="https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite" alt="Vite">
   <img src="https://img.shields.io/badge/License-MIT-059669?style=for-the-badge" alt="License">
 </p>
@@ -18,10 +18,11 @@
 
 ## Overview
 
-**OrbitPay Credit Union** is an enterprise-grade 2030 digital banking platform built with modern web technologies. It delivers a premium, green glass UI experience with comprehensive financial services.
+**OrbitPay Credit Union** is an enterprise-grade 2030 digital banking platform built with modern web technologies. It delivers a premium, green glass UI experience with comprehensive financial services. The platform includes both a **Member Portal** for customers and a comprehensive **Admin Portal** for secure operations management.
 
 ### Key Features
 
+#### Member Portal
 - **Multi-Currency Accounts** - USD, EUR, GBP, and BTC support
 - **Instant Transfers** - Internal, external, wire, and crypto transfers
 - **Virtual & Physical Cards** - Manageable debit cards with spending controls
@@ -30,26 +31,73 @@
 - **AI Financial Assistant** - Smart insights and recommendations
 - **KYC Verification** - Secure identity verification process
 - **Real-time Notifications** - Stay updated on all account activity
+- **PWA Support** - Installable on mobile devices
+- **Dark/Light Mode** - Premium green glass design system
+
+#### Admin Portal
+- **Executive Dashboard** - KPIs, Charts, Activity feeds
+- **Member Management** - Full CRUD, Suspend/Reactivate, Notes
+- **Account Operations** - Freeze, Unfreeze, Close, Configure fees
+- **KYC Review Center** - Document verification, Risk scoring, Approve/Reject
+- **Loan Management** - Applications, Underwriting, Repayment tracking
+- **Card Operations** - Issue, Block, Replace, PIN reset, Limits
+- **Transaction Center** - Reconciliation, Chargebacks, Disputes
+- **Fraud & Risk Monitoring** - Alerts, AML, Velocity monitoring
+- **Branch Management** - Multi-branch support with performance tracking
+- **Employee Management** - Staff accounts, Roles, Permissions, Activity logs
+- **Financial Oversight** - Revenue, Expenses, Profit & Loss
+- **Compliance Center** - AML reviews, Audit preparation, Policy management
+- **Audit Logging** - Complete action tracking, Immutable logs
+- **System Settings** - Branding, Security policies, Notifications
+- **Help Desk** - Ticket management, Escalation workflows
 
 ## Tech Stack
 
 | Category | Technology |
 |----------|------------|
-| Framework | React 18 + TypeScript |
-| Build Tool | Vite 7 |
-| Styling | TailwindCSS 4 |
-| Animations | Framer Motion |
-| State | Zustand |
-| Routing | React Router 6 |
+| Framework | React 19 + TypeScript 5.9 |
+| Build Tool | Vite 7.3 |
+| Styling | TailwindCSS 4, Radix UI |
+| Animations | Framer Motion 12 |
+| State | Zustand 5 |
+| Routing | React Router 7 |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth + TOTP MFA |
 | Icons | Lucide React |
-| Modal | Radix UI Dialog |
+| Charts | Recharts |
+
+## Project Structure
+
+```
+MyOnlineBank/
+├── src/                      # Member Portal Source
+│   ├── components/           # React components
+│   │   ├── auth/            # Authentication components
+│   │   ├── dashboard/       # Dashboard components
+│   │   ├── admin/           # Admin components
+│   │   └── branding/        # Brand components
+│   ├── store/               # Zustand state management
+│   ├── lib/                 # Utilities and Supabase client
+│   ├── types/               # TypeScript definitions
+│   └── pages/               # Route pages
+├── admin-portal/             # Admin Portal (Separate Build)
+│   ├── src/
+│   │   ├── components/      # Admin components
+│   │   ├── pages/           # Admin pages
+│   │   ├── store/           # Admin state
+│   │   └── lib/             # Supabase, MFA utilities
+│   └── supabase/            # Database schema
+├── supabase/                 # Shared database schema
+└── .github/                 # CI/CD workflows
+```
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- npm or yarn
+- pnpm 8+ or npm 9+
+- Supabase account (optional for demo mode)
 
 ### Installation
 
@@ -59,56 +107,109 @@ git clone https://github.com/RUSTYBM7/MyOnlineBank.git
 cd MyOnlineBank
 
 # Install dependencies
-npm install
+pnpm install
 
 # Copy environment variables
-cp .env.example .env
+cp .env.example .env.local
+```
 
-# Start development server
-npm run dev
+### Configuration
+
+Edit `.env.local` with your Supabase credentials:
+
+```env
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-key
+```
+
+### Development
+
+```bash
+# Run member portal
+pnpm dev
+
+# Run admin portal (separate terminal)
+cd admin-portal && pnpm dev
 ```
 
 ### Build
 
 ```bash
-# Build for production
-npm run build
+# Build member portal
+pnpm build
 
-# Preview production build
-npm run preview
+# Build admin portal
+cd admin-portal && pnpm build
 ```
+
+## 🔐 Demo Credentials
+
+### Member Portal
+- **Email**: john.smith@email.com
+- **Password**: demo123
+
+### Admin Portal
+- **Email**: admin@orbitpay.com
+- **Password**: admin123
+- **MFA Code**: Any 6-digit code (demo mode)
+
+## 🔒 Security Features
+
+- **Authentication**: Email/Password with MFA support (TOTP)
+- **Session Management**: Auto-refresh tokens, Session timeout
+- **Audit Logging**: All admin actions logged
+- **Role-Based Access**: Granular permissions per module
+- **Row Level Security**: Supabase RLS policies
+- **Security Headers**: X-Frame-Options, CSP, etc.
+- **Input Validation**: Zod schemas
+
+## Database Setup
+
+1. Create a new Supabase project at https://supabase.com
+2. Run the schema from `supabase/schema.sql` in the SQL Editor
+3. Enable Row Level Security (RLS) on all tables
+4. Configure authentication settings in Supabase Dashboard
 
 ## Deployment
 
 ### Vercel (Recommended)
 
+**Member Portal:**
 1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically with CI/CD
+2. Set root directory to `/`
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically with CI/CD
 
-### GitHub Actions
+**Admin Portal:**
+1. Create a new Vercel project
+2. Set root directory to `admin-portal`
+3. Add environment variables
+4. Deploy at `/admin` path or subdomain
 
-The repository includes automated CI/CD:
+### Environment Variables
+
+**Member Portal (.env.local)**
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_API_URL=https://api.orbitpay.com
+```
+
+**Admin Portal (admin-portal/.env.local)**
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-key
+```
+
+## GitHub Actions
+
+The repository includes automated CI/CD workflows:
 - **Lint**: Code quality checks
 - **Build**: Production builds
 - **Test**: Unit and integration tests
 - **Deploy**: Automatic Vercel deployment on merge to `main`
-
-## Environment Variables
-
-```env
-VITE_API_URL=https://api.orbitpay.com
-VITE_APP_NAME=OrbitPay
-VITE_APP_VERSION=1.0.0
-VITE_GA_ID=G-MOBILE_APP_CONFIG
-```
-
-## Security
-
-- Never commit secrets to version control
-- Use environment variables for all sensitive data
-- Enable 2FA for GitHub and Vercel
-- Regular dependency updates via Dependabot
 
 ## Contributing
 
@@ -127,7 +228,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email**: support@orbitpay.com
 - **Phone**: 1-800-ORBITPAY (672-4892)
 - **Website**: https://myonlinebank.vercel.app
+- **Admin Portal**: https://admin.myonlinebank.vercel.app
 
 ---
 
-Built with security and scalability in mind.
+Built with security, scalability, and enterprise-grade quality in mind.
+
+**© 2024 OrbitPay Credit Union. All rights reserved.**

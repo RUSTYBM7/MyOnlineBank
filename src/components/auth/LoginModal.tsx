@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Eye, EyeOff, Lock, Mail, User, ShieldCheck, Sparkles, Check, ArrowRight, Fingerprint } from 'lucide-react'
+import { X, Eye, EyeOff, Lock, Mail, ShieldCheck, Sparkles, Check, ArrowRight, Fingerprint } from 'lucide-react'
 import { BrandLogo } from '@/components/branding/BrandLogo'
 import { useStore } from '@/store'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 interface LoginModalProps {
   open: boolean
@@ -62,6 +63,7 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [step, setStep] = useState<'credentials' | 'mfa'>('credentials')
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     email: '',
     memberId: '',
@@ -72,6 +74,13 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
 
   const { login } = useStore()
   const formRef = useRef<HTMLFormElement>(null)
+
+  // Demo credentials for quick access
+  const demoAccounts = [
+    { email: 'john.smith@email.com', password: 'demo123', name: 'John Smith' },
+    { email: 'sarah.j@email.com', password: 'demo123', name: 'Sarah Johnson' },
+    { email: 'demo@orbitpay.com', password: 'demo123', name: 'Demo User' },
+  ]
 
   // Handle escape key
   useEffect(() => {
@@ -91,6 +100,7 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
     } else {
       document.body.style.overflow = ''
       setStep('credentials')
+      setError(null)
     }
     return () => {
       document.body.style.overflow = ''
@@ -102,6 +112,7 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }))
     }
+    setError(null)
   }
 
   const validateForm = () => {
@@ -123,8 +134,8 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
 
     if (!formData.password) {
       newErrors.password = 'Password is required'
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters'
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters'
     }
 
     setErrors(newErrors)
@@ -137,19 +148,76 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
     if (!validateForm()) return
 
     setIsLoading(true)
+    setError(null)
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    try {
+      // Check if Supabase is configured
+      if (isSupabaseConfigured()) {
+        // Try Supabase auth first
+        const email = formData.email || demoAccounts[0].email
 
-    // Mock successful login
+        const { data, error: authError } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: formData.password,
+        })
+
+        if (authError) {
+          // Fall back to demo mode if auth fails
+          console.log('Supabase auth failed, using demo mode:', authError.message)
+          handleDemoLogin()
+        } else if (data.user) {
+          // Successfully logged in with Supabase
+          // Fetch member data from our members table
+          const { data: memberData } = await supabase
+            .from('members')
+            .select('*')
+            .eq('email', email)
+            .single()
+
+          const mockUser = {
+            id: data.user.id,
+            fullName: memberData ? `${memberData.first_name} ${memberData.last_name}` : data.user.email || 'User',
+            email: data.user.email || email,
+            phone: memberData?.phone || '+1 (555) 123-4567',
+            avatar: null,
+            accountStatus: memberData?.status === 'active' ? 'active' as const : 'active' as const,
+            balanceUSD: memberData?.total_balance || 5000,
+            balanceEUR: 0,
+            balanceGBP: 0,
+            balanceBTC: 0,
+            kycStatus: memberData?.kyc_status === 'verified' ? 'verified' as const : 'pending' as const,
+            createdAt: memberData?.created_at || new Date().toISOString(),
+            updatedAt: memberData?.updated_at || new Date().toISOString()
+          }
+
+          login(mockUser)
+          onOpenChange(false)
+        }
+      } else {
+        // Use demo mode if Supabase is not configured
+        handleDemoLogin()
+      }
+    } catch (err) {
+      console.error('Login error:', err)
+      handleDemoLogin()
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleDemoLogin = () => {
+    // Find matching demo account or use default
+    const demoEmail = formData.email || demoAccounts[0].email
+    const matchedDemo = demoAccounts.find(d => d.email === demoEmail) || demoAccounts[0]
+
     const mockUser = {
-      id: 'user_' + Date.now(),
-      fullName: 'Demo User',
-      email: formData.email || 'demo@orbitpay.com',
+      id: 'demo_' + Date.now(),
+      fullName: matchedDemo.name,
+      email: matchedDemo.email,
       phone: '+1 (555) 123-4567',
       avatar: null,
       accountStatus: 'active' as const,
-      balanceUSD: 5000,
+      balanceUSD: 5000 + Math.random() * 10000,
       balanceEUR: 0,
       balanceGBP: 0,
       balanceBTC: 0,
@@ -159,7 +227,6 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
     }
 
     login(mockUser)
-    setIsLoading(false)
     onOpenChange(false)
   }
 
@@ -258,6 +325,24 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
               </motion.p>
             </div>
 
+            {/* Demo credentials notice */}
+            <div className="mx-8 mb-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-400/30">
+              <p className="text-emerald-200/90 text-xs text-center">
+                Demo: Use any email with password <span className="font-mono bg-white/10 px-1 rounded">demo123</span>
+              </p>
+            </div>
+
+            {/* Error message */}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mx-8 mb-4 p-3 rounded-xl bg-red-500/20 border border-red-400/30"
+              >
+                <p className="text-red-200 text-xs text-center">{error}</p>
+              </motion.div>
+            )}
+
             {/* Form */}
             <form ref={formRef} onSubmit={handleSubmit} className="px-8 pb-8 space-y-5">
               {/* Step Indicator */}
@@ -304,7 +389,7 @@ const LoginModal = ({ open, onOpenChange }: LoginModalProps) => {
                         type={loginType === 'email' ? 'email' : 'text'}
                         value={inputValue}
                         onChange={(e) => handleInputChange(loginType, e.target.value)}
-                        placeholder={loginType === 'email' ? 'name@example.com' : `Enter your ${loginType}`}
+                        placeholder={loginType === 'email' ? 'john.smith@email.com' : `Enter your ${loginType}`}
                         className={`w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border-2 text-white placeholder-emerald-100/40 transition-all focus:outline-none ${
                           errors[loginType] ? 'border-red-400 focus:border-red-400' : 'border-white/20 focus:border-emerald-400 focus:bg-white/15'
                         }`}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Security meta tags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+
+    <!-- iOS/Android specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="OrbitPay Admin" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#059669" />
+    <meta name="color-scheme" content="light dark" />
+
+    <title>OrbitPay Admin Portal - Credit Union Administration</title>
+    <meta name="description" content="OrbitPay Credit Union Administration Portal - Secure admin dashboard for managing members, accounts, loans, KYC, fraud monitoring, and system operations." />
+    <meta name="keywords" content="admin portal, credit union management, banking admin, member management, KYC verification, fraud monitoring, financial administration" />
+    <meta name="author" content="OrbitPay Credit Union" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/logo/orbitpay-logo.svg" />
+    <link rel="apple-touch-icon" href="/assets/logo/orbitpay-logo.svg" />
+    <meta name="msapplication-TileImage" content="/assets/logo/orbitpay-logo.svg" />
+    <meta name="msapplication-TileColor" content="#111d35" />
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://oyghbtzxurjtlwpraqpo.supabase.co" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Error display styles -->
+    <style id="error-styles">
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #022c22 100%);
+        min-height: 100vh;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      .app-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: white;
+      }
+      .app-loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #10b981;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="app-loading">
+        <div class="app-loading-spinner"></div>
+        <p style="margin-top: 16px; font-size: 18px;">Loading Admin Portal...</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
