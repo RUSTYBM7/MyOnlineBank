@@ -40,7 +40,12 @@ async function main() {
   const connStr = buildConnectionString();
 
   console.log(`[supabase-apply] Connecting to ${DB_HOST}:${DB_PORT}/${DB_NAME}…`);
-  const client = new pg.Client({ connectionString: connStr, ssl: { rejectUnauthorized: false } });
+  const client = new pg.Client({
+    connectionString: connStr,
+    ssl: { rejectUnauthorized: false },
+    // Force IPv4 — Vercel's build env doesn't always route IPv6 to Supabase
+    family: 4,
+  });
 
   try {
     await client.connect();
