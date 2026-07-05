@@ -33,7 +33,7 @@ async function resolveIPv4(host) {
 
 const SCHEMA_FILE = resolve(ROOT, 'supabase', 'schema.sql');
 
-function buildConnectionString() {
+async function buildConnectionString() {
   if (process.env.SUPABASE_DB_URL) return process.env.SUPABASE_DB_URL;
   const pwd = process.env.SUPABASE_DB_PASSWORD;
   if (!pwd) {
@@ -47,9 +47,9 @@ function buildConnectionString() {
 
 async function main() {
   const sql = readFileSync(SCHEMA_FILE, 'utf8');
-  const connStr = buildConnectionString();
 
   console.log(`[supabase-apply] Connecting to ${DB_HOST}:${DB_PORT}/${DB_NAME}…`);
+  const connStr = await buildConnectionString();
   const client = new pg.Client({
     connectionString: connStr,
     ssl: { rejectUnauthorized: false },
