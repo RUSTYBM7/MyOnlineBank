@@ -36,7 +36,6 @@ import AboutSettings from '@/components/user/settings/AboutSettings';
 import TransactionLimitsPage from '@/components/user/settings/TransactionLimitsPage';
 import DevicesPage from '@/components/user/settings/DevicesPage';
 // Scroll to top button
-import ScrollToTop from '@/components/common/ScrollToTop';
 import { useState, useEffect } from 'react';
 
 // 5-button bottom navigation: Home, Transfer, Accounts, Cards, Settings
@@ -190,7 +189,7 @@ export default function UserApp() {
           animate={{ y: 0 }}
           exit={{ y: 100 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-[102]"
+          className="fixed bottom-0 left-0 right-0 z-30"
         >
           <div className="max-w-lg mx-auto px-4 pb-4 pt-2">
             <div
@@ -225,8 +224,7 @@ export default function UserApp() {
         </motion.div>
       )}
 
-      {/* Scroll to Top Button */}
-      <ScrollToTop threshold={300} smooth={true} />
+      {/* Scroll to Top Button removed from user portal - only on landing page */}
     </div>
   );
 }

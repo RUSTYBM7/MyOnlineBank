@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import AccountCreationWizard from '@/components/user/AccountCreationWizard';
+import ScrollToTop from '@/components/common/ScrollToTop';
 
 // OrbitPay Brand Images - Using embedded SVG data URIs for reliability
 const BRAND_IMAGES = {
@@ -1832,6 +1833,9 @@ export default function LandingPage() {
           />
         </div>
       )}
+
+      {/* Scroll to Top Button - only on landing page */}
+      <ScrollToTop threshold={300} smooth={true} />
     </div>
   );
 }
