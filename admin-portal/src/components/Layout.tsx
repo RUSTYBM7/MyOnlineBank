@@ -6,7 +6,8 @@ import {
   Settings, LogOut, ChevronLeft, Bell, Menu, X, Shield,
   Building2, Wallet, BarChart3, AlertTriangle, UserRound,
   Globe, Megaphone, Headphones, FileCheck, Calculator,
-  FolderOpen, Lock, BellRing, UserCog
+  FolderOpen, Lock, BellRing, UserCog, MessageSquare,
+  ShieldCheck, Briefcase, TrendingUp, Eye, Bot, Zap
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useAdminStore } from '@/store/adminStore';
@@ -31,6 +32,13 @@ const navItems = [
   { id: 'support', label: 'Support', icon: Headphones, permission: 'support.view' },
   { id: 'documents', label: 'Documents', icon: FolderOpen, permission: 'documents.view' },
   { id: 'notifications', label: 'Notifications', icon: BellRing, permission: 'notifications.view' },
+  { id: 'communications', label: 'Communications', icon: MessageSquare, permission: 'communications.view' },
+  { id: 'verification', label: 'Verification', icon: ShieldCheck, permission: 'verification.view' },
+  { id: 'statements', label: 'Statements', icon: FileText, permission: 'statements.view' },
+  { id: 'investments', label: 'Investments', icon: TrendingUp, permission: 'investments.view' },
+  { id: 'impersonation', label: 'Impersonation', icon: Eye, permission: 'impersonation.view' },
+  { id: 'ai-assistant', label: 'AI Assistant', icon: Bot, permission: 'ai.view' },
+  { id: 'automation', label: 'Automation', icon: Zap, permission: 'automation.view' },
   { id: 'settings', label: 'Settings', icon: Settings, permission: 'settings.view' },
 ];
 

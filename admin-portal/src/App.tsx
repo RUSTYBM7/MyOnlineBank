@@ -21,6 +21,13 @@ import Support from './pages/Support';
 import Documents from './pages/Documents';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
+import Communications from './pages/Communications';
+import Verification from './pages/Verification';
+import Statements from './pages/Statements';
+import Investments from './pages/Investments';
+import Impersonation from './pages/Impersonation';
+import AIAssistant from './pages/AIAssistant';
+import Automation from './pages/Automation';
 
 function App() {
   return (
@@ -48,6 +55,13 @@ function App() {
         <Route path="documents" element={<Documents />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="communications" element={<Communications />} />
+        <Route path="verification" element={<Verification />} />
+        <Route path="statements" element={<Statements />} />
+        <Route path="investments" element={<Investments />} />
+        <Route path="impersonation" element={<Impersonation />} />
+        <Route path="ai-assistant" element={<AIAssistant />} />
+        <Route path="automation" element={<Automation />} />
       </Route>
     </Routes>
   );
