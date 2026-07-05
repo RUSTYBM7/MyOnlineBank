@@ -26,7 +26,7 @@ import {
   maskEmail,
   maskPhone,
   formatPhoneNumber,
-  OnboardingData
+  type OnboardingData
 } from '@/lib/onboarding-api';
 
 // Account type definitions

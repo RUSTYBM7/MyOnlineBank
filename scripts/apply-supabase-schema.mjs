@@ -23,7 +23,7 @@ const DB_PORT = 5432;
 const DB_NAME = 'postgres';
 const DB_USER = 'postgres';
 
-const SCHEMA_FILE = resolve(ROOT, '..', 'supabase', 'schema.sql');
+const SCHEMA_FILE = resolve(ROOT, 'supabase', 'schema.sql');
 
 function buildConnectionString() {
   if (process.env.SUPABASE_DB_URL) return process.env.SUPABASE_DB_URL;
