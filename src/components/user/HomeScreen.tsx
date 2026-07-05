@@ -7,7 +7,6 @@ import {
   Activity,
   ArrowDownLeft,
   ArrowRight,
-  BarChart,
   Bell,
   Bitcoin,
   Bot,
@@ -17,7 +16,6 @@ import {
   Eye,
   EyeOff,
   Headphones,
-  LineChart,
   PiggyBank,
   Plus,
   QrCode,
@@ -30,7 +28,7 @@ import {
   User,
   Wallet,
   Zap
-} from 'lucide-react';;;
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, ResponsiveContainer, BarChart, Bar } from 'recharts';
 

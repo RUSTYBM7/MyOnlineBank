@@ -5,13 +5,10 @@ import {
   Activity,
   AlertTriangle,
   ArrowDownRight,
-  BarChart,
   Bot,
   Clock,
   DollarSign,
   Globe,
-  LineChart,
-  PieChart,
   Server,
   ShieldCheck,
   Sun,
@@ -20,7 +17,7 @@ import {
   Users,
   Wifi,
   Zap
-} from 'lucide-react';;;
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis,
