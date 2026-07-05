@@ -96,14 +96,28 @@ const HeroSection = () => {
             Experience banking designed for the way you live.
           </motion.p>
 
-          {/* Featured Corporate Banner */}
+          {/* Featured Hero Video + Static Banner Fallback */}
           <motion.div variants={itemVariants} className="mb-8">
-            <img
-              src="/assets/images/corporate-banner.jpg"
-              alt="OrbitPay Finance - Banking Without Borders"
+            <video
               className="mx-auto rounded-2xl shadow-2xl shadow-emerald-500/20 w-full max-w-4xl h-auto object-cover"
-              style={{ maxHeight: '400px' }}
-            />
+              style={{ maxHeight: '420px' }}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/assets/images/corporate-banner.jpg"
+              controls
+              aria-label="OrbitPay Credit Union — Banking Without Borders"
+            >
+              <source src="/assets/videos/orbitpay-hero.mp4" type="video/mp4" />
+              <img
+                src="/assets/images/corporate-banner.jpg"
+                alt="OrbitPay Credit Union - Banking Without Borders"
+                className="mx-auto rounded-2xl w-full max-w-4xl h-auto"
+                style={{ maxHeight: '420px' }}
+              />
+            </video>
           </motion.div>
 
           {/* CTA Buttons */}

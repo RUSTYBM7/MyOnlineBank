@@ -1,0 +1,58 @@
+{
+  "name": "OrbitPay Credit Union",
+  "short_name": "OrbitPay",
+  "description": "Enterprise 2030 Digital Credit Union — secure digital banking with 5.25% APY savings, instant transfers, and premium financial services.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0F0A1F",
+  "theme_color": "#059669",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "/assets/logo/orbitpay-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/corporate-banner.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "OrbitPay Member Portal"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Account",
+      "short_name": "Open",
+      "url": "/app?action=onboarding",
+      "icons": [{ "src": "/assets/logo/orbitpay-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Transfer",
+      "short_name": "Transfer",
+      "url": "/app/transfer",
+      "icons": [{ "src": "/assets/logo/orbitpay-logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Cards",
+      "short_name": "Cards",
+      "url": "/app/cards",
+      "icons": [{ "src": "/assets/logo/orbitpay-logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}
