@@ -95,7 +95,7 @@ export default function HomeScreen() {
 
   const secondaryActions = [
     { icon: <CreditCard className="w-5 h-5" />, label: 'Cards', action: () => navigate('/app/cards') },
-    { icon: <Invest className="w-5 h-5" />, label: 'Invest', action: () => navigate('/app/invest') },
+    { icon: <TrendingUp className="w-5 h-5" />, label: 'Invest', action: () => navigate('/app/invest') },
     { icon: <Bitcoin className="w-5 h-5" />, label: 'Crypto', action: () => navigate('/app/crypto') },
     { icon: <ArrowDownLeft className="w-5 h-5" />, label: 'History', action: () => navigate('/app/transfer') },
   ];

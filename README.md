@@ -1,7 +1,7 @@
 # OrbitPay Credit Union - Enterprise Digital Banking Platform
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.0-059669?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.0.0-059669?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react" alt="React">
   <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
   <img src="https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite" alt="Vite">
@@ -57,7 +57,7 @@
 |----------|------------|
 | Framework | React 19 + TypeScript 5.9 |
 | Build Tool | Vite 7.3 |
-| Styling | TailwindCSS 4, Radix UI |
+| Styling | TailwindCSS 3.4, Radix UI |
 | Animations | Framer Motion 12 |
 | State | Zustand 5 |
 | Routing | React Router 7 |
@@ -115,12 +115,16 @@ cp .env.example .env.local
 
 ### Configuration
 
-Edit `.env.local` with your Supabase credentials:
+Edit `.env.local` with your Supabase credentials. **Only the public anon key belongs
+in the browser — NEVER put the service-role key in a frontend env file:**
 
 ```env
+# Browser-safe (Vite exposes these to the client bundle)
 VITE_SUPABASE_URL=your-supabase-url
 VITE_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-key
+
+# Server-only — for Supabase Edge Functions / a Node backend, NEVER the browser
+# SUPABASE_SERVICE_ROLE_KEY=your-service-key
 ```
 
 ### Development
@@ -197,10 +201,16 @@ VITE_API_URL=https://api.orbitpay.com
 ```
 
 **Admin Portal (admin-portal/.env.local)**
+
+Admin-side queries can use a more privileged anon key (e.g. one scoped to
+authenticated admins with admin RLS policies) but **must not** include the
+service-role key. The service-role key bypasses Row Level Security and would
+expose every row in the database to anyone with browser devtools open.
+
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-key
+VITE_SUPABASE_ANON_KEY=your-anon-key   # use a key whose RLS policies enforce admin-only access
+# SUPABASE_SERVICE_ROLE_KEY=...        # SERVER-ONLY — never put this in a frontend .env
 ```
 
 ## GitHub Actions
