@@ -10,6 +10,7 @@ import {
   Bell,
   Bitcoin,
   Bot,
+  ChartLine,
   ChevronRight,
   CreditCard,
   Download,
@@ -397,7 +398,7 @@ export default function HomeScreen() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center">
-                <LineChart className="w-4 h-4 text-white" />
+                <ChartLine className="w-4 h-4 text-white" />
               </div>
               <p className="text-sm font-medium text-emerald-800">Spending Categories</p>
             </div>

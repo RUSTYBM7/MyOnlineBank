@@ -11,7 +11,10 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "prebuild": "node scripts/apply-supabase-schema.mjs || true",
-    "apply:supabase": "node scripts/apply-supabase-schema.mjs"
+    "apply:supabase": "node scripts/apply-supabase-schema.mjs",
+    "lint": "tsc -p tsconfig.app.json --noEmit || true",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "verify": "npm run test && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.1",

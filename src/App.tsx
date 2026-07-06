@@ -9,64 +9,66 @@ import NotFound from '@/pages/NotFound';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingScreen from '@/components/LoadingScreen';
 import PublicLayout from '@/components/public/PublicLayout';
-// Public sub-pages
-import PersonalBankingPage from '@/pages/public/PersonalBankingPage';
-import BusinessBankingPage from '@/pages/public/BusinessBankingPage';
-import LoansPage from '@/pages/public/LoansPage';
-import CreditCardsPage from '@/pages/public/CreditCardsPage';
-import InvestmentsPage from '@/pages/public/InvestmentsPage';
-import DigitalBankingPage from '@/pages/public/DigitalBankingPage';
-import SecurityCenterPage from '@/pages/public/SecurityCenterPage';
-import EducationPage from '@/pages/public/EducationPage';
-import AboutPage from '@/pages/public/AboutPage';
-import RatesPage from '@/pages/public/RatesPage';
-import FeesPage from '@/pages/public/FeesPage';
-import FAQPage from '@/pages/public/FAQPage';
-import ContactPage from '@/pages/public/ContactPage';
-import CareersPage from '@/pages/public/CareersPage';
-import NewsPage from '@/pages/public/NewsPage';
-import AccessibilityPage from '@/pages/public/AccessibilityPage';
-import PrivacyPage from '@/pages/public/PrivacyPage';
-import TermsPage from '@/pages/public/TermsPage';
-import CookiesPage from '@/pages/public/CookiesPage';
+// Public sub-pages — lazy-loaded for code splitting. Each route lives
+// in its own chunk so the initial bundle stays small.
+import { lazy } from 'react';
+const PersonalBankingPage = lazy(() => import('@/pages/public/PersonalBankingPage'));
+const BusinessBankingPage = lazy(() => import('@/pages/public/BusinessBankingPage'));
+const LoansPage = lazy(() => import('@/pages/public/LoansPage'));
+const CreditCardsPage = lazy(() => import('@/pages/public/CreditCardsPage'));
+const InvestmentsPage = lazy(() => import('@/pages/public/InvestmentsPage'));
+const DigitalBankingPage = lazy(() => import('@/pages/public/DigitalBankingPage'));
+const SecurityCenterPage = lazy(() => import('@/pages/public/SecurityCenterPage'));
+const EducationPage = lazy(() => import('@/pages/public/EducationPage'));
+const AboutPage = lazy(() => import('@/pages/public/AboutPage'));
+const RatesPage = lazy(() => import('@/pages/public/RatesPage'));
+const FeesPage = lazy(() => import('@/pages/public/FeesPage'));
+const FAQPage = lazy(() => import('@/pages/public/FAQPage'));
+const ContactPage = lazy(() => import('@/pages/public/ContactPage'));
+const CareersPage = lazy(() => import('@/pages/public/CareersPage'));
+const NewsPage = lazy(() => import('@/pages/public/NewsPage'));
+const AccessibilityPage = lazy(() => import('@/pages/public/AccessibilityPage'));
+const PrivacyPage = lazy(() => import('@/pages/public/PrivacyPage'));
+const TermsPage = lazy(() => import('@/pages/public/TermsPage'));
+const CookiesPage = lazy(() => import('@/pages/public/CookiesPage'));
+const IntegrationsPage = lazy(() => import('@/pages/public/IntegrationsPage'));
 
-// Auth pages
-import AuthHubPage from '@/pages/auth/AuthHubPage';
-import SignInPage from '@/pages/auth/SignInPage';
-import SignUpPage from '@/pages/auth/SignUpPage';
-import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage';
-import ResetPasswordPage from '@/pages/auth/ResetPasswordPage';
-import ForgotUsernamePage from '@/pages/auth/ForgotUsernamePage';
-import RecoverMembershipPage from '@/pages/auth/RecoverMembershipPage';
-import RecoverOnlineIdPage from '@/pages/auth/RecoverOnlineIdPage';
-import UnlockAccountPage from '@/pages/auth/UnlockAccountPage';
-import VerifyEmailPage from '@/pages/auth/VerifyEmailPage';
-import VerifyPhonePage from '@/pages/auth/VerifyPhonePage';
-import VerifyAuthenticatorPage from '@/pages/auth/VerifyAuthenticatorPage';
-import MfaSetupPage from '@/pages/auth/MfaSetupPage';
-import PasskeySetupPage from '@/pages/auth/PasskeySetupPage';
-import TrustedDevicesPage from '@/pages/auth/TrustedDevicesPage';
-import LoginHistoryPage from '@/pages/auth/LoginHistoryPage';
-import SecurityAlertsPage from '@/pages/auth/SecurityAlertsPage';
-import RecoveryCodesPage from '@/pages/auth/RecoveryCodesPage';
-import SecurityQuestionsPage from '@/pages/auth/SecurityQuestionsPage';
-import LockedAccountPage from '@/pages/auth/LockedAccountPage';
-import LogoutConfirmPage from '@/pages/auth/LogoutConfirmPage';
+// Auth pages — lazy
+const AuthHubPage = lazy(() => import('@/pages/auth/AuthHubPage'));
+const SignInPage = lazy(() => import('@/pages/auth/SignInPage'));
+const SignUpPage = lazy(() => import('@/pages/auth/SignUpPage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/auth/ResetPasswordPage'));
+const ForgotUsernamePage = lazy(() => import('@/pages/auth/ForgotUsernamePage'));
+const RecoverMembershipPage = lazy(() => import('@/pages/auth/RecoverMembershipPage'));
+const RecoverOnlineIdPage = lazy(() => import('@/pages/auth/RecoverOnlineIdPage'));
+const UnlockAccountPage = lazy(() => import('@/pages/auth/UnlockAccountPage'));
+const VerifyEmailPage = lazy(() => import('@/pages/auth/VerifyEmailPage'));
+const VerifyPhonePage = lazy(() => import('@/pages/auth/VerifyPhonePage'));
+const VerifyAuthenticatorPage = lazy(() => import('@/pages/auth/VerifyAuthenticatorPage'));
+const MfaSetupPage = lazy(() => import('@/pages/auth/MfaSetupPage'));
+const PasskeySetupPage = lazy(() => import('@/pages/auth/PasskeySetupPage'));
+const TrustedDevicesPage = lazy(() => import('@/pages/auth/TrustedDevicesPage'));
+const LoginHistoryPage = lazy(() => import('@/pages/auth/LoginHistoryPage'));
+const SecurityAlertsPage = lazy(() => import('@/pages/auth/SecurityAlertsPage'));
+const RecoveryCodesPage = lazy(() => import('@/pages/auth/RecoveryCodesPage'));
+const SecurityQuestionsPage = lazy(() => import('@/pages/auth/SecurityQuestionsPage'));
+const LockedAccountPage = lazy(() => import('@/pages/auth/LockedAccountPage'));
+const LogoutConfirmPage = lazy(() => import('@/pages/auth/LogoutConfirmPage'));
 
-// Enrollment + onboarding
-import EnrollHubPage from '@/pages/enroll/EnrollHubPage';
-import EnrollProductPage from '@/pages/enroll/EnrollProductPage';
-import CardServicesPage from '@/pages/enroll/CardServicesPage';
-import OnboardWizard from '@/components/onboard/OnboardWizard';
+// Enrollment + onboarding — lazy
+const EnrollHubPage = lazy(() => import('@/pages/enroll/EnrollHubPage'));
+const EnrollProductPage = lazy(() => import('@/pages/enroll/EnrollProductPage'));
+const CardServicesPage = lazy(() => import('@/pages/enroll/CardServicesPage'));
+const OnboardWizard = lazy(() => import('@/components/onboard/OnboardWizard'));
 
-// Applicant dashboard
-import ApplicantDashboardPage from '@/pages/applicant/ApplicantDashboardPage';
+// Applicant dashboard — lazy
+const ApplicantDashboardPage = lazy(() => import('@/pages/applicant/ApplicantDashboardPage'));
 
-// Support pages
-import ChatSupportPage from '@/pages/support/ChatSupportPage';
-import AISupportPage from '@/pages/support/AISupportPage';
-import TicketSupportPage from '@/pages/support/TicketSupportPage';
-import IntegrationsPage from '@/pages/public/IntegrationsPage';
+// Support pages — lazy
+const ChatSupportPage = lazy(() => import('@/pages/support/ChatSupportPage'));
+const AISupportPage = lazy(() => import('@/pages/support/AISupportPage'));
+const TicketSupportPage = lazy(() => import('@/pages/support/TicketSupportPage'));
 
 function App() {
   useEffect(() => {

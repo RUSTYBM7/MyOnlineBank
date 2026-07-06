@@ -92,7 +92,6 @@ const SKIP_NAMES = new Set([
   'Select',
   'SupportButton',
   'NotificationToaster',
-  'LineChart',
   'Sonner',
   'Loader2Icon',
   'Info',
