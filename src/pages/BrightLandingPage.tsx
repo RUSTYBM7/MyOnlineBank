@@ -28,6 +28,7 @@ import {
   ChevronRight,
   Globe,
   Lock,
+  Phone,
   Sparkles,
   TrendingUp,
   Download,
@@ -134,31 +135,116 @@ const STATS = [
 ];
 
 const BRANCHES = [
-  { city: 'Sacramento, CA', address: '500 Capitol Mall, Suite 1800', hours: 'Mon–Fri 9am–5pm', phone: '1-916-555-0100' },
-  { city: 'San Francisco, CA', address: '101 California Street, Floor 12', hours: 'Mon–Fri 9am–5pm', phone: '1-415-555-0101' },
-  { city: 'Los Angeles, CA', address: '725 S Figueroa Street, Suite 2200', hours: 'Mon–Fri 9am–5pm', phone: '1-213-555-0102' },
-  { city: 'Seattle, WA', address: '1201 3rd Avenue, Suite 2400', hours: 'Mon–Fri 9am–5pm', phone: '1-206-555-0103' },
-  { city: 'Denver, CO', address: '1700 Lincoln Street, Floor 18', hours: 'Mon–Fri 9am–5pm', phone: '1-303-555-0104' },
-  { city: 'Austin, TX', address: '300 W 6th Street, Suite 2100', hours: 'Mon–Fri 9am–5pm', phone: '1-512-555-0105' },
-  { city: 'Chicago, IL', address: '200 E Randolph Street, Floor 60', hours: 'Mon–Fri 9am–5pm', phone: '1-312-555-0106' },
-  { city: 'New York, NY', address: '1290 Avenue of the Americas', hours: 'Mon–Fri 8am–6pm', phone: '1-212-555-0107' },
+  {
+    city: 'Sacramento, CA',
+    address: '500 Capitol Mall, Suite 1800',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-916-555-0100',
+    photo: '/imgs/orbitpay-hq-real.jpg',
+  },
+  {
+    city: 'San Francisco, CA',
+    address: '101 California Street, Floor 12',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-415-555-0101',
+    photo: '/imgs/modern-bank-headquarters-exterior.jpg',
+  },
+  {
+    city: 'Los Angeles, CA',
+    address: '725 S Figueroa Street, Suite 2200',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-213-555-0102',
+    photo: '/imgs/modern-bank-headquarters-building-exterior.jpg',
+  },
+  {
+    city: 'Seattle, WA',
+    address: '1201 3rd Avenue, Suite 2400',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-206-555-0103',
+    photo: '/imgs/modern-bank-building-exterior.jpg',
+  },
+  {
+    city: 'Denver, CO',
+    address: '1700 Lincoln Street, Floor 18',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-303-555-0104',
+    photo: '/imgs/modern-bank-building-exterior-architecture.jpg',
+  },
+  {
+    city: 'Austin, TX',
+    address: '300 W 6th Street, Suite 2100',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-512-555-0105',
+    photo: '/imgs/diverse-community-group-office.jpg',
+  },
+  {
+    city: 'Chicago, IL',
+    address: '200 E Randolph Street, Floor 60',
+    hours: 'Mon–Fri 9am–5pm',
+    phone: '1-312-555-0106',
+    photo: '/imgs/modern-professional-office-workspace.jpg',
+  },
+  {
+    city: 'New York, NY',
+    address: '1290 Avenue of the Americas',
+    hours: 'Mon–Fri 8am–6pm',
+    phone: '1-212-555-0107',
+    photo: '/imgs/diverse-community-banking-team.jpg',
+  },
+  {
+    city: 'Frankfurt, Germany',
+    address: 'Europa Headquarters, Mainzer Landstraße 1',
+    hours: 'Mon–Fri 9am–6pm CET',
+    phone: '+49 69 555 0100',
+    photo: '/imgs/orbitpay-v2/conference-room-1.png',
+  },
 ];
 
 const TESTIMONIALS = [
   {
-    q: '"Moving my operating account took a week. Same-day funding on card transactions meant we stopped carrying a 14-day float on $4M of monthly volume."',
+    q: '"Moving our operating account took a week. Same-day funding on card transactions meant we stopped carrying a 14-day float on $4M of monthly volume."',
     name: 'Marisol Vega',
     role: 'CFO, Northwind Logistics',
   },
   {
-    q: '"A real human answered my call on the second ring. That hasn\'t happened at any bank in 15 years."',
+    q: '"A real human answered my call on the second ring. That hasn\u2019t happened at any bank in 15 years."',
     name: 'Aliyah Chen',
     role: 'Owner, Chen Family Restaurants',
   },
   {
-    q: '"The mobile deposit is faster than my old bank\'s desktop version. I genuinely do not visit a branch anymore."',
+    q: '"The mobile deposit is faster than my old bank\u2019s desktop version. I genuinely do not visit a branch anymore."',
     name: 'Devon Walker',
     role: 'Founder, Salt & Pine Studios',
+  },
+  {
+    q: '"We refinanced the apartment building through OrbitPay in 11 days. Our previous bank took four months and still asked for the same paperwork twice."',
+    name: 'Henrik Jansen',
+    role: 'Principal, Linden Real Estate',
+  },
+  {
+    q: '"The international wire interface is the first one I\u2019ve used that didn\u2019t make me open a spreadsheet. USD \u2194 EUR in three clicks."',
+    name: 'Eva Novak',
+    role: 'Treasurer, Atelier Novak',
+  },
+  {
+    q: '"I had a charge I didn\u2019t recognize on a Sunday night at 11pm. The chat agent had it reversed before I woke up on Monday."',
+    name: 'Matteo Ricci',
+    role: 'Architect, Ricci Studio',
+  },
+  {
+    q: '"My mom is 74 and refuses to learn a banking app. The branch staff in Sacramento know her by name. That\u2019s the point."',
+    name: 'Sarah Chen',
+    role: 'Retired teacher, Sacramento',
+  },
+  {
+    q: '"Auto-saving into a vacation fund every payday without thinking about it is the single best financial decision I\u2019ve made in five years."',
+    name: 'Bianca Ortiz',
+    role: 'Pediatric nurse, San Francisco',
+  },
+  {
+    q: '"Switching the LLC\u2019s payroll over saved us $480 a month in fees. The migration team walked us through every screen."',
+    name: 'Luis Mendoza',
+    role: 'Founder, Mendoza Contracting',
   },
 ];
 
@@ -528,20 +614,29 @@ export default function BrightLandingPage() {
               </span>
             </h2>
           </div>
-          <div className="grid gap-5 md:grid-cols-3">
-            {TESTIMONIALS.map((t) => (
-              <figure
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.figure
                 key={t.name}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: (i % 3) * 0.05 }}
                 className="flex flex-col gap-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm"
               >
                 <blockquote className="text-sm leading-relaxed text-neutral-700">
                   {t.q}
                 </blockquote>
-                <figcaption className="mt-auto text-xs">
-                  <div className="font-semibold text-neutral-900">{t.name}</div>
-                  <div className="text-neutral-500">{t.role}</div>
+                <figcaption className="mt-auto flex items-center gap-3 text-xs">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 via-orange-500 to-pink-500 text-[11px] font-bold text-white">
+                    {t.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-900">{t.name}</div>
+                    <div className="text-neutral-500">{t.role}</div>
+                  </div>
                 </figcaption>
-              </figure>
+              </motion.figure>
             ))}
           </div>
         </div>
@@ -858,12 +953,12 @@ export default function BrightLandingPage() {
               Branches
             </div>
             <h2 className="font-serif text-4xl font-medium sm:text-5xl">
-              18 branches across{' '}
+              9 branches across{' '}
               <span
                 className="bg-clip-text text-transparent"
                 style={{ backgroundImage: 'linear-gradient(90deg, #F43F5E 0%, #F97316 50%, #EC4899 100%)' }}
               >
-                the country.
+                the U.S. and Europe.
               </span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm text-neutral-600 sm:text-base">
@@ -872,60 +967,47 @@ export default function BrightLandingPage() {
             </p>
           </div>
 
-          {/* Map-style grid with HQ building photo on the side */}
-          <div className="grid gap-5 lg:grid-cols-[1fr_2fr]">
-            <div className="grid grid-rows-2 gap-3">
-              <div className="relative overflow-hidden rounded-3xl shadow-md">
-                <img
-                  src="/imgs/orbitpay-hq-real.jpg"
-                  alt="OrbitPay HQ — Sacramento"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white">
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300">
-                    <Building2 className="h-3 w-3" />
-                    Sacramento HQ
-                  </div>
-                  <div className="mt-0.5 text-sm font-semibold">500 Capitol Mall, Suite 1800</div>
-                </div>
-              </div>
-              <div className="relative overflow-hidden rounded-3xl shadow-md">
-                <img
-                  src="/imgs/orbitpay-v2/conference-room-1.png"
-                  alt="OrbitPay Frankfurt operations center"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white">
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300">
-                    <Building2 className="h-3 w-3" />
-                    Frankfurt, Germany
-                  </div>
-                  <div className="mt-0.5 text-sm font-semibold">Europa Operations Center</div>
-                </div>
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {BRANCHES.slice(1).map((b) => (
-                <div
-                  key={b.city}
-                  className="flex items-start gap-3 rounded-2xl border border-neutral-200 bg-[#F5F5F7] p-4 transition hover:border-rose-300 hover:bg-white"
-                >
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-rose-500 to-pink-500 text-white">
-                    <MapPin className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-semibold text-neutral-900">{b.city}</h3>
-                    <p className="mt-0.5 truncate text-xs text-neutral-600">{b.address}</p>
-                    <div className="mt-1 flex items-center gap-3 text-[11px] text-neutral-500">
-                      <span className="inline-flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {b.hours}
-                      </span>
-                    </div>
+          {/* Branch photo grid — every branch has its own card with a real photo */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {BRANCHES.map((b, i) => (
+              <motion.figure
+                key={b.city}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: (i % 3) * 0.05 }}
+                className="group relative overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <img
+                    src={b.photo}
+                    alt={`OrbitPay branch in ${b.city}`}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-rose-600 shadow-sm backdrop-blur">
+                    <MapPin className="h-3 w-3" />
+                    {b.city}
                   </div>
                 </div>
-              ))}
-            </div>
+                <figcaption className="space-y-2 p-4">
+                  <div className="text-sm font-semibold text-neutral-900">{b.address}</div>
+                  <div className="flex items-center justify-between text-[11px] text-neutral-500">
+                    <span className="inline-flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {b.hours}
+                    </span>
+                    <a
+                      href={`tel:${b.phone.replace(/[^+\d]/g, '')}`}
+                      className="inline-flex items-center gap-1 font-medium text-rose-600 transition hover:text-rose-700"
+                    >
+                      <Phone className="h-3 w-3" />
+                      {b.phone}
+                    </a>
+                  </div>
+                </figcaption>
+              </motion.figure>
+            ))}
           </div>
 
           <div className="mt-10 text-center">
