@@ -5,10 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "prebuild": "node scripts/apply-supabase-schema.mjs || true",
-    "apply:supabase": "node scripts/apply-supabase-schema.mjs"
+    "build": "./node_modules/.bin/vite build",
+    "preview": "./node_modules/.bin/vite preview"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.1",
