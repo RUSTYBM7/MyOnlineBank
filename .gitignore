@@ -18,7 +18,7 @@
 **/downloads/
 **/eggs/
 **/.eggs/
-**/lib/
+# **/lib/  # intentionally kept — src/lib contains real source files
 **/lib64/
 **/parts/
 **/sdist/
